@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<!-- utf-8-marker: äöüß -->
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="content-language" content="de">
+<title>Tetris_XH - Handbuch</title>
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
+
+<body>
+
+<h1>Tetris_XH - ein CMSimple_XH-Plugin</h1>
+<p>Tetris_XH ist eine Implementierung des bekannten Tetris-Spiels
+zum Einbinden in eine CMSimple_XH-Homepage.</p>
+
+<ul id="nav">
+<li><a href="#notice">Wichtiger Hinweis</a></li>
+<li><a href="#requirements">Voraussetzungen</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#settings">Einstellungen</a></li>
+<li><a href="#usage">Verwendung</a></li>
+<li><a href="#limitations">Beschränkungen</a></li>
+<li><a href="#license">Lizenz</a></li>
+<li><a href="#credits">Danksagung</a></li>
+</ul>
+
+<div id="body">
+
+<p><strong>Bitte lesen Sie diese Dokumentation!
+Andernfalls wird möglicherweise kein Support gewährt.
+Es ist grundsätzlich eine gute Idee, die Dokumentation zu lesen,
+<em>bevor</em> Sie auf Probleme stoßen!</strong></p>
+
+<h2><a name="notice">Wichtiger Hinweis</a></h2>
+<p><strong>Die aktuelle Version von Tetris_XH ist ein so genannter Release Candidate.
+Vorsicht bei der Anwendung!</strong></p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2><a name="requirements">Voraussetzungen</a></h2>
+<p>Tetris_XH ist ein Plugin für CMSimple_XH.
+Es erfordert eine UTF-8-kodierte Version.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2><a name="installation">Installation</a></h2>
+<p>Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch.
+Im <a href="http://www.cmsimple-xh.de/dokuwiki/doku.php/anwenderdokumentation:plugins:installation">
+CMSimple_XH Wiki</a> finden sie ausführliche Hinweise.</p>
+<ol>
+<li><strong>Sichern Sie die Daten auf Ihrem Server.</strong></li>
+<li>Entpacken Sie die ZIP-Datei auf Ihrem Computer.</li>
+<li>Laden Sie das gesamte Verzeichnis tetris/ auf Ihren Server in das CMSimple_XH-Plugin-Verzeichnis hoch.</li>
+<li>Vergeben Sie falls nötig Schreibrechte für die Unterverzeichnisse config/, css/, languages/ und den Daten-Ordner des Plugins.</li>
+<li><strong>Gehen Sie zu Tetris im Administrationsbereich,
+und prüfen Sie, ob alle Vorraussetzungen erfüllt sind.</strong></li>
+</ol>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2><a name="settings">Einstellungen</a></h2>
+<p>Die Konfiguration des Plugins erfolgt wie bei vielen anderen CMSimple_XH-Plugins
+auch im Administrationsbereich der Homepage. Wählen Sie unter Plugins
+Tetris aus.</p>
+<p>Sie können die Original-Einstellungen von Tetris_XH in der Plugin-Konfiguration ändern.
+Beim Überfahren der Hilfe-Icons mit der Maus werden Hinweise zu den Einstellungen angezeigt.</p>
+<p>Die Lokalisierung wird unter Plugin-Sprache vorgenommen.
+Sie können die Zeichenketten in Ihre eigene Sprache übersetzen,
+oder sie entsprechend Ihren Anforderungen anpassen.</p>
+<p>Das Aussehen von Tetris_XH kann unter Plugin-Stylesheet angepasst werden.
+Wenn Sie die jQueryUI-Elemente passend zu Ihrem Template stylen möchten,
+sollten Sie in Erwägung ziehen Ihr Template um Unterstützung von jQueryUI-Themes zu erweitern.
+Wie das geht ist im
+<a href="http://www.cmsimpleforum.com/viewtopic.php?f=29&amp;t=3435&amp;start=2">CMSimple-Forum</a>
+erklärt.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2><a name="usage">Verwendung</a></h2>
+<p>Bearbeiten Sie die Seite, auf der das Tetris-Spiel angezeigt werden soll,
+und fügen Sie den erforderlichen Skript-Aufruf <em>tetris();</em>
+per CMSimple Skripting, dem neuen {{{PLUGIN:...}}} Aufruf oder mit hi_pd_scripting ein.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2><a name="limitations">Beschränkungen</a></h2>
+
+<h3>jQuery</h3>
+<p>Tetris_XH <em>könnte</em> in Installationen
+mit jQuery abhängigen Plugins/Addons/Templates,
+die nicht jQuery4CMSimple verwenden,
+sondern ihre eigene jQuery Bibliothek importieren, nicht funktionieren.
+Dieses Problem wird nicht behoben werden
+(es ist ohnehin nicht möglich, es für alle Fälle zu beheben),
+weil allen Entwicklern geraten wird, ausschließlich jQuery4CMSimple
+in Verbindung mit ihrem jQuery basierten Code für CMSimple_XH zu verwenden.
+Daher sollten diejenigen Erweiterungen aktualisiert werden,
+die sich nicht daran halten!</p>
+
+<h3>Vulnerabilität der Highscores</h3>
+<p>Es ist nicht besonders schwer für Hacker die Highscores zu manipulieren
+ohne diese tatsächlich erspielt zu haben.
+Aber dies stellt keine wirkliche Sicherheitslücke dar,
+da die Größe der Highscore-Datenbank eingeschränkt ist.</p>
+
+<h3>CSS-Validierung</h3>
+<p>Da das Plugin jQueryUI-Themes verwendet, wird die erzeugte Ausgabe unter CSS 2.1
+möglicherweise nicht validieren.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2><a name="license">Lizenz</a></h2>
+<p>Tetris_XH kann unter Einhaltung der
+<a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a> verwendet werden.</p>
+<p>&copy; 2011 Christoph M. Becker</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2><a name="credits">Danksagung</a></h2>
+<p>Tetris_XH basiert auf
+<a href="http://fmarcia.info/jquery/tetris/tetris.html">
+Tetris with jQuery</a> von Franck Marcia.
+Vielen Dank dafür, dass er diese nette und einfache Implementierung von Tetris entwickelt
+und den Code unter einer Open-Source-Lizenz veröffentlicht hat.</p>
+<p>Dieses Plugin verwendet "free application icons" von <a href="http://www.aha-soft.com/">Aha-Soft</a>.
+Vielen Dank für die freie Verwendbarkeit dieser Icons.</p>
+<p>Vielen Dank an die Gemeinschaft im <a href="http://www.cmsimpleforum.com">CMSimple-Forum</a>
+für Tipps, Anregungen und das Testen.
+Besonders möchte ich Gert und oldnema für ihre Verbesserungsvorschläge danken.
+Und ich muss mich bei bca entschuldigen, der die Online-Demo als erster getestet hat,
+aber aufgrund eines Fehlers im Plugin seinen Highscore nicht eintragen konnte.</p>
+<p>Vielen Dank an Luda Wieland die mich darauf hinwies, dass die Highscores
+in Installationen in einem UserDir nicht gespeichert werden konnten,
+und die mir beim Debuggen des Problems half.</p>
+<p>Und vielen Dank an alle Entwickler von <a href="http://www.cmsimple-xh.com">
+CMSimple_XH</a>, ohne die dieses phantastische CMS nicht existieren würde.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+</div>
+
+</body>
+
+</html>

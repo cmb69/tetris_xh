@@ -1,0 +1,35 @@
+TODO:
+change links in LANG.php to "
+high-score problem? (http://www.cmsimpleforum.com/viewtopic.php?f=5&t=3888#p24263)
+    ?action=list (might be available without SESSION)
+check and document cz.php
+check and document pl.php
+include plugin icon
+remove defaultconfig.php?
+
+Version 1rc2 - released TODO
+cmb	minor improvements
+
+Version 1rc1 - released 2011-12-15
+cmb	fixed UserDir related bug regarding highscores (reported by Luda)
+cmb	fixed bug regarding missing highscores.dat (reported by oldnema)
+cmb	changed requirements check to system check
+cmb	updated manual accordingly
+cmb	added german manual
+cmb	added default language and configuration for CMSimple_XH 1.5
+cmb	changed config option "falldown_immediately" to 1/0
+cmb	completed and corrected de.php
+cmb	added translation-hints
+cmb	made config option "falldown_immediately" work
+
+Version 1beta2 - released 2011-09-12
+cmb	fixed faulty mkdir mode (reported by bca)
+cmb	updated manual
+cmb	fixed several minor bugs and flaws
+cmb	added i18n of the stats labels (reported by oldnema)
+cmb	added config option: moving tetrominoes down let them touchdown immediately (inspired by Gert)
+cmb	added config options for speed of game (inspired by gert)
+cmb	added alternative control through arrow keys (works only on FF) (suggested by oldnema)
+
+Version 1beta1 - released 2011-09-09
+cmb	initial release

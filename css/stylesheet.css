@@ -1,0 +1,73 @@
+/* utf-8-marker: äöüß */
+
+#tetris {
+    overflow:hidden;
+}
+
+#tetris-grid {
+    float:left;
+    margin-right: 2em;
+}
+
+#tetris-grid table, #tetris-next table {
+    border: 3px solid #999999;
+}
+
+#tetris-grid td, #tetris-next td {
+    width:15px;
+    height:15px;
+}
+
+#tetris-next {
+    margin-bottom: 2em;
+}
+
+#tetris-stats {}
+
+#tetris-stats .label {
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+#tetris-stats .led {
+    background: black;
+    color: red;
+    font-family: monospace;
+    font-size: large;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+#tetris-cmd {
+    margin-top: 1em;
+}
+
+#tetris-cmd input {}
+
+
+/*
+ * Highscores
+ */
+
+#tetris-highscores td.name {
+    padding-right: 1em;
+}
+
+#tetris-highscores td.score {
+    text-align: right;
+    padding-left: 1em;
+}
+
+
+/*
+ * Rules
+ */
+ 
+#tetris-rules td {
+    padding-right: 1em;
+}
+
+#tetris-rules td.key {
+    font-family: monospace;
+    font-size: 130%;
+}
