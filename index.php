@@ -131,7 +131,7 @@ function tetris_headers() {
  */
 function tetris_grid() {
     $htm = '<div id="tetris-grid">'."\n".'<table>'."\n";
-    for ($j = ord('a'); $j <= ord('r'); $j++) {
+    for ($j = ord('d'); $j <= ord('u'); $j++) {
 	$htm .= '<tr>';
 	for ($i = 1; $i <= 10; $i++) {
 	    $htm .= '<td id="tetris-'.chr($j).$i.'"></td>';
