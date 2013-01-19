@@ -1,8 +1,8 @@
-TODO:
-document JS requirement!
-
-Version 1rc2 - released TODO
-cmb	minor improvements
+Version 1rc2 - released 2013-01-19
+cmb	fixed bug where invalid CSS selectors were given, which fails since jQuery 1.8.0
+cmb     added Polish, Czech and Slovak localization (constributed by kamilloi, oldnema resp. Tata)
+cmb     improved user manuals
+cmb     slightly improved different parts of the code
 
 Version 1rc1 - released 2011-12-15
 cmb	fixed UserDir related bug regarding highscores (reported by Luda)
