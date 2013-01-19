@@ -25,7 +25,7 @@
 	$plugin_tx['tetris']['label_level']="Úroveň";
 	$plugin_tx['tetris']['label_rows']="Počet řad";
 	$plugin_tx['tetris']['label_score']="Skóre";
-	$plugin_tx['tetris']['message_howto_play']="<p> Jak hrát Tetris je vysvětleno na <a href='http://cs.wikipedia.org/wiki/Tetris' target='_blank'> Wikipedii </a>. </ p>Pro ovládání  použijte následující klávesy (pozor, šipky nefungují ve všech prohlížečích): </ p>";
+	$plugin_tx['tetris']['message_howto_play']="<p> Jak hrát Tetris je vysvětleno na <a href=\"http://cs.wikipedia.org/wiki/Tetris\" target=\"_blank\"> Wikipedii </a>. </ p>Pro ovládání  použijte následující klávesy (pozor, šipky nefungují ve všech prohlížečích): </ p>";
 	$plugin_tx['tetris']['message_about']="<p>Tetris pro CMSimple_XH.</p>";
 	$plugin_tx['tetris']['error_no_js']="Pro hru musí být ve vašem prohlížeči povolen javascript!";
 	$plugin_tx['tetris']['cf_utf-8-marker']="Systémové nastavení. <strong>NEMĚNIT!</strong>";

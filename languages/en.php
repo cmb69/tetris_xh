@@ -28,7 +28,7 @@ $plugin_tx['tetris']['label_level']="Level";
 $plugin_tx['tetris']['label_rows']="Rows";
 $plugin_tx['tetris']['label_score']="Score";
 
-$plugin_tx['tetris']['message_howto_play']="<p>How to play Tetris is explained at <a href='http://en.wikipedia.org/wiki/Tetris#Gameplay' target='_blank'>Wikipedia</a>.</p><p>Use the following keys (the arrow keys don't work in all browsers):</p>";
+$plugin_tx['tetris']['message_howto_play']="<p>How to play Tetris is explained at <a href=\"http://en.wikipedia.org/wiki/Tetris#Gameplay\" target=\"_blank\">Wikipedia</a>.</p><p>Use the following keys (the arrow keys don't work in all browsers):</p>";
 $plugin_tx['tetris']['message_about']="<p>Tetris for CMSimple_XH.</p>";
 
 $plugin_tx['tetris']['error_no_js']="Javascript must be enabled in your browser to play!";
