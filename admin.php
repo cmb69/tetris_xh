@@ -21,7 +21,7 @@ function tetris_version() {
     return '<h1>Tetris_XH</h1>'."\n"
 	    .'<p>Version: '.TETRIS_VERSION.'</p>'."\n"
 	    .'<p><a href="http://3-magi.net/?CMSimple_XH/Tetris_XH">Tetris_XH</a> is powered by '
-	    .'<a href="http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple" target="_blank">'
+	    .'<a href="http://www.cmsimple-xh.org/wiki/doku.php/extend:jquery4cmsimple" target="_blank">'
 	    .'jQuery4CMSimple</a>'
 	    .' and <a href="http://fmarcia.info/jquery/tetris/tetris.html" target"_blank">Tetris with jQuery</a>.</p>'."\n"
 	    .'<p>Copyright &copy; 2011 Christoph M. Becker</p>'."\n"

@@ -1,9 +1,5 @@
 TODO:
-    ?action=list (might be available without SESSION)
-check and document cz.php
-check and document pl.php
 include plugin icon
-remove defaultconfig.php?
 document JS requirement!
 
 Version 1rc2 - released TODO
