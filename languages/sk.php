@@ -1,6 +1,5 @@
 <?php
 
-$plugin_tx['tetris']['utf-8-marker']="äöüßľščťžýáíéňôß";
 $plugin_tx['tetris']['syscheck_title']="Kontrola systému";
 $plugin_tx['tetris']['syscheck_phpversion']="PHP verzia &ge; %s";
 $plugin_tx['tetris']['syscheck_extension']="Rozšírenie '%s' načítané";
@@ -28,7 +27,6 @@ $plugin_tx['tetris']['label_score']="Skóre";
 $plugin_tx['tetris']['message_howto_play']="<p>Ako hrať Tetris, je vysvetlené na <a href='http://en.wikipedia.org/wiki/Tetris#Gameplay' target='_blank'>Wikipedia</a>.</p><p>Použite tieto klávesy (šípky nefungujú vo všetkých prehliadačoch):</p>";
 $plugin_tx['tetris']['message_about']="<p>Tetris pre CMSimple_XH.</p>";
 $plugin_tx['tetris']['error_no_js']="Javascript musí byť v prehliadači povlený!";
-$plugin_tx['tetris']['cf_utf-8-marker']="Iba pre vnútorné použitie. <strong>Nič nemeňte!</strong>";
 $plugin_tx['tetris']['cf_folder_data']="Cesta k adresáru relatívna ku koreňovému adresáru  CMSimple, v ktorom sa majú uložiť dáta. Napr.: \"userfiles/tetris/\". Ak neuvediete nič, dáta sa uložia v adresári pluginu data/.";
 $plugin_tx['tetris']['cf_falldown_immediately']="Majú častice padať automaticky (1), alebo iba na pokyn z klávesnice (0).";
 $plugin_tx['tetris']['cf_speed_initial']="Počiatočná rýchlosť hry. Čím vyššie číslo, tým nižšia rýchlosť.";

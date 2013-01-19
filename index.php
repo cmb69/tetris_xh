@@ -6,9 +6,6 @@
  */
 
 
-// utf-8-marker: äöüß
-
-
 define('TETRIS_VERSION', '1rc2');
 
 
@@ -214,10 +211,10 @@ function tetris_rules() {
     $htm = '<div id="tetris-rules">'."\n"
 	    .'<div>'.$ptx['message_howto_play'].'</div>'."\n"
 	    .'<table>'."\n"
-	    .'<tr><td>'.$ptx['label_left'].'</td><td class="key">J / ←</td></tr>'."\n"
-	    .'<tr><td>'.$ptx['label_right'].'</td><td class="key">L / →</td></tr>'."\n"
-	    .'<tr><td>'.$ptx['label_rotate'].'</td><td class="key">I / ↑</td></tr>'."\n"
-	    .'<tr><td>'.$ptx['label_down'].'</td><td class="key">K / ↓</td></tr>'."\n"
+	    .'<tr><td>'.$ptx['label_left'].'</td><td class="key">J / &larr;</td></tr>'."\n"
+	    .'<tr><td>'.$ptx['label_right'].'</td><td class="key">L / &rarr;</td></tr>'."\n"
+	    .'<tr><td>'.$ptx['label_rotate'].'</td><td class="key">I / &uarr;</td></tr>'."\n"
+	    .'<tr><td>'.$ptx['label_down'].'</td><td class="key">K / &darr;</td></tr>'."\n"
 	    .'</table>'."\n".'</div>'."\n";
     return $htm;
 }

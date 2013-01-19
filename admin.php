@@ -6,9 +6,6 @@
  */
 
 
-// utf-8 marker: äöüß
-
-
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
     exit;

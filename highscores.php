@@ -2,12 +2,9 @@
 
 /**
  * Highscore handling of Tetris_XH.
- * 
- * Copyright (c) 2011 Christoph M. Becker (see license.txt)
+ *
+ * Copyright (c) 2011-2013 Christoph M. Becker (see license.txt)
  */
- 
- 
-// utf-8-marker: äöüß
 
 
 error_reporting(0);
@@ -43,7 +40,7 @@ function stsl($text) {
  */
 function read_highscores() {
     global $highscores;
-    
+
     $fn = $_SESSION['tetris_data_folder'].'highscores.dat';
     if (($cnt = file_get_contents($fn)) === FALSE
 	    || ($highscores = unserialize($cnt)) === FALSE) {
@@ -60,7 +57,7 @@ function read_highscores() {
  */
 function write_highscores() {
     global $highscores;
-    
+
     $fn = $_SESSION['tetris_data_folder'].'highscores.dat';
     if (($fh = fopen($fn, 'w')) !== FALSE) {
 	flock($fh, LOCK_EX);

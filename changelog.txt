@@ -1,5 +1,4 @@
 TODO:
-high-score problem? (http://www.cmsimpleforum.com/viewtopic.php?f=5&t=3888#p24263)
     ?action=list (might be available without SESSION)
 check and document cz.php
 check and document pl.php

@@ -7,7 +7,6 @@
  * License.
  */
 
-$plugin_tx['tetris']['utf-8-marker']="żółć";
 $plugin_tx['tetris']['syscheck_title']="Test systemu";
 $plugin_tx['tetris']['syscheck_phpversion']="Wersja PHP ≥ %s";
 $plugin_tx['tetris']['syscheck_extension']="Wtyczka '%s' wczytana poprawnie";
@@ -35,7 +34,6 @@ $plugin_tx['tetris']['label_score']="Wynik";
 $plugin_tx['tetris']['message_howto_play']="<p>Zasady gry zostały wyjaśnione na <a href=\"http://pl.wikipedia.org/wiki/Tetris#Zasady_gry\" target=\"_blank\">Wikipedii</a>.</p><p>Użyj wymienionych klawiszy (strzałki nie działają ze wszystkimi przeglądarkami):</p>";
 $plugin_tx['tetris']['message_about']="<p>Tetris dla CMSimple_XH.</p>";
 $plugin_tx['tetris']['error_no_js']="Javascript musi być aktywny aby zagrać!";
-$plugin_tx['tetris']['cf_utf-8-marker']="Do użytku wewnętrznego. <strong>Nie zmieniać!</strong>";
 $plugin_tx['tetris']['cf_folder_data']="Ścieżka do folderu gdzie przechowywane będą dane wtyczki n.p. <em>userfiles/tetris/</em>. Pozostaw puste pole aby zapisywać w katalogu data/ wtyczki.";
 $plugin_tx['tetris']['cf_falldown_immediately']="Określ zachowanie spadania: (1) - klocki spadają natychmiast lub (0) - klocki opadają co jedną linię.";
 $plugin_tx['tetris']['cf_speed_initial']="Prędkość początkowa gry. Im wyższa tym mniejsza prędkość.";

@@ -10,8 +10,6 @@
  */
 
 
-
-
 (function($) {
     var tetris = {
 
