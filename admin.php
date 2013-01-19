@@ -15,16 +15,21 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 /**
  * Returns (x)html plugin version information.
  *
+ * @global array  The paths of system files and folders.
  * @return string
  */
-function tetris_version() {
-    return '<h1>Tetris_XH</h1>'."\n"
+function tetris_version()
+{
+    global $pth;
+
+    return '<h1><a href="http://3-magi.net/?CMSimple_XH/Tetris_XH">Tetris_XH</a></h1>'."\n"
+	    .'<div style="float:left; margin-right: 1em">'.tag('img src="'.$pth['folder']['plugins'].'tetris/tetris.png" alt="Plugin Icon"').'</div>'
 	    .'<p>Version: '.TETRIS_VERSION.'</p>'."\n"
-	    .'<p><a href="http://3-magi.net/?CMSimple_XH/Tetris_XH">Tetris_XH</a> is powered by '
+	    .'<p>Tetris_XH is powered by '
 	    .'<a href="http://www.cmsimple-xh.org/wiki/doku.php/extend:jquery4cmsimple" target="_blank">'
 	    .'jQuery4CMSimple</a>'
 	    .' and <a href="http://fmarcia.info/jquery/tetris/tetris.html" target"_blank">Tetris with jQuery</a>.</p>'."\n"
-	    .'<p>Copyright &copy; 2011 Christoph M. Becker</p>'."\n"
+	    .'<p>Copyright &copy; 2011-2013 Christoph M. Becker</p>'."\n"
 	    .'<p style="text-align:justify">This program is free software: you can redistribute it and/or modify'
 	    .' it under the terms of the GNU General Public License as published by'
 	    .' the Free Software Foundation, either version 3 of the License, or'
