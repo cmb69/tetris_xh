@@ -1,5 +1,4 @@
 TODO:
-include plugin icon
 document JS requirement!
 
 Version 1rc2 - released TODO

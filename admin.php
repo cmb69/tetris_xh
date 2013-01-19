@@ -28,7 +28,7 @@ function tetris_version()
 	    .'<p>Tetris_XH is powered by '
 	    .'<a href="http://www.cmsimple-xh.org/wiki/doku.php/extend:jquery4cmsimple" target="_blank">'
 	    .'jQuery4CMSimple</a>'
-	    .' and <a href="http://fmarcia.info/jquery/tetris/tetris.html" target"_blank">Tetris with jQuery</a>.</p>'."\n"
+	    .' and <a href="http://fmarcia.info/jquery/tetris/tetris.html" target="_blank">Tetris with jQuery</a>.</p>'."\n"
 	    .'<p>Copyright &copy; 2011-2013 Christoph M. Becker</p>'."\n"
 	    .'<p style="text-align:justify">This program is free software: you can redistribute it and/or modify'
 	    .' it under the terms of the GNU General Public License as published by'

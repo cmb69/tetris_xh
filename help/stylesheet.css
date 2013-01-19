@@ -6,6 +6,8 @@ body {
     background: #ffffe1;
 }
 
+h1 {line-height: 1.5em}
+
 #body {
     margin-left: 17em;
 }
@@ -17,6 +19,7 @@ body {
 #nav {
     margin-left: 0;
     float: left;
+    clear: both;
     width: 15em;
     list-style: none;
     padding-left: 0;
@@ -27,6 +30,7 @@ body {
     list-style: none;
     font-size: small;
     padding-left: 1em;
+    clear: both;
 }
 
 .image-right {
