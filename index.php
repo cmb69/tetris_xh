@@ -2,7 +2,7 @@
 
 /**
  * Front-end functionality of Tetris_XH.
- * Copyright (c) 2011 Christoph M. Becker (see license.txt)
+ * Copyright (c) 2011-2013 Christoph M. Becker (see license.txt)
  */
 
 

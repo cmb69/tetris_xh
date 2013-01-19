@@ -4,7 +4,7 @@
  *        http://en.wikipedia.org/wiki/Tetris_Worlds
  *   be careful: http://en.wikipedia.org/wiki/Tetris_effect
  * Copyright (c) 2006 Franck Marcia
- * Copyright (c) 2011 Christoph M. Becker
+ * Copyright (c) 2011-2013 Christoph M. Becker
  * Licensed under the MIT License:
  *   http://www.opensource.org/licenses/mit-license.php
  */
