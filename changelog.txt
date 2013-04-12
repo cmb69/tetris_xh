@@ -1,3 +1,6 @@
+Version 1 - released 2013-04-13
+cmb     updated copyright in About dialog
+
 Version 1rc2 - released 2013-01-19
 cmb	fixed bug where invalid CSS selectors were given, which fails since jQuery 1.8.0
 cmb     added Polish, Czech and Slovak localization (constributed by kamilloi, oldnema resp. Tata)

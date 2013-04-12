@@ -6,7 +6,7 @@
  */
 
 
-define('TETRIS_VERSION', '1rc2');
+define('TETRIS_VERSION', '1');
 
 
 /**
@@ -263,7 +263,7 @@ function tetris() {
     $htm .= '<div id="tetris-about-dlg" title="'.$ptx['label_about'].'" style="display:none">'."\n"
 	    .'<h3>Tetris_XH</h3>'
 	    .$ptx['message_about']
-	    .'<p>&copy; 2011 by <a href="http://3-magi.net">cmb</a></p>'."\n"
+	    .'<p>&copy; 2011-2013 by <a href="http://3-magi.net">cmb</a></p>'."\n"
 	    .'</div>'."\n";
 
     return $htm;
