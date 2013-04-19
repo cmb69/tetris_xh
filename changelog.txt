@@ -1,5 +1,6 @@
 Version 1 - released 2013-04-19
 cmb     updated copyright in About dialog
+cmb     updated user manuals
 
 Version 1rc2 - released 2013-01-19
 cmb	fixed bug where invalid CSS selectors were given, which fails since jQuery 1.8.0
