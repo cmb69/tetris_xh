@@ -1,0 +1,33 @@
+Version 1 - released 2013-04-19
+cmb     updated copyright in About dialog
+cmb     updated user manuals
+
+Version 1rc2 - released 2013-01-19
+cmb     fixed bug where invalid CSS selectors were given, which fails since jQuery 1.8.0
+cmb     added Polish, Czech and Slovak localization (constributed by kamilloi, oldnema resp. Tata)
+cmb     improved user manuals
+cmb     slightly improved different parts of the code
+
+Version 1rc1 - released 2011-12-15
+cmb     fixed UserDir related bug regarding highscores (reported by Luda)
+cmb     fixed bug regarding missing highscores.dat (reported by oldnema)
+cmb     changed requirements check to system check
+cmb     updated manual accordingly
+cmb     added german manual
+cmb     added default language and configuration for CMSimple_XH 1.5
+cmb     changed config option "falldown_immediately" to 1/0
+cmb     completed and corrected de.php
+cmb     added translation-hints
+cmb     made config option "falldown_immediately" work
+
+Version 1beta2 - released 2011-09-12
+cmb     fixed faulty mkdir mode (reported by bca)
+cmb     updated manual
+cmb     fixed several minor bugs and flaws
+cmb     added i18n of the stats labels (reported by oldnema)
+cmb     added config option: moving tetrominoes down let them touchdown immediately (inspired by Gert)
+cmb     added config options for speed of game (inspired by gert)
+cmb     added alternative control through arrow keys (works only on FF) (suggested by oldnema)
+
+Version 1beta1 - released 2011-09-09
+cmb     initial release
