@@ -108,7 +108,8 @@ function Tetris_highscoreList()
     foreach ($_Tetris_highscores as $highscore) {
         list($name, $score) = $highscore;
         $o .= '<tr><td class="name">' . htmlspecialchars($name, ENT_COMPAT, 'UTF-8')
-            . '</td><td class="score">' . htmlspecialchars($score, ENT_COMPAT, 'UTF-8')
+            . '</td><td class="score">'
+            . htmlspecialchars($score, ENT_COMPAT, 'UTF-8')
             . '</td></tr>' . PHP_EOL;
     }
     $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
@@ -346,6 +347,13 @@ EOT;
     return $o;
 }
 
+/**
+ * Returns the about view.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array The localization of the plugins.
+ */
 function Tetris_about()
 {
     global $plugin_tx;
