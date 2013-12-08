@@ -193,7 +193,7 @@
 		async: false,
 		success: function(data) {
 		    if (tetris.score > data) {
-			$('#tetris-highscore-dlg').dialog('open');
+                        tetris.newHighscore();
 		    }
 		}
 	    });
@@ -348,6 +348,22 @@
 	    tetris.r0 = tetris.r;
 	},
 
+        // enters new highscore
+        newHighscore: function () {        
+            var name = prompt("Your name");
+            if (name) {
+                jQuery.ajax({
+                    url: TETRIS_HIGHSCORES,
+                    type: 'POST',
+                    data: {
+                        action: 'new',
+                        name: name,
+                        score: tetris.score
+                    }
+                });
+            }
+        },
+
 	// Format the number
 	format: function(number) {
 	    var res = '000000'.concat(number);
@@ -366,28 +382,5 @@
 	$('#tetris-grid table, #tetris-next table').css('background-color', tetris.colors[0]);
 	$('#tetris-start').click(tetris.start);
 	$('#tetris-stop').click(tetris.gameOver);
-	$('#tetris-highscore-dlg').dialog({
-	    autoOpen: false,
-	    modal: true,
-	    buttons: [{
-		text: TETRIS_TX['label_ok'],
-		click: function() {
-		    var name = $(this).find('input').val();
-		    $.ajax({
-			url: TETRIS_HIGHSCORES,
-			type: 'POST',
-			data: {
-			    action: 'new',
-			    name: name,
-			    score: tetris.score
-			}
-		    });
-		    $(this).dialog('close');
-		}
-	    }, {
-		text: TETRIS_TX['label_cancel'],
-		click: function() {$(this).dialog('close')}
-	    }]
-	});
    });
 })(jQuery);

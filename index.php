@@ -297,9 +297,6 @@ function tetris()
     $rules
     $about
 </div>
-<div id="tetris-highscore-dlg" title="New Highscore" style="display:none">
-    <input type="text" maxlength="20" />
-</div>
     
 EOT;
     return $o;
