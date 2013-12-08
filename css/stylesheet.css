@@ -1,7 +1,10 @@
-/* utf-8-marker: äöüß */
-
 #tetris {
     overflow:hidden;
+}
+
+#tetris-tabs li {
+    list-style: none;
+    display: inline-block;
 }
 
 #tetris-grid {

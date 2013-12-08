@@ -224,7 +224,6 @@ function Tetris_headers()
 
     include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
     include_jQuery();
-    include_jQueryUI();
     $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
         . 'tetris/tetris.js"></script>' . PHP_EOL;
     $falldown = $pcf['falldown_immediately'] ? 'true' : 'false';
@@ -319,14 +318,9 @@ function Tetris_cmd()
     $ptx = $plugin_tx['tetris'];
 
     $o = '<div id="tetris-cmd">' . PHP_EOL
-        . tag(
-            'input id="tetris-start" type="button" value="'
-            . $ptx['label_start'] . '"'
-        ) . PHP_EOL
-        . tag(
-            'input id="tetris-stop" type="button" value="'
-            . $ptx['label_stop'] . '"'
-        ) . PHP_EOL
+        . '<button id="tetris-start">' . $ptx['label_start'] . '</button>' . PHP_EOL
+        . '<button id="tetris-stop" disabled="disabled">' . $ptx['label_stop']
+        . '</button>' . PHP_EOL
         . '</div>' . PHP_EOL;
     return $o;
 }
