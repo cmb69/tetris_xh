@@ -200,11 +200,6 @@ function Tetris_cmd()
             'input id="tetris-stop" type="button" value="'
             . $ptx['label_stop'] . '"'
         ) . PHP_EOL
-        . tag(
-            'input id="tetris-about-btn" type="button" value="'
-            . $ptx['label_about'] . '"'
-            . ' onclick="jQuery(\'#tetris-about-dlg\').dialog(\'open\')"'
-        ) . PHP_EOL
         . '</div>' . PHP_EOL;
     return $o;
 }
@@ -230,6 +225,22 @@ function Tetris_rules()
         <tr><td>$ptx[label_rotate]</td><td class="key">I / &uarr;</td></tr>
         <tr><td>$ptx[label_down]</td><td class="key">K / &darr;</td></tr>
     </table>
+</div>
+
+EOT;
+    return $o;
+}
+
+function Tetris_about()
+{
+    global $plugin_tx;
+    
+    $ptx = $plugin_tx['tetris'];
+    $o = <<<EOT
+<div id="tetris-about">
+    <h4>Tetris_XH</h4>
+    $ptx[message_about]
+    <p>&copy; 2011-2013 by <a href="http://3-magi.net/">cmb</a></p>
 </div>
 
 EOT;
@@ -264,6 +275,7 @@ function tetris()
     $stats = Tetris_stats();
     $cmd = Tetris_cmd();
     $rules = Tetris_rules();
+    $about = Tetris_about();
     $o = <<<EOT
 <div id="tetris-no-js" class="cmsimplecore_warning">$ptx[error_no_js]</div>
 <div id="tetris-tabs">
@@ -271,6 +283,7 @@ function tetris()
         <li><a href="#tetris">$ptx[label_play]</a></li>
         <li><a href="$url">$ptx[label_highscores]</a></li>
         <li><a href="#tetris-rules">$ptx[label_rules]</a></li>
+        <li><a href="#tetris-about">$ptx[label_about]</a></li>
     </ul>
     <div id="tetris">
         $grid
@@ -282,14 +295,10 @@ function tetris()
         $cmd
     </div>
     $rules
+    $about
 </div>
 <div id="tetris-highscore-dlg" title="New Highscore" style="display:none">
     <input type="text" maxlength="20" />
-</div>
-<div id="tetris-about-dlg" title="$ptx[label_about]" style="display:none">
-    <h3>Tetris_XH</h3>
-    $ptx[message_about]
-    <p>&copy; 2011-2013 by <a href="http://3-magi.net/">cmb</a></p>
 </div>
     
 EOT;

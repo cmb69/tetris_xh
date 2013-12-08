@@ -389,15 +389,5 @@
 		click: function() {$(this).dialog('close')}
 	    }]
 	});
-	$('#tetris-about-dlg').dialog({
-	    autoOpen: false,
-	    modal: true,
-	    buttons: [{
-		text: TETRIS_TX['label_ok'],
-		click: function() {
-		    $(this).dialog('close');
-		}
-	    }]
-	});
    });
 })(jQuery);
