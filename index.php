@@ -17,7 +17,7 @@
 /**
  * The version number.
  */
-define('TETRIS_VERSION', '1');
+define('TETRIS_VERSION', '@TETRIS_VERSION@');
 
 /**
  * Returns the path of the data folder.
