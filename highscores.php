@@ -55,13 +55,13 @@ function stsl($text)
  */
 function Tetris_readHighscores()
 {
-    global $highscores;
+    global $_Tetris_highscores;
 
     $fn = $_SESSION['tetris_data_folder'] . 'highscores.dat';
     if (($cnt = file_get_contents($fn)) === false
-        || ($highscores = unserialize($cnt)) === false
+        || ($_Tetris_highscores = unserialize($cnt)) === false
     ) {
-        $highscores = array();
+        $_Tetris_highscores = array();
     }
 }
 
@@ -74,12 +74,12 @@ function Tetris_readHighscores()
  */
 function Tetris_writeHighscores()
 {
-    global $highscores;
+    global $_Tetris_highscores;
 
     $fn = $_SESSION['tetris_data_folder'] . 'highscores.dat';
     if (($fh = fopen($fn, 'w')) !== false) {
         flock($fh, LOCK_EX);
-        fputs($fh, serialize($highscores));
+        fputs($fh, serialize($_Tetris_highscores));
         flock($fh, LOCK_UN);
         fclose($fh);
     }
@@ -99,21 +99,25 @@ function Tetris_writeHighscores()
  */
 function Tetris_enterHighscore($name, $score)
 {
-    global $highscores;
+    global $_Tetris_highscores;
 
-    $highscores[] = array($name, $score);
-    usort($highscores, create_function('$a, $b', 'return $b[1] - $a[1];'));
-    array_splice($highscores, 10);
+    $_Tetris_highscores[] = array($name, $score);
+    usort($_Tetris_highscores, create_function('$a, $b', 'return $b[1] - $a[1];'));
+    array_splice($_Tetris_highscores, 10);
 }
 
 /**
  * Returns the minimum required score to get a highscore.
  *
  * @return string
+ * 
+ * @global array The highscores
  */
 function Tetris_requiredHighscore()
 {
-    return isset($highscores[9][1]) ? $highscores[9][1] : 0;
+    global $_Tetris_highscores;
+    
+    return isset($_Tetris_highscores[9][1]) ? $_Tetris_highscores[9][1] : 0;
 }
 
 /**
@@ -125,10 +129,10 @@ function Tetris_requiredHighscore()
  */
 function Tetris_highscoreList()
 {
-    global $highscores;
+    global $_Tetris_highscores;
     
     $o = '<div id="tetris-highscores">' . PHP_EOL . '<table>' . PHP_EOL;
-    foreach ($highscores as $highscore) {
+    foreach ($_Tetris_highscores as $highscore) {
         list($name, $score) = $highscore;
         $o .= '<tr><td class="name">' . htmlspecialchars($name, ENT_COMPAT, 'UTF-8')
             . '</td><td class="score">' . htmlspecialchars($score, ENT_COMPAT, 'UTF-8')
