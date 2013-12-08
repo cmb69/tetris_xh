@@ -107,24 +107,44 @@ function Tetris_enterHighscore($name, $score)
 }
 
 /**
- * Handles the requests.
+ * Returns the minimum required score to get a highscore.
+ *
+ * @return string
  */
-Tetris_readHighscores();
-switch ($_REQUEST['action']) {
-case 'required':
-    echo isset($highscores[9][1]) ? $highscores[9][1] : 0;
-    break;
-case 'list':
-    echo '<div id="tetris-highscores">', PHP_EOL, '<table>', PHP_EOL;
+function Tetris_requiredHighscore()
+{
+    return isset($highscores[9][1]) ? $highscores[9][1] : 0;
+}
+
+/**
+ * Return the view of the highscore list.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array The highscores.
+ */
+function Tetris_highscoreList()
+{
+    global $highscores;
+    
+    $o = '<div id="tetris-highscores">' . PHP_EOL . '<table>' . PHP_EOL;
     foreach ($highscores as $highscore) {
         list($name, $score) = $highscore;
-        echo '<tr><td class="name">', htmlspecialchars($name, ENT_COMPAT, 'UTF-8'),
-            '</td><td class="score">', htmlspecialchars($score, ENT_COMPAT, 'UTF-8'),
-            '</td></tr>', PHP_EOL;
+        $o .= '<tr><td class="name">' . htmlspecialchars($name, ENT_COMPAT, 'UTF-8')
+            . '</td><td class="score">' . htmlspecialchars($score, ENT_COMPAT, 'UTF-8')
+            . '</td></tr>' . PHP_EOL;
     }
-    echo '</table>', PHP_EOL, '</div>', PHP_EOL;
-    break;
-case 'new':
+    $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
+    return $o;
+}
+
+/**
+ * Enters a new highscore to the list.
+ *
+ * @return void
+ */
+function Tetris_newHighscore()
+{
     $name = stsl($_POST['name']);
     $score = stsl($_POST['score']);
     if (time() > $_SESSION['tetris_timestamp'] + 10
@@ -135,8 +155,22 @@ case 'new':
         Tetris_writeHighscores();
     }
     $_SESSION['tetris_timestamp'] = time();
-    break;
-default:
+}
+
+/**
+ * Handles the requests.
+ */
+Tetris_readHighscores();
+switch ($_REQUEST['action']) {
+case 'required':
+    echo Tetris_requiredHighscore();
+    exit;
+case 'list':
+    echo Tetris_highscoreList();
+    exit;
+case 'new':
+    Tetris_newHighscore();
+    exit;
 }
 
 ?>
