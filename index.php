@@ -104,15 +104,26 @@ function Tetris_highscoreList()
 {
     global $_Tetris_highscores;
     
-    $o = '<div id="tetris-highscores">' . PHP_EOL . '<table>' . PHP_EOL;
+    $o = <<<EOT
+<!-- Tetris_XH: highscores -->
+<div id="tetris-highscores">
+    <table>
+
+EOT;
     foreach ($_Tetris_highscores as $highscore) {
         list($name, $score) = $highscore;
-        $o .= '<tr><td class="name">' . htmlspecialchars($name, ENT_COMPAT, 'UTF-8')
-            . '</td><td class="score">'
-            . htmlspecialchars($score, ENT_COMPAT, 'UTF-8')
-            . '</td></tr>' . PHP_EOL;
+        $name = htmlspecialchars($name, ENT_COMPAT, 'UTF-8');
+        $score = htmlspecialchars($score, ENT_COMPAT, 'UTF-8');
+        $o .= <<<EOT
+        <tr><td class="name">$name</td><td class="score">$score</td></tr>
+
+EOT;
     }
-    $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
+    $o .= <<<EOT
+    </table>
+</div>
+
+EOT;
     return $o;
 }
 
