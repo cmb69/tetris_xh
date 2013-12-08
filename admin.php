@@ -111,7 +111,7 @@ function Tetris_systemCheck()
     foreach (array('config/', 'css/', 'languages/') as $folder) {
         $folders[] = $pth['folder']['plugins'] . 'tetris/' . $folder;
     }
-    $folders[] = tetris_data_folder();
+    $folders[] = Tetris_dataFolder();
     foreach ($folders as $folder) {
         $o .= (is_writable($folder) ? $ok : $warn)
             . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
