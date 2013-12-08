@@ -189,7 +189,7 @@
 	    }
 
 	    $.ajax({
-		url: TETRIS_HIGHSCORES+'?action=required',
+		url: TETRIS_HIGHSCORES + 'required',
 		async: false,
 		success: function(data) {
 		    if (tetris.score > data) {
@@ -353,10 +353,9 @@
             var name = prompt("Your name");
             if (name) {
                 jQuery.ajax({
-                    url: TETRIS_HIGHSCORES,
+                    url: TETRIS_HIGHSCORES + "new",
                     type: 'POST',
                     data: {
-                        action: 'new',
                         name: name,
                         score: tetris.score
                     }

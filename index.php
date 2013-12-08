@@ -20,6 +20,119 @@
 define('TETRIS_VERSION', '@TETRIS_VERSION@');
 
 /**
+ * Reads the highscores.
+ *
+ * @return bool
+ * 
+ * @global array The highscores.
+ */
+function Tetris_readHighscores()
+{
+    global $_Tetris_highscores;
+
+    $fn = Tetris_dataFolder() . 'highscores.dat';
+    if (($cnt = file_get_contents($fn)) === false
+        || ($_Tetris_highscores = unserialize($cnt)) === false
+    ) {
+        $_Tetris_highscores = array();
+    }
+}
+
+/**
+ * Writes back the highscores.
+ *
+ * @return void
+ * 
+ * @global array The highscores.
+ */
+function Tetris_writeHighscores()
+{
+    global $_Tetris_highscores;
+
+    $fn = Tetris_dataFolder() . 'highscores.dat';
+    if (($fh = fopen($fn, 'w')) !== false) {
+        flock($fh, LOCK_EX);
+        fputs($fh, serialize($_Tetris_highscores));
+        flock($fh, LOCK_UN);
+        fclose($fh);
+    }
+}
+
+/**
+ * Enters a new highscore.
+ * 
+ * Strips the highscores to at most 10 entries.
+ *
+ * @param string $name  A player name.
+ * @param string $score A score.
+ *
+ * @return void
+ * 
+ * @global array The highscores
+ */
+function Tetris_enterHighscore($name, $score)
+{
+    global $_Tetris_highscores;
+
+    $_Tetris_highscores[] = array($name, $score);
+    usort($_Tetris_highscores, create_function('$a, $b', 'return $b[1] - $a[1];'));
+    array_splice($_Tetris_highscores, 10);
+}
+
+/**
+ * Returns the minimum required score to get a highscore.
+ *
+ * @return string
+ * 
+ * @global array The highscores
+ */
+function Tetris_requiredHighscore()
+{
+    global $_Tetris_highscores;
+    
+    return isset($_Tetris_highscores[9][1]) ? $_Tetris_highscores[9][1] : 0;
+}
+
+/**
+ * Return the view of the highscore list.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array The highscores.
+ */
+function Tetris_highscoreList()
+{
+    global $_Tetris_highscores;
+    
+    $o = '<div id="tetris-highscores">' . PHP_EOL . '<table>' . PHP_EOL;
+    foreach ($_Tetris_highscores as $highscore) {
+        list($name, $score) = $highscore;
+        $o .= '<tr><td class="name">' . htmlspecialchars($name, ENT_COMPAT, 'UTF-8')
+            . '</td><td class="score">' . htmlspecialchars($score, ENT_COMPAT, 'UTF-8')
+            . '</td></tr>' . PHP_EOL;
+    }
+    $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
+    return $o;
+}
+
+/**
+ * Enters a new highscore to the list.
+ *
+ * @return void
+ */
+function Tetris_newHighscore()
+{
+    $name = stsl($_POST['name']);
+    $score = stsl($_POST['score']);
+    if (strlen($name) <= 20 // FIXME: use utf8_strlen()
+        && preg_match('/[0-9]{1,6}/', $score)
+    ) {
+        Tetris_enterHighscore($name, $score);
+        Tetris_writeHighscores();
+    }
+}
+
+/**
  * Returns the path of the data folder.
  *
  * @return string
@@ -87,10 +200,12 @@ function Tetris_langJS()
  * @global array  The configuration of the plugins.
  * @global array  The localization of the plugins.
  * @global string The current language.
+ * @global string The script name.
+ * @global string The current page URL.
  */
 function Tetris_headers()
 {
-    global $pth, $hjs, $plugin_cf, $plugin_tx, $sl;
+    global $pth, $hjs, $plugin_cf, $plugin_tx, $sl, $sn, $su;
 
     $pcf = $plugin_cf['tetris'];
     $ptx = $plugin_tx['tetris'];
@@ -104,12 +219,12 @@ function Tetris_headers()
     $texts = json_encode(Tetris_langJS());
     $hjs .= <<<EOT
 <script type="text/javascript">/* <![CDATA[ */
-    var TETRIS_HIGHSCORES = "{$pth['folder']['plugins']}tetris/highscores.php";
+    var TETRIS_HIGHSCORES = "$sn?$su&tetris_highscores=";
     var TETRIS_FALLDOWN = $falldown;
     var TETRIS_SPEED_INITIAL = $pcf[speed_initial];
     var TETRIS_SPEED_ACCELERATION = $pcf[speed_acceleration];
     var TETRIS_TX = $texts;
-/* ]]> */</script>'
+/* ]]> */</script>
 
 EOT;
 }
@@ -252,24 +367,34 @@ EOT;
  *
  * @return string
  *
- * @global array The paths of system files and folders.
- * @global array The localization of the plugins.
+ * @global array  The paths of system files and folders.
+ * @global array  The localization of the plugins.
+ * @global string The script name.
+ * @global string The current page URL.
  */
 function tetris()
 {
-    global $pth, $plugin_tx;
+    global $pth, $plugin_tx, $sn, $su;
 
     $ptx = $plugin_tx['tetris'];
 
-    if (session_id() == '') {
-        session_start();
+    if (isset($_GET['tetris_highscores'])) {
+        Tetris_readHighscores();
+        switch ($_GET['tetris_highscores']) {
+        case 'required':
+            echo Tetris_requiredHighscore();
+            exit;
+        case 'list':
+            echo Tetris_highscoreList();
+            exit;
+        case 'new':
+            Tetris_newHighscore();
+            exit;
+        }
     }
-    $_SESSION['tetris_data_folder'] = dirname($_SERVER['SCRIPT_FILENAME']) . '/'
-        . Tetris_dataFolder();
-    $_SESSION['tetris_timestamp'] = time();
 
     Tetris_headers();
-    $url = $pth['folder']['plugins'] . 'tetris/highscores.php?action=list';
+    $url = $sn . '?' . $su . '&amp;tetris_highscores=list';
     $grid = Tetris_grid();
     $next = Tetris_next();
     $stats = Tetris_stats();
