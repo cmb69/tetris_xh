@@ -84,17 +84,17 @@ function Tetris_systemCheck()
 {
     global $pth, $tx, $plugin_tx;
 
-    define('TETRIS_PHP_VERSION', '4.3.0');
+    $phpVersion = '4.3.10';
     $ptx = $plugin_tx['tetris'];
     $imgdir = $pth['folder']['plugins'] . 'tetris/images/';
     $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
     $warn = tag('img src="' . $imgdir . 'warn.png" alt="warning"');
     $fail = tag('img src="' . $imgdir . 'fail.png" alt="failure"');
     $o = tag('hr') . '<h4>' . $ptx['syscheck_title'] . '</h4>'
-        . (version_compare(PHP_VERSION, TETRIS_PHP_VERSION) >= 0 ? $ok : $fail)
-        . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], TETRIS_PHP_VERSION)
+        . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
+        . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
         . tag('br') . tag('br') . PHP_EOL;
-    foreach (array('date', 'pcre', 'session') as $ext) {
+    foreach (array('pcre', 'session') as $ext) {
         $o .= (extension_loaded($ext) ? $ok : $fail)
             . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
             . tag('br') . PHP_EOL;
