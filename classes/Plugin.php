@@ -122,7 +122,7 @@ HTM;
         foreach (array('config/', 'css/', 'languages/') as $folder) {
             $folders[] = $pth['folder']['plugins'] . 'tetris/' . $folder;
         }
-        $folders[] = self::dataFolder();
+        $folders[] = HighscoreService::dataFolder();
         foreach ($folders as $folder) {
             $o .= (is_writable($folder) ? $ok : $warn)
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
@@ -139,10 +139,9 @@ HTM;
         global $pth, $sn, $su;
 
         if (isset($_GET['tetris_highscores'])) {
-            self::readHighscores();
             switch ($_GET['tetris_highscores']) {
                 case 'required':
-                    echo self::requiredHighscore();
+                    echo HighscoreService::requiredHighscore();
                     exit;
                 case 'list':
                     echo self::highscoreList();
@@ -163,30 +162,19 @@ HTM;
         $view->render();
     }
 
-    /**
-     * @return string
-     */
-    private static function requiredHighscore()
-    {
-        global $_Tetris_highscores;
-
-        return isset($_Tetris_highscores[9][1]) ? $_Tetris_highscores[9][1] : 0;
-    }
-
      /**
       * @return string
       */
     private static function highscoreList()
     {
-        global $_Tetris_highscores;
-
+        $highscores = HighscoreService::readHighscores();
         $o = <<<EOT
 <!-- Tetris_XH: highscores -->
 <div id="tetris-highscores">
     <table>
 
 EOT;
-        foreach ($_Tetris_highscores as $highscore) {
+        foreach ($highscores as $highscore) {
             list($name, $score) = $highscore;
             $name = XH_hsc($name);
             $score = XH_hsc($score);
@@ -213,25 +201,8 @@ EOT;
         if (strlen($name) <= 20 // FIXME: use utf8_strlen()
             && preg_match('/[0-9]{1,6}/', $score)
         ) {
-            self::enterHighscore($name, $score);
-            self::writeHighscores();
+            HighscoreService::enterHighscore($name, (int) $score);
         }
-    }
-
-    /**
-     * @param string $name
-     * @param string $score
-     * @return void
-     */
-    private static function enterHighscore($name, $score)
-    {
-        global $_Tetris_highscores;
-    
-        $_Tetris_highscores[] = array($name, $score);
-        usort($_Tetris_highscores, function ($a, $b) {
-            return $b[1] - $a[1];
-        });
-        array_splice($_Tetris_highscores, 10);
     }
 
     /**
@@ -278,46 +249,5 @@ EOT;
             }
         }
         return $texts;
-    }
-
-    /**
-     * @return bool
-     */
-    private static function readHighscores()
-    {
-        global $_Tetris_highscores;
-
-        $fn = self::dataFolder() . 'tetris.dat';
-        if (($cnt = file_get_contents($fn)) === false
-            || ($_Tetris_highscores = unserialize($cnt)) === false
-        ) {
-            $_Tetris_highscores = array();
-        }
-    }
-
-    /**
-     * @return void
-     */
-    private static function writeHighscores()
-    {
-        global $_Tetris_highscores;
-
-        $fn = self::dataFolder() . 'tetris.dat';
-        if (($fh = fopen($fn, 'w')) !== false) {
-            flock($fh, LOCK_EX);
-            fputs($fh, serialize($_Tetris_highscores));
-            flock($fh, LOCK_UN);
-            fclose($fh);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    private static function dataFolder()
-    {
-        global $pth;
-
-        return "{$pth['folder']['base']}content/";
     }
 }
