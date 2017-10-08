@@ -3,12 +3,12 @@
 <project name="Tetris" default="default">
 
     <fileset id="php-sources" dir=".">
-        <include name="admin.php"/>
         <include name="index.php"/>
+        <include name="classes/*.php"/>
     </fileset>
 
     <target name="sniff">
-        <phpcodesniffer standard="PEAR">
+        <phpcodesniffer standard="PSR2" haltonerror="true">
             <fileset refid="php-sources"/>
         </phpcodesniffer>
     </target>

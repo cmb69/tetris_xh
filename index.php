@@ -2,7 +2,7 @@
 
 /**
  * Front-end functionality of Tetris_XH.
- * 
+ *
  * PHP versions 4 and 5
  *
  * @category  CMSimple_XH
@@ -30,5 +30,3 @@ function tetris()
 }
 
 Tetris\Plugin::run();
-
-?>

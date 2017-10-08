@@ -36,11 +36,11 @@ class Plugin
             if (isset($tetris) && $tetris == 'true') {
                 $o .= print_plugin_admin('off');
                 switch ($admin) {
-                case '':
-                    $o .= self::version() . self::systemCheck();
-                    break;
-                default:
-                    $o .= plugin_admin_common($action, $admin, $plugin);
+                    case '':
+                        $o .= self::version() . self::systemCheck();
+                        break;
+                    default:
+                        $o .= plugin_admin_common($action, $admin, $plugin);
                 }
             }
         }
@@ -146,15 +146,15 @@ HTM;
         if (isset($_GET['tetris_highscores'])) {
             self::readHighscores();
             switch ($_GET['tetris_highscores']) {
-            case 'required':
-                echo self::requiredHighscore();
-                exit;
-            case 'list':
-                echo self::highscoreList();
-                exit;
-            case 'new':
-                self::newHighscore();
-                exit;
+                case 'required':
+                    echo self::requiredHighscore();
+                    exit;
+                case 'list':
+                    echo self::highscoreList();
+                    exit;
+                case 'new':
+                    self::newHighscore();
+                    exit;
             }
         }
 
