@@ -19,7 +19,9 @@
 
     <target name="build">
         <fail unless="version" message="version is not defined!"/>
-        <svnexport revision="" repositoryurl="." todir="export"/>
+        <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
+        <untar file="export.tar" todir="export"/>
+        <delete file="export.tar"/>
         <move todir="dist">
             <fileset dir="export">
                 <include name="index.php"/>
@@ -35,6 +37,7 @@
             <fileset dir="export">
                 <exclude name="tetris.komodoproject"/>
                 <exclude name="build.xml"/>
+                <exclude name="composer.*"/>
                 <exclude name="phpcompatinfo.json"/>
             </fileset>
         </move>
