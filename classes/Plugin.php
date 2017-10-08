@@ -54,42 +54,10 @@ class Plugin
     {
         global $pth;
 
-        $icon = tag(
-            'img src="' . $pth['folder']['plugins']
-            . 'tetris/tetris.png" alt="Plugin Icon"'
-        );
-        $version = self::VERSION;
-        return <<<HTM
-
-<h1><a href="http://3-magi.net/?CMSimple_XH/Tetris_XH">Tetris_XH</a></h1>
-<div style="float:left; margin-right: 1em">$icon</div>
-<p>Version: $version</p>
-<p>Tetris_XH is powered by <a
-    href="http://www.cmsimple-xh.org/wiki/doku.php/extend:jquery4cmsimple"
-    target="_blank">jQuery4CMSimple</a> and <a
-    href="http://fmarcia.info/jquery/tetris/tetris.html" target="_blank">
-    Tetris with jQuery</a>.
-</p>
-<p>Copyright &copy; 2011-2017 Christoph M. Becker</p>
-<p style="text-align:justify">
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-</p>
-<p style="text-align:justify">
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHAN&shy;TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
-</p>
-<p style="text-align:justify">
-    You should have received a copy of the GNU General Public License
-    along with this program. If not, see
-    <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
-</p>
-
-HTM;
+        $view = new View('info');
+        $view->logo = "{$pth['folder']['plugins']}tetris/tetris.png";
+        $view->version = self::VERSION;
+        return (string) $view;
     }
 
     /**
