@@ -2,271 +2,442 @@
 
 /**
  * Front-end functionality of Tetris_XH.
- * Copyright (c) 2011-2013 Christoph M. Becker (see license.txt)
+ * 
+ * PHP versions 4 and 5
+ *
+ * @category  CMSimple_XH
+ * @package   Tetris
+ * @author    Christoph M. Becker <cmbecker69@gmx.de>
+ * @copyright 2011-2013 Christoph M. Becker <http://3-magi.net>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
+ * @version   SVN: $Id$
+ * @link      http://3-magi.net/?CMSimple_XH/Tetris_XH
  */
-
-
-define('TETRIS_VERSION', '1');
-
 
 /**
- * Returns the data folder.
+ * The version number.
+ */
+define('TETRIS_VERSION', '@TETRIS_VERSION@');
+
+/**
+ * Reads the highscores.
+ *
+ * @return bool
+ * 
+ * @global array The highscores.
+ */
+function Tetris_readHighscores()
+{
+    global $_Tetris_highscores;
+
+    $fn = Tetris_dataFolder() . 'highscores.dat';
+    if (($cnt = file_get_contents($fn)) === false
+        || ($_Tetris_highscores = unserialize($cnt)) === false
+    ) {
+        $_Tetris_highscores = array();
+    }
+}
+
+/**
+ * Writes back the highscores.
+ *
+ * @return void
+ * 
+ * @global array The highscores.
+ */
+function Tetris_writeHighscores()
+{
+    global $_Tetris_highscores;
+
+    $fn = Tetris_dataFolder() . 'highscores.dat';
+    if (($fh = fopen($fn, 'w')) !== false) {
+        flock($fh, LOCK_EX);
+        fputs($fh, serialize($_Tetris_highscores));
+        flock($fh, LOCK_UN);
+        fclose($fh);
+    }
+}
+
+/**
+ * Enters a new highscore.
+ * 
+ * Strips the highscores to at most 10 entries.
+ *
+ * @param string $name  A player name.
+ * @param string $score A score.
+ *
+ * @return void
+ * 
+ * @global array The highscores
+ */
+function Tetris_enterHighscore($name, $score)
+{
+    global $_Tetris_highscores;
+
+    $_Tetris_highscores[] = array($name, $score);
+    usort($_Tetris_highscores, create_function('$a, $b', 'return $b[1] - $a[1];'));
+    array_splice($_Tetris_highscores, 10);
+}
+
+/**
+ * Returns the minimum required score to get a highscore.
  *
  * @return string
+ * 
+ * @global array The highscores
  */
-function tetris_data_folder() {
+function Tetris_requiredHighscore()
+{
+    global $_Tetris_highscores;
+    
+    return isset($_Tetris_highscores[9][1]) ? $_Tetris_highscores[9][1] : 0;
+}
+
+/**
+ * Return the view of the highscore list.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array The highscores.
+ */
+function Tetris_highscoreList()
+{
+    global $_Tetris_highscores;
+    
+    $o = <<<EOT
+<!-- Tetris_XH: highscores -->
+<div id="tetris-highscores">
+    <table>
+
+EOT;
+    foreach ($_Tetris_highscores as $highscore) {
+        list($name, $score) = $highscore;
+        $name = htmlspecialchars($name, ENT_COMPAT, 'UTF-8');
+        $score = htmlspecialchars($score, ENT_COMPAT, 'UTF-8');
+        $o .= <<<EOT
+        <tr><td class="name">$name</td><td class="score">$score</td></tr>
+
+EOT;
+    }
+    $o .= <<<EOT
+    </table>
+</div>
+
+EOT;
+    return $o;
+}
+
+/**
+ * Enters a new highscore to the list.
+ *
+ * @return void
+ */
+function Tetris_newHighscore()
+{
+    $name = stsl($_POST['name']);
+    $score = stsl($_POST['score']);
+    if (strlen($name) <= 20 // FIXME: use utf8_strlen()
+        && preg_match('/[0-9]{1,6}/', $score)
+    ) {
+        Tetris_enterHighscore($name, $score);
+        Tetris_writeHighscores();
+    }
+}
+
+/**
+ * Returns the path of the data folder.
+ *
+ * @return string
+ *
+ * @global array The paths of system files and folders.
+ * @global array The configuration of the plugins. * 
+ */
+function Tetris_dataFolder()
+{
     global $pth, $plugin_cf;
 
     $pcf = $plugin_cf['tetris'];
 
     if ($pcf['folder_data'] == '') {
-	$fn = $pth['folder']['plugins'].'tetris/data/';
+        $fn = $pth['folder']['plugins'] . 'tetris/data/';
     } else {
-	$fn = $pth['folder']['base'].$pcf['folder_data'];
+        $fn = $pth['folder']['base'] . $pcf['folder_data'];
     }
     if (substr($fn, -1) != '/') {
-	$fn .= '/';
+        $fn .= '/';
     }
     if (file_exists($fn)) {
-	if (!is_dir($fn)) {
-	    e('cntopen', 'folder', $fn);
-	}
+        if (!is_dir($fn)) {
+            e('cntopen', 'folder', $fn);
+        }
     } else {
-	if (!mkdir($fn, 0777, TRUE)) {
-	    e('cntwriteto', 'folder', $fn);
-	}
+        if (!mkdir($fn, 0777, true)) {
+            e('cntwriteto', 'folder', $fn);
+        }
     }
     return $fn;
 }
 
-
 /**
- * Updates the LANG.js file if necessary
- * with the strings from LANG.php.
- * Returns FALSE on failure.
+ * Returns the localization needed for the JavaScript.
  *
- * @return bool
+ * @return string array.
+ *
+ * @global array  The paths of system files and folders.
+ * @global string The current language.
+ * @global array  The localization of the plugins.
  */
-function tetris_update_lang_js() {
+function Tetris_langJS()
+{
     global $pth, $sl, $plugin_tx;
 
-    $ptx =& $plugin_tx['tetris'];
-
-    $fn = $pth['folder']['plugins'].'tetris/languages/';
-    if (!file_exists($fn.$sl.'.php')) {
-	if (file_exists($fn.'en.php')) {
-	    if (!copy($fn.'en.php', $fn.$sl.'.php')) {
-		e('cntwriteto', 'language', $fn.$sl.'.php');
-		return FALSE;
-	    }
-	} else {
-	    e('missing', 'language', $fn.'en.php');
-	    return FALSE;
-	}
+    $ptx = $plugin_tx['tetris'];
+    $texts = array();
+    foreach ($ptx as $key => $msg) {
+        $parts = explode('_', $key);
+        if ($parts[0] != 'cf') {
+            $texts[$key] = $msg;
+        }
     }
-    $fn .= $sl;
-    if (!file_exists($fn.'.js') || filemtime($fn.'.js') < filemtime($fn.'.php')) {
-	$js = '// auto-generated by Tetris_XH -- do not modify!'."\n"
-		.'// any modifications should be made in '.$sl.'.php'."\n\n"
-		.'TETRIS_TX = {'."\n";
-	$first = TRUE;
-	foreach ($ptx as $key => $msg) {
-	    $parts = explode('_', $key);
-	    if ($parts[0] != 'cf') {
-		if ($first) {
-		    $first = FALSE;
-		} else {
-		    $js .= ','."\n";
-		}
-		$js .= '    \''.$key.'\': \''.addslashes($msg).'\'';
-	    }
-	}
-	$js .= "\n".'};'."\n";
-	if (!($fh = fopen($fn.'.js', 'w')) || ($res = fwrite($fh, $js)) === FALSE) {
-	    e('cntwriteto', 'file', $fn.'.js');
-	}
-	if ($fh)
-	    fclose($fh);
-	return $fh && $res;
-    }
-    return TRUE;
+    return $texts;
 }
-
 
 /**
  * Includes the necessary scripts and stylesheets.
  *
  * @return void
+ *
+ * @global array  The paths of system files and folders.
+ * @global string The (X)HTML fragment to insert into the head element.
+ * @global array  The configuration of the plugins.
+ * @global array  The localization of the plugins.
+ * @global string The current language.
+ * @global string The script name.
+ * @global string The current page URL.
  */
-function tetris_headers() {
-    global $pth, $hjs, $plugin_cf, $plugin_tx, $sl;
+function Tetris_headers()
+{
+    global $pth, $hjs, $plugin_cf, $plugin_tx, $sl, $sn, $su;
 
-    $pcf =& $plugin_cf['tetris'];
-    $ptx =& $plugin_tx['tetris'];
+    $pcf = $plugin_cf['tetris'];
+    $ptx = $plugin_tx['tetris'];
 
-    include_once($pth['folder']['plugins'].'jquery/jquery.inc.php');
+    include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
     include_jQuery();
-    include_jQueryUI();
-    $hjs .= '<script type="text/javascript" src="'.$pth['folder']['plugins'].'tetris/tetris.js"></script>'."\n";
-    if (tetris_update_lang_js()) {
-	$hjs .= '<script type="text/javascript" src="'.$pth['folder']['plugins']
-		.'tetris/languages/'.$sl.'.js"></script>'."\n";
-    }
-    $hjs .= '<script type="text/javascript">'."\n".'/* <![CDATA[ */'."\n"
-	    .'var TETRIS_HIGHSCORES = \''.$pth['folder']['plugins'].'tetris/highscores.php\';'."\n"
-	    .'var TETRIS_FALLDOWN = '.($pcf['falldown_immediately'] ? 'true' : 'false').';'."\n"
-	    .'var TETRIS_SPEED_INITIAL = '.$pcf['speed_initial'].';'."\n"
-	    .'var TETRIS_SPEED_ACCELERATION = '.$pcf['speed_acceleration'].';'."\n"
-	    .'/* ]]> */'."\n".'</script>'."\n";
+    $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
+        . 'tetris/tetris.js"></script>' . PHP_EOL;
+    $falldown = $pcf['falldown_immediately'] ? 'true' : 'false';
+    $texts = json_encode(Tetris_langJS());
+    $hjs .= <<<EOT
+<script type="text/javascript">/* <![CDATA[ */
+    var TETRIS_HIGHSCORES = "$sn?$su&tetris_highscores=";
+    var TETRIS_FALLDOWN = $falldown;
+    var TETRIS_SPEED_INITIAL = $pcf[speed_initial];
+    var TETRIS_SPEED_ACCELERATION = $pcf[speed_acceleration];
+    var TETRIS_TX = $texts;
+/* ]]> */</script>
+
+EOT;
 }
 
-
 /**
- * Returns the (x)html of the tetris matrix.
+ * Returns the the Tetris matrix view.
  *
- * @return string
+ * @return string (X)HTML.
  */
-function tetris_grid() {
-    $htm = '<div id="tetris-grid">'."\n".'<table>'."\n";
+function Tetris_grid()
+{
+    $o = '<div id="tetris-grid">' . PHP_EOL . '<table>' . PHP_EOL;
     for ($j = ord('d'); $j <= ord('u'); $j++) {
-	$htm .= '<tr>';
-	for ($i = 1; $i <= 10; $i++) {
-	    $htm .= '<td id="tetris-'.chr($j).$i.'"></td>';
-	}
-	$htm .= '</tr>'."\n";
+        $o .= '<tr>';
+        for ($i = 1; $i <= 10; $i++) {
+            $o .= '<td id="tetris-' . chr($j) . $i . '"></td>';
+        }
+        $o .= '</tr>' . PHP_EOL;
     }
-    $htm .= '</table>'."\n".'</div>'."\n";
-    return $htm;
+    $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
+    return $o;
 }
 
-
 /**
- * Returns the (x)html of the next tetromino.
+ * Returns the view of the next tetromino.
  *
- * @return string
+ * @return string (X)HTML.
  */
-function tetris_next() {
-    $htm = '<div id="tetris-next">'."\n".'<table>'."\n";
+function Tetris_next()
+{
+    $o = '<div id="tetris-next">' . PHP_EOL . '<table>' . PHP_EOL;
     for ($j = 0; $j < 4; $j++) {
-	$htm .= '<tr>';
-	for ($i = 0; $i < 4; $i++) {
-	    $htm .= '<td id="tetris-x'.$i.$j.'"></td>';
-	}
-	$htm .= '</tr>'."\n";
+        $o .= '<tr>';
+        for ($i = 0; $i < 4; $i++) {
+            $o .= '<td id="tetris-x' . $i . $j . '"></td>';
+        }
+        $o .= '</tr>' . PHP_EOL;
     }
-    $htm .= '</table>'."\n".'</div>'."\n";
-    return $htm;
+    $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
+    return $o;
 }
 
-
 /**
- * Returns the (x)html of the tetris stats.
+ * Returns the of the tetris stats view.
  *
- * @return string
+ * @return string (X)HTML.
+ *
+ * @global array The localization of the plugins.
  */
-function tetris_stats() {
+function Tetris_stats()
+{
     global $plugin_tx;
 
-    $ptx =& $plugin_tx['tetris'];
-    $htm = '<div id="tetris-stats">'."\n"
-	    .'<div class="label">'.$ptx['label_level'].'</div>'."\n"
-	    .'<div id="tetris-level" class="led">000001</div>'."\n"
-	    .'<div class="label">'.$ptx['label_rows'].'</div>'."\n"
-	    .'<div id="tetris-lines" class="led">000000</div>'."\n"
-	    .'<div class="label">'.$ptx['label_score'].'</div>'."\n"
-	    .'<div id="tetris-score" class="led">000000</div>'."\n"
-	    .'</div>'."\n";
-    return $htm;
+    $ptx = $plugin_tx['tetris'];
+    $o = <<<EOT
+<div id="tetris-stats">
+    <div class="label">$ptx[label_level]</div>
+    <div id="tetris-level" class="led">000001</div>
+    <div class="label">$ptx[label_rows]</div>
+    <div id="tetris-lines" class="led">000000</div>
+    <div class="label">$ptx[label_score]</div>
+    <div id="tetris-score" class="led">000000</div>
+</div>
+
+EOT;
+    return $o;
 }
 
-
 /**
- * Returns the (x)html of the tetris command buttons.
+ * Returns the view of the tetris command buttons.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array The localization of the plugins.
  */
-function tetris_cmd() {
+function Tetris_cmd()
+{
     global $plugin_tx;
 
-    $ptx =& $plugin_tx['tetris'];
+    $ptx = $plugin_tx['tetris'];
 
-    $htm = '<div id="tetris-cmd">'."\n"
-	    .tag('input id="tetris-start" type="button" value="'.$ptx['label_start'].'"')."\n"
-	    .tag('input id="tetris-stop" type="button" value="'.$ptx['label_stop'].'"')."\n"
-	    .tag('input id="tetris-about-btn" type="button" value="'.$ptx['label_about'].'"'
-	    .' onclick="jQuery(\'#tetris-about-dlg\').dialog(\'open\')"')."\n"
-	    .'</div>'."\n";
-    return $htm;
+    $o = '<div id="tetris-cmd">' . PHP_EOL
+        . '<button id="tetris-start">' . $ptx['label_start'] . '</button>' . PHP_EOL
+        . '<button id="tetris-stop" disabled="disabled">' . $ptx['label_stop']
+        . '</button>' . PHP_EOL
+        . '</div>' . PHP_EOL;
+    return $o;
 }
 
-
 /**
- * Returns the (x)html of the content of the rule tab.
+ * Returns the view of the content of the rule tab.
  *
- * @return string
+ * @return string (X)HTML.
+ *
+ * @global array The localization of the plugins.
  */
-function tetris_rules() {
+function Tetris_rules()
+{
     global $plugin_tx;
 
-    $ptx =& $plugin_tx['tetris'];
+    $ptx = $plugin_tx['tetris'];
+    $o = <<<EOT
+<div id="tetris-rules">
+    <div>$ptx[message_howto_play]</div>
+    <table>
+        <tr><td>$ptx[label_left]</td><td class="key">J / &larr;</td></tr>
+        <tr><td>$ptx[label_right]</td><td class="key">L / &rarr;</td></tr>
+        <tr><td>$ptx[label_rotate]</td><td class="key">I / &uarr;</td></tr>
+        <tr><td>$ptx[label_down]</td><td class="key">K / &darr;</td></tr>
+    </table>
+</div>
 
-    $htm = '<div id="tetris-rules">'."\n"
-	    .'<div>'.$ptx['message_howto_play'].'</div>'."\n"
-	    .'<table>'."\n"
-	    .'<tr><td>'.$ptx['label_left'].'</td><td class="key">J / &larr;</td></tr>'."\n"
-	    .'<tr><td>'.$ptx['label_right'].'</td><td class="key">L / &rarr;</td></tr>'."\n"
-	    .'<tr><td>'.$ptx['label_rotate'].'</td><td class="key">I / &uarr;</td></tr>'."\n"
-	    .'<tr><td>'.$ptx['label_down'].'</td><td class="key">K / &darr;</td></tr>'."\n"
-	    .'</table>'."\n".'</div>'."\n";
-    return $htm;
+EOT;
+    return $o;
 }
 
+/**
+ * Returns the about view.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array The localization of the plugins.
+ */
+function Tetris_about()
+{
+    global $plugin_tx;
+    
+    $ptx = $plugin_tx['tetris'];
+    $o = <<<EOT
+<div id="tetris-about">
+    <h4>Tetris_XH</h4>
+    $ptx[message_about]
+    <p>&copy; 2011-2013 by <a href="http://3-magi.net/">cmb</a></p>
+</div>
+
+EOT;
+    return $o;
+}
 
 /**
- * Returns the (x)html of the tetris plugin.
+ * Returns the view of the Tetris plugin.
  *
  * @return string
+ *
+ * @global array  The paths of system files and folders.
+ * @global array  The localization of the plugins.
+ * @global string The script name.
+ * @global string The current page URL.
  */
-function tetris() {
-    global $pth, $plugin_tx;
+function tetris()
+{
+    global $pth, $plugin_tx, $sn, $su;
 
-    $ptx =& $plugin_tx['tetris'];
+    $ptx = $plugin_tx['tetris'];
 
-    if (!isset($_SESSION)) {session_start();}
-    $_SESSION['tetris_data_folder'] = dirname($_SERVER['SCRIPT_FILENAME']).'/'.tetris_data_folder();
-    $_SESSION['tetris_timestamp'] = time();
+    if (isset($_GET['tetris_highscores'])) {
+        Tetris_readHighscores();
+        switch ($_GET['tetris_highscores']) {
+        case 'required':
+            echo Tetris_requiredHighscore();
+            exit;
+        case 'list':
+            echo Tetris_highscoreList();
+            exit;
+        case 'new':
+            Tetris_newHighscore();
+            exit;
+        }
+    }
 
-    tetris_headers();
-    $htm = '';
-    $htm .= '<div id="tetris-no-js" class="cmsimplecore_warning">'.$ptx['error_no_js'].'</div>'."\n";
-    $htm .= '<div id="tetris-tabs">'."\n"
-	    .'<ul>'."\n"
-	    .'<li><a href="#tetris">'.$ptx['label_play'].'</a></li>'."\n"
-	    .'<li><a href="'.$pth['folder']['plugins'].'tetris/highscores.php?action=list">'
-	    .$ptx['label_highscores'].'</a></li>'."\n"
-	    .'<li><a href="#tetris-rules">'.$ptx['label_rules'].'</a></li>'."\n"
-	    .'</ul>'."\n";
-    $htm .= '<div id="tetris">'."\n";
-    $htm .= tetris_grid();
-    $htm .= '<div style="float:left">'."\n";
-    $htm .= tetris_next();
-    $htm .= tetris_stats();
-    $htm .= '</div>'."\n";
-    $htm .= '<div style="clear:both"></div>'."\n";
-    $htm .= tetris_cmd();
-    $htm .= '</div>'."\n"; // #tetris
-    $htm .= tetris_rules();
-    $htm .= '</div>'."\n"; // #tetris-tabs
-
-    $htm .= '<div id="tetris-highscore-dlg" title="New Highscore" style="display:none">'."\n"
-	    .tag('input type="text" maxlength="20"')."\n"
-	    .'</div>'."\n";
-
-    $htm .= '<div id="tetris-about-dlg" title="'.$ptx['label_about'].'" style="display:none">'."\n"
-	    .'<h3>Tetris_XH</h3>'
-	    .$ptx['message_about']
-	    .'<p>&copy; 2011-2013 by <a href="http://3-magi.net">cmb</a></p>'."\n"
-	    .'</div>'."\n";
-
-    return $htm;
+    Tetris_headers();
+    $url = $sn . '?' . $su . '&amp;tetris_highscores=list';
+    $grid = Tetris_grid();
+    $next = Tetris_next();
+    $stats = Tetris_stats();
+    $cmd = Tetris_cmd();
+    $rules = Tetris_rules();
+    $about = Tetris_about();
+    $o = <<<EOT
+<div id="tetris-no-js" class="cmsimplecore_warning">$ptx[error_no_js]</div>
+<div id="tetris-tabs">
+    <ul>
+        <li><a href="#tetris">$ptx[label_play]</a></li>
+        <li><a href="$url">$ptx[label_highscores]</a></li>
+        <li><a href="#tetris-rules">$ptx[label_rules]</a></li>
+        <li><a href="#tetris-about">$ptx[label_about]</a></li>
+    </ul>
+    <div id="tetris">
+        $grid
+        <div style="float:left">
+            $next
+            $stats
+        </div>
+        <div style="clear:both"></div>
+        $cmd
+    </div>
+    $rules
+    $about
+</div>
+    
+EOT;
+    return $o;
 }
 
 ?>

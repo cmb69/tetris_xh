@@ -87,8 +87,8 @@
 		[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1]];
 	    $('#tetris-grid td').css('background-color', tetris.colors[0]);
-	    $('#tetris-start').unbind('click', tetris.start).val(TETRIS_TX['label_pause']).click(tetris.pause);
-	    $('#tetris-stop').button('enable');
+	    $('#tetris-start').unbind('click', tetris.start).html(TETRIS_TX['label_pause']).click(tetris.pause);
+	    document.getElementById("tetris-stop").disabled = null;
 	    $(tetris.bound).keypress(tetris.key);
 	    tetris.next = tetris.newShape();
 	    tetris.shift();
@@ -148,14 +148,14 @@
 	    $(tetris.bound).unbind('keypress', tetris.key);
 	    window.clearInterval(tetris.timer);
 	    tetris.timer = null;
-	    $('#tetris-start').unbind('click', tetris.pause).val(TETRIS_TX['label_resume']).click(tetris.resume);
+	    $('#tetris-start').unbind('click', tetris.pause).html(TETRIS_TX['label_resume']).click(tetris.resume);
 	},
 
 	// Resume the game
 	resume: function() {
 	    $(tetris.bound).keypress(tetris.key);
 	    tetris.timer = window.setInterval(tetris.moveDown, tetris.duration);
-	    $('#tetris-start').unbind('click', tetris.resume).val(TETRIS_TX['label_pause']).click(tetris.pause);
+	    $('#tetris-start').unbind('click', tetris.resume).html(TETRIS_TX['label_pause']).click(tetris.pause);
 	},
 
 	// Stop the game
@@ -166,11 +166,11 @@
 		$(tetris.bound).unbind('keypress', tetris.key);
 		window.clearInterval(tetris.timer);
 		tetris.timer = null;
-		$('#tetris-start').unbind('click', tetris.pause).val(TETRIS_TX['label_start']).click(tetris.start);
+		$('#tetris-start').unbind('click', tetris.pause).html(TETRIS_TX['label_start']).click(tetris.start);
 	    } else {
-		$('#tetris-start').unbind('click', tetris.resume).val(TETRIS_TX['label_start']).click(tetris.start);
+		$('#tetris-start').unbind('click', tetris.resume).html(TETRIS_TX['label_start']).click(tetris.start);
 	    }
-	    $('#tetris-stop').button('disable');
+	    document.getElementById("tetris-stop").disabled = "disabled";
 	    // Draw everything in grey
 	    for (i = 0; i < 18; ++i) {
 		for (j = 1; j < 11; ++j) {
@@ -189,11 +189,11 @@
 	    }
 
 	    $.ajax({
-		url: TETRIS_HIGHSCORES+'?action=required',
+		url: TETRIS_HIGHSCORES + 'required',
 		async: false,
 		success: function(data) {
 		    if (tetris.score > data) {
-			$('#tetris-highscore-dlg').dialog('open');
+                        tetris.newHighscore();
 		    }
 		}
 	    });
@@ -348,6 +348,21 @@
 	    tetris.r0 = tetris.r;
 	},
 
+        // enters new highscore
+        newHighscore: function () {        
+            var name = prompt("Your name");
+            if (name) {
+                jQuery.ajax({
+                    url: TETRIS_HIGHSCORES + "new",
+                    type: 'POST',
+                    data: {
+                        name: name,
+                        score: tetris.score
+                    }
+                });
+            }
+        },
+
 	// Format the number
 	format: function(number) {
 	    var res = '000000'.concat(number);
@@ -358,46 +373,10 @@
 
     // Initialization
     $(function() {
- 	$('#tetris-tabs').tabs();
 	tetris.init();
 	$('#tetris-no-js').hide();
-	$('#tetris-start, #tetris-stop, #tetris-about-btn').button();
-	$('#tetris-stop').button('disable');
 	$('#tetris-grid table, #tetris-next table').css('background-color', tetris.colors[0]);
 	$('#tetris-start').click(tetris.start);
 	$('#tetris-stop').click(tetris.gameOver);
-	$('#tetris-highscore-dlg').dialog({
-	    autoOpen: false,
-	    modal: true,
-	    buttons: [{
-		text: TETRIS_TX['label_ok'],
-		click: function() {
-		    var name = $(this).find('input').val();
-		    $.ajax({
-			url: TETRIS_HIGHSCORES,
-			type: 'POST',
-			data: {
-			    action: 'new',
-			    name: name,
-			    score: tetris.score
-			}
-		    });
-		    $(this).dialog('close');
-		}
-	    }, {
-		text: TETRIS_TX['label_cancel'],
-		click: function() {$(this).dialog('close')}
-	    }]
-	});
-	$('#tetris-about-dlg').dialog({
-	    autoOpen: false,
-	    modal: true,
-	    buttons: [{
-		text: TETRIS_TX['label_ok'],
-		click: function() {
-		    $(this).dialog('close');
-		}
-	    }]
-	});
    });
 })(jQuery);
