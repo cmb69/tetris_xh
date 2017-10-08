@@ -48,23 +48,9 @@ class MainController
     {
         global $sn, $su;
 
-        if (isset($_GET['tetris_highscores'])) {
-            switch ($_GET['tetris_highscores']) {
-                case 'required':
-                    echo HighscoreService::requiredHighscore();
-                    exit;
-                case 'list':
-                    echo $this->highscoreList();
-                    exit;
-                case 'new':
-                    $this->newHighscore();
-                    exit;
-            }
-        }
-
         $this->headers();
         $view = new View('main');
-        $view->url = $sn . '?' . $su . '&tetris_highscores=list';
+        $view->url = $sn . '?' . $su . '&tetris_action=show_highscores';
         $view->gridRows = range('d', 'u');
         $view->gridCols = range(1, 10);
         $view->nextRows = range(0, 3);
@@ -73,9 +59,57 @@ class MainController
     }
 
     /**
-     * @return string
+     * @return void
      */
-    private function highscoreList()
+    private function headers()
+    {
+        global $pth, $hjs, $sn, $su;
+
+        include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
+        include_jQuery();
+        $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
+            . 'tetris/tetris.js"></script>' . PHP_EOL;
+        $falldown = $this->conf['falldown_immediately'] ? 'true' : 'false';
+        $texts = json_encode($this->langJS());
+        $hjs .= <<<EOT
+<script type="text/javascript">/* <![CDATA[ */
+    var TETRIS_HIGHSCORES = "$sn?$su&tetris_action=";
+    var TETRIS_FALLDOWN = $falldown;
+    var TETRIS_SPEED_INITIAL = {$this->conf['speed_initial']};
+    var TETRIS_SPEED_ACCELERATION = {$this->conf['speed_acceleration']};
+    var TETRIS_TX = $texts;
+/* ]]> */</script>
+
+EOT;
+    }
+
+    /**
+     * @return array.
+     */
+    private function langJS()
+    {
+        $texts = array();
+        foreach ($this->lang as $key => $text) {
+            if (strpos($key, 'cf_') !== 0) {
+                $texts[$key] = $text;
+            }
+        }
+        return $texts;
+    }
+
+    /**
+     * @return void
+     */
+    public function getHighscoreAction()
+    {
+        echo HighscoreService::requiredHighscore();
+        exit;
+    }
+
+    /**
+     * @return void
+     */
+    public function showHighscoresAction()
     {
         $highscores = HighscoreService::readHighscores();
         $o = <<<EOT
@@ -98,13 +132,14 @@ EOT;
 </div>
 
 EOT;
-        return $o;
+        echo $o;
+        exit;
     }
 
     /**
      * @return void
      */
-    private function newHighscore()
+    public function newHighscoreAction()
     {
         $name = $_POST['name'];
         $score = $_POST['score'];
@@ -113,45 +148,6 @@ EOT;
         ) {
             HighscoreService::enterHighscore($name, (int) $score);
         }
-    }
-
-    /**
-     * @return void
-     */
-    private function headers()
-    {
-        global $pth, $hjs, $sn, $su;
-
-        include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
-        include_jQuery();
-        $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
-            . 'tetris/tetris.js"></script>' . PHP_EOL;
-        $falldown = $this->conf['falldown_immediately'] ? 'true' : 'false';
-        $texts = json_encode($this->langJS());
-        $hjs .= <<<EOT
-<script type="text/javascript">/* <![CDATA[ */
-    var TETRIS_HIGHSCORES = "$sn?$su&tetris_highscores=";
-    var TETRIS_FALLDOWN = $falldown;
-    var TETRIS_SPEED_INITIAL = {$this->conf['speed_initial']};
-    var TETRIS_SPEED_ACCELERATION = {$this->conf['speed_acceleration']};
-    var TETRIS_TX = $texts;
-/* ]]> */</script>
-
-EOT;
-    }
-
-    /**
-     * @return array.
-     */
-    private function langJS()
-    {
-        $texts = array();
-        foreach ($this->lang as $key => $msg) {
-            $parts = explode('_', $key);
-            if ($parts[0] != 'cf') {
-                $texts[$key] = $msg;
-            }
-        }
-        return $texts;
+        exit;
     }
 }

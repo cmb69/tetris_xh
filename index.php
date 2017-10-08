@@ -24,8 +24,17 @@
  */
 function tetris()
 {
+    $controller = new Tetris\MainController;
+    if (isset($_GET['tetris_action'])) {
+        $action = str_replace('_', '', $_GET['tetris_action']) . 'Action';
+        if (!method_exists($controller, $action)) {
+            $action = 'defaultAction';
+        }
+    } else {
+        $action = 'defaultAction';
+    }
     ob_start();
-    (new Tetris\MainController)->defaultAction();
+    $controller->$action();
     return ob_get_clean();
 }
 
