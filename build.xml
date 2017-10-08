@@ -28,6 +28,12 @@
         <exec command="phpcompatinfo analyser:run --alias current" logoutput="true"/>
     </target>
 
+    <target name="uml" description="generates UML diagram">
+        <fail unless="plantuml" message="plantuml is not defined!"/>
+        <exec command="umlwriter diagram:render --reflector=reflect --processor=plantuml classes | java -jar ${plantuml} -p -tsvg > classes.svg"
+              logoutput="true"/>
+    </target>
+
     <target name="build" description="builds distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
