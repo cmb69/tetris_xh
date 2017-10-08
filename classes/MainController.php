@@ -132,8 +132,8 @@ EOT;
 <script type="text/javascript">/* <![CDATA[ */
     var TETRIS_HIGHSCORES = "$sn?$su&tetris_highscores=";
     var TETRIS_FALLDOWN = $falldown;
-    var TETRIS_SPEED_INITIAL = $this->conf[speed_initial];
-    var TETRIS_SPEED_ACCELERATION = $this->conf[speed_acceleration];
+    var TETRIS_SPEED_INITIAL = {$this->conf['speed_initial']};
+    var TETRIS_SPEED_ACCELERATION = {$this->conf['speed_acceleration']};
     var TETRIS_TX = $texts;
 /* ]]> */</script>
 
