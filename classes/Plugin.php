@@ -251,7 +251,9 @@ EOT;
         global $_Tetris_highscores;
     
         $_Tetris_highscores[] = array($name, $score);
-        usort($_Tetris_highscores, create_function('$a, $b', 'return $b[1] - $a[1];'));
+        usort($_Tetris_highscores, function ($a, $b) {
+            return $b[1] - $a[1];
+        });
         array_splice($_Tetris_highscores, 10);
     }
 
