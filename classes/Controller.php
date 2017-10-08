@@ -21,31 +21,23 @@
 
 namespace Tetris;
 
-class Plugin
+abstract class Controller
 {
-    const VERSION = '@TETRIS_VERSION@';
-
     /**
-     * @return void
+     * @var array
      */
-    public function run()
-    {
-        global $o, $action, $admin, $plugin;
+    protected $conf;
+     
+    /**
+     * @var array
+     */
+    protected $lang;
 
-        if (XH_ADM) {
-            XH_registerStandardPluginMenuItems(false);
-            if (XH_wantsPluginAdministration('tetris')) {
-                $o .= print_plugin_admin('off');
-                switch ($admin) {
-                    case '':
-                        ob_start();
-                        (new InfoController)->defaultAction();
-                        $o .= ob_get_clean();
-                        break;
-                    default:
-                        $o .= plugin_admin_common($action, $admin, $plugin);
-                }
-            }
-        }
+    public function __construct()
+    {
+        global $plugin_cf, $plugin_tx;
+
+        $this->conf = $plugin_cf['tetris'];
+        $this->lang = $plugin_tx['tetris'];
     }
 }

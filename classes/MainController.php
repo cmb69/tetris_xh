@@ -21,26 +21,8 @@
 
 namespace Tetris;
 
-class MainController
+class MainController extends Controller
 {
-    /**
-     * @var array
-     */
-    private $conf;
-
-    /**
-     * @var array
-     */
-    private $lang;
-
-    public function __construct()
-    {
-        global $plugin_cf, $plugin_tx;
-
-        $this->conf = $plugin_cf['tetris'];
-        $this->lang = $plugin_tx['tetris'];
-    }
-
     /**
      * @return void
      */
