@@ -429,7 +429,7 @@ EOT;
     {
         global $_Tetris_highscores;
 
-        $fn = self::dataFolder() . 'highscores.dat';
+        $fn = self::dataFolder() . 'tetris.dat';
         if (($cnt = file_get_contents($fn)) === false
             || ($_Tetris_highscores = unserialize($cnt)) === false
         ) {
@@ -444,7 +444,7 @@ EOT;
     {
         global $_Tetris_highscores;
 
-        $fn = self::dataFolder() . 'highscores.dat';
+        $fn = self::dataFolder() . 'tetris.dat';
         if (($fh = fopen($fn, 'w')) !== false) {
             flock($fh, LOCK_EX);
             fputs($fh, serialize($_Tetris_highscores));
@@ -458,27 +458,8 @@ EOT;
      */
     private static function dataFolder()
     {
-        global $pth, $plugin_cf;
+        global $pth;
 
-        $pcf = $plugin_cf['tetris'];
-
-        if ($pcf['folder_data'] == '') {
-            $fn = $pth['folder']['plugins'] . 'tetris/data/';
-        } else {
-            $fn = $pth['folder']['base'] . $pcf['folder_data'];
-        }
-        if (substr($fn, -1) != '/') {
-            $fn .= '/';
-        }
-        if (file_exists($fn)) {
-            if (!is_dir($fn)) {
-                e('cntopen', 'folder', $fn);
-            }
-        } else {
-            if (!mkdir($fn, 0777, true)) {
-                e('cntwriteto', 'folder', $fn);
-            }
-        }
-        return $fn;
+        return "{$pth['folder']['base']}content/";
     }
 }

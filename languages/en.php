@@ -31,7 +31,6 @@ $plugin_tx['tetris']['message_about']="<p>Tetris for CMSimple_XH.</p>";
 
 $plugin_tx['tetris']['error_no_js']="Javascript must be enabled in your browser to play!";
 
-$plugin_tx['tetris']['cf_folder_data']="Path to a folder relative to the CMSimple root directory, where to store the plugin's data. E.g. <em>userfiles/tetris/</em>. Leave empty to store into the plugin's data/ folder.";
 $plugin_tx['tetris']['cf_falldown_immediately']="Whether the tetrominoes should fall down immediately (1), or one line per key press (0).";
 $plugin_tx['tetris']['cf_speed_initial']="Initial speed of the game. The higher the slower.";
 $plugin_tx['tetris']['cf_speed_acceleration']="Acceleration for each level. The higher the sharper.";

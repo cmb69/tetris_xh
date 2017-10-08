@@ -27,7 +27,6 @@ $plugin_tx['tetris']['label_score']="Punkte";
 $plugin_tx['tetris']['message_howto_play']="<p>Wie Tetris gespielt wird, wird auf <a href=\"http://de.wikipedia.org/wiki/Tetris\" target=\"_blank\">Wikipedia</a> erklärt.</p><p>Verwenden Sie die folgenden Tasten (die Pfeil-Tasten funktionieren nicht in allen Browsern):</p>";
 $plugin_tx['tetris']['message_about']="<p>Tetris für CMSimple_XH.</p>";
 $plugin_tx['tetris']['error_no_js']="Zum Spielen muss Javascript in Ihrem Browser aktiviert sein!";
-$plugin_tx['tetris']['cf_folder_data']="Eine zum Wurzelverzeichnis von CMSimple_XH relative Pfadangabe, wo die Plugindaten gespeichert werden sollen. Z.B. <em>userfiles/tetris/</em>. Falls leer, werden die Daten im data/ Ordner des Plugins gespeichert.";
 $plugin_tx['tetris']['cf_falldown_immediately']="Ob die Tetrominos sofort herunter fallen sollen (1), oder um eine Zeile pro Tastendruck (0).";
 $plugin_tx['tetris']['cf_speed_initial']="Ausgangsgeschwindigkeit des Spiels. Je jöher desto langsamer.";
 $plugin_tx['tetris']['cf_speed_acceleration']="Beschleunigung pro Stufe. Je höher desto stärker.";

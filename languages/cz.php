@@ -27,7 +27,6 @@
 	$plugin_tx['tetris']['message_howto_play']="<p> Jak hrát Tetris je vysvětleno na <a href=\"http://cs.wikipedia.org/wiki/Tetris\" target=\"_blank\"> Wikipedii </a>. </ p>Pro ovládání  použijte následující klávesy (pozor, šipky nefungují ve všech prohlížečích): </ p>";
 	$plugin_tx['tetris']['message_about']="<p>Tetris pro CMSimple_XH.</p>";
 	$plugin_tx['tetris']['error_no_js']="Pro hru musí být ve vašem prohlížeči povolen javascript!";
-	$plugin_tx['tetris']['cf_folder_data']="Cesta do složky ve vztahu k CMSimple kořenového adresáře, kam se má uložit plugin dat. Např. <em> userfiles / tetris / </em>. Nechte prázdné pro původní cestu do adresáře data..";
 	$plugin_tx['tetris']['cf_falldown_immediately']="Nastavení způsobu pádu kostičky  - hned (1), nebo o jeden řádek (0).";
 	$plugin_tx['tetris']['cf_speed_initial']="Počáteční rychlost hry. Čím vyšší bude pomalejší.";
 	$plugin_tx['tetris']['cf_speed_acceleration']="Akcelerace pro každou úroveň. Čím vyšší, tím je větší.";
