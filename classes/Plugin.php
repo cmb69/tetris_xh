@@ -38,7 +38,7 @@ class Plugin
                 $o .= print_plugin_admin('off');
                 switch ($admin) {
                     case '':
-                        $o .= self::version() . self::systemCheck();
+                        $o .= self::version();
                         break;
                     default:
                         $o .= plugin_admin_common($action, $admin, $plugin);
@@ -57,46 +57,8 @@ class Plugin
         $view = new View('info');
         $view->logo = "{$pth['folder']['plugins']}tetris/tetris.png";
         $view->version = self::VERSION;
+        $view->checks = (new SystemCheckService)->getChecks();
         return (string) $view;
-    }
-
-    /**
-     * @return string
-     */
-    private static function systemCheck()
-    {
-        global $pth, $tx, $plugin_tx;
-
-        $phpVersion = '5.5.0';
-        $ptx = $plugin_tx['tetris'];
-        $imgdir = $pth['folder']['plugins'] . 'tetris/images/';
-        $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
-        $warn = tag('img src="' . $imgdir . 'warn.png" alt="warning"');
-        $fail = tag('img src="' . $imgdir . 'fail.png" alt="failure"');
-        $o = tag('hr') . '<h4>' . $ptx['syscheck_title'] . '</h4>'
-            . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
-            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
-            . tag('br') . tag('br') . PHP_EOL;
-        foreach (array('json') as $ext) {
-            $o .= (extension_loaded($ext) ? $ok : $fail)
-                . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
-                . tag('br') . PHP_EOL;
-        }
-        $state = file_exists($pth['folder']['plugins'].'jquery/jquery.inc.php')
-            ? $ok
-            : $fail;
-        $o .= $state . '&nbsp;&nbsp;' . $ptx['syscheck_jquery']
-            . tag('br') . tag('br') . PHP_EOL;
-        foreach (array('config/', 'css/', 'languages/') as $folder) {
-            $folders[] = $pth['folder']['plugins'] . 'tetris/' . $folder;
-        }
-        $folders[] = HighscoreService::dataFolder();
-        foreach ($folders as $folder) {
-            $o .= (is_writable($folder) ? $ok : $warn)
-                . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
-                . tag('br') . PHP_EOL;
-        }
-        return $o;
     }
 
     /**

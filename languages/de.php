@@ -1,10 +1,15 @@
 <?php
 
+$plugin_tx['tetris']['syscheck_extension']="die PHP-Erweiterung '%s' geladen ist";
+$plugin_tx['tetris']['syscheck_fail']="Fehler";
+$plugin_tx['tetris']['syscheck_message']="Prüfe, dass %1\$s … %2\$s";
+$plugin_tx['tetris']['syscheck_phpversion']="die PHP-Version ≥ %s";
+$plugin_tx['tetris']['syscheck_plugin']="das CMSIMPLE_XH Plugin '%s' installiert ist";
+$plugin_tx['tetris']['syscheck_success']="OK";
 $plugin_tx['tetris']['syscheck_title']="System-Prüfung";
-$plugin_tx['tetris']['syscheck_phpversion']="PHP-Version ≥ %s";
-$plugin_tx['tetris']['syscheck_extension']="Erweiterung '%s' geladen";
-$plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple Plugin</a> installiert";
-$plugin_tx['tetris']['syscheck_writable']="Ordner '%s' beschreibbar";
+$plugin_tx['tetris']['syscheck_warning']="Warnung";
+$plugin_tx['tetris']['syscheck_writable']="'%s' schreibbar ist";
+$plugin_tx['tetris']['syscheck_xhversion']="die CMSimple_XH-Version ≥ %s";
 $plugin_tx['tetris']['label_ok']="OK";
 $plugin_tx['tetris']['label_cancel']="Abbrechen";
 $plugin_tx['tetris']['label_play']="Spielen";

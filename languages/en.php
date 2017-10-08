@@ -1,10 +1,15 @@
 <?php
 
+$plugin_tx['tetris']['syscheck_extension']="the PHP extension '%s' is loaded";
+$plugin_tx['tetris']['syscheck_fail']="failure";
+$plugin_tx['tetris']['syscheck_message']="Checking that %1\$s … %2\$s";
+$plugin_tx['tetris']['syscheck_phpversion']="PHP version ≥ %s";
+$plugin_tx['tetris']['syscheck_plugin']="the CMSimple_XH plugin '%s' is installed";
+$plugin_tx['tetris']['syscheck_success']="okay";
 $plugin_tx['tetris']['syscheck_title']="System check";
-$plugin_tx['tetris']['syscheck_phpversion']="PHP version &ge; %s";
-$plugin_tx['tetris']['syscheck_extension']="Extension '%s' loaded";
-$plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple plugin</a> installed";
-$plugin_tx['tetris']['syscheck_writable']="'%s' writable";
+$plugin_tx['tetris']['syscheck_warning']="warning";
+$plugin_tx['tetris']['syscheck_writable']="'%s' is writable";
+$plugin_tx['tetris']['syscheck_xhversion']="CMSimple_XH version ≥ %s";
 
 $plugin_tx['tetris']['label_ok'] = "Ok";
 $plugin_tx['tetris']['label_cancel'] = "Cancel";
