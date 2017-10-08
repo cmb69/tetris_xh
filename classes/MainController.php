@@ -112,27 +112,13 @@ EOT;
     public function showHighscoresAction()
     {
         $highscores = HighscoreService::readHighscores();
-        $o = <<<EOT
-<!-- Tetris_XH: highscores -->
-<div id="tetris-highscores">
-    <table>
-
-EOT;
-        foreach ($highscores as $highscore) {
-            list($name, $score) = $highscore;
-            $name = XH_hsc($name);
-            $score = XH_hsc($score);
-            $o .= <<<EOT
-        <tr><td class="name">$name</td><td class="score">$score</td></tr>
-
-EOT;
+        foreach ($highscores as &$highscore) {
+            list($player, $score) = $highscore;
+            $highscore = (object) compact('player', 'score');
         }
-        $o .= <<<EOT
-    </table>
-</div>
-
-EOT;
-        echo $o;
+        $view = new View('highscores');
+        $view->highscores = $highscores;
+        $view->render();
         exit;
     }
 
