@@ -14,8 +14,7 @@
     </target>
 
     <target name="compat">
-        <exec command="phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern tetris ."
-              logoutput="true"/>
+        <exec command="phpcompatinfo analyser:run --alias current" logoutput="true"/>
     </target>
 
     <target name="build">
@@ -36,7 +35,7 @@
             <fileset dir="export">
                 <exclude name="tetris.komodoproject"/>
                 <exclude name="build.xml"/>
-                <exclude name="phpcompatinfo.xml"/>
+                <exclude name="phpcompatinfo.json"/>
             </fileset>
         </move>
         <delete dir="export"/>
