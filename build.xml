@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Tetris" default="default">
+<project name="Tetris" default="help">
 
     <fileset id="php-sources" dir=".">
         <include name="index.php"/>
         <include name="classes/*.php"/>
     </fileset>
 
-    <target name="sniff">
+    <target name="help" description="lists available targets">
+        <exec command="phing -l" outputProperty="help"/>
+        <echo>${help}</echo>
+    </target>
+
+    <target name="sniff" description="checks adherence to the coding standard">
         <phpcodesniffer standard="PSR2" haltonerror="true">
             <fileset refid="php-sources"/>
         </phpcodesniffer>
     </target>
 
-    <target name="compat">
+    <target name="compat" description="checks PHP requirements">
         <exec command="phpcompatinfo analyser:run --alias current" logoutput="true"/>
     </target>
 
-    <target name="build">
+    <target name="build" description="builds distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
         <untar file="export.tar" todir="export"/>
