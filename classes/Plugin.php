@@ -66,7 +66,7 @@ class Plugin
      */
     public static function main()
     {
-        global $pth, $sn, $su;
+        global $sn, $su;
 
         if (isset($_GET['tetris_highscores'])) {
             switch ($_GET['tetris_highscores']) {
@@ -140,11 +140,10 @@ EOT;
      */
     private static function headers()
     {
-        global $pth, $hjs, $plugin_cf, $plugin_tx, $sl, $sn, $su;
-    
+        global $pth, $hjs, $plugin_cf, $sn, $su;
+
         $pcf = $plugin_cf['tetris'];
-        $ptx = $plugin_tx['tetris'];
-    
+
         include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
         include_jQuery();
         $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
@@ -168,7 +167,7 @@ EOT;
      */
     private static function langJS()
     {
-        global $pth, $sl, $plugin_tx;
+        global $plugin_tx;
 
         $ptx = $plugin_tx['tetris'];
         $texts = array();
