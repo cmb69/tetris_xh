@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
 <project name="Tetris" default="default">
-
-    <!-- Filesets -->
 
     <fileset id="php-sources" dir=".">
         <include name="admin.php"/>
         <include name="index.php"/>
     </fileset>
-
-    <!-- Checks -->
 
     <target name="sniff">
         <phpcodesniffer standard="PEAR">
@@ -23,8 +17,6 @@
         <exec command="phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern tetris ."
               logoutput="true"/>
     </target>
-
-    <!-- Documentation -->
 
     <target name="php-doc">
         <phpdoc title="Tetris_XH Developer Documentation" destdir="doc/php"
@@ -38,13 +30,7 @@
         </phpdoc>
     </target>
 
-<!--    <target name="js-doc">
-        <exec command="jsdoc -destination doc/js pagemanager.js" checkreturn="true"/>
-    </target>
--->
     <target name="doc" depends="php-doc"/>
-
-    <!-- Build -->
 
     <target name="build">
         <fail unless="version" message="version is not defined!"/>
