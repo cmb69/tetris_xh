@@ -132,13 +132,11 @@ HTM;
     }
 
     /**
-     * @return string
+     * @return void
      */
     public static function main()
     {
-        global $pth, $plugin_tx, $sn, $su;
-
-        $ptx = $plugin_tx['tetris'];
+        global $pth, $sn, $su;
 
         if (isset($_GET['tetris_highscores'])) {
             self::readHighscores();
@@ -156,34 +154,13 @@ HTM;
         }
 
         self::headers();
-        $url = $sn . '?' . $su . '&amp;tetris_highscores=list';
-        $grid = self::grid();
-        $next = self::next();
-        $stats = self::stats();
-        $cmd = self::cmd();
-        $rules = self::rules();
-        $o = <<<EOT
-<div id="tetris-no-js" class="cmsimplecore_warning">$ptx[error_no_js]</div>
-<div id="tetris-tabs">
-    <ul>
-        <li><a href="#tetris">$ptx[label_play]</a></li>
-        <li><a href="$url">$ptx[label_highscores]</a></li>
-        <li><a href="#tetris-rules">$ptx[label_rules]</a></li>
-    </ul>
-    <div id="tetris">
-        $grid
-        <div style="float:left">
-            $next
-            $stats
-        </div>
-        <div style="clear:both"></div>
-        $cmd
-    </div>
-    $rules
-</div>
-    
-EOT;
-        return $o;
+        $view = new View('main');
+        $view->url = $sn . '?' . $su . '&tetris_highscores=list';
+        $view->gridRows = range('d', 'u');
+        $view->gridCols = range(1, 10);
+        $view->nextRows = range(0, 3);
+        $view->nextCols = range(0, 3);
+        $view->render();
     }
 
     /**
@@ -303,102 +280,6 @@ EOT;
         return $texts;
     }
 
-    /**
-     * @return string
-     */
-    private static function grid()
-    {
-        $o = '<div id="tetris-grid">' . PHP_EOL . '<table>' . PHP_EOL;
-        for ($j = ord('d'); $j <= ord('u'); $j++) {
-            $o .= '<tr>';
-            for ($i = 1; $i <= 10; $i++) {
-                $o .= '<td id="tetris-' . chr($j) . $i . '"></td>';
-            }
-            $o .= '</tr>' . PHP_EOL;
-        }
-        $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
-        return $o;
-    }
-
-    /**
-     * @return string
-     */
-    private static function next()
-    {
-        $o = '<div id="tetris-next">' . PHP_EOL . '<table>' . PHP_EOL;
-        for ($j = 0; $j < 4; $j++) {
-            $o .= '<tr>';
-            for ($i = 0; $i < 4; $i++) {
-                $o .= '<td id="tetris-x' . $i . $j . '"></td>';
-            }
-            $o .= '</tr>' . PHP_EOL;
-        }
-        $o .= '</table>' . PHP_EOL . '</div>' . PHP_EOL;
-        return $o;
-    }
-
-    /**
-     * @return string
-     */
-    private static function stats()
-    {
-        global $plugin_tx;
-    
-        $ptx = $plugin_tx['tetris'];
-        $o = <<<EOT
-<div id="tetris-stats">
-    <div class="label">$ptx[label_level]</div>
-    <div id="tetris-level" class="led">000001</div>
-    <div class="label">$ptx[label_rows]</div>
-    <div id="tetris-lines" class="led">000000</div>
-    <div class="label">$ptx[label_score]</div>
-    <div id="tetris-score" class="led">000000</div>
-</div>
-
-EOT;
-        return $o;
-    }
-
-    /**
-     * @return string
-     */
-    private static function cmd()
-    {
-        global $plugin_tx;
-    
-        $ptx = $plugin_tx['tetris'];
-    
-        $o = '<div id="tetris-cmd">' . PHP_EOL
-            . '<button id="tetris-start">' . $ptx['label_start'] . '</button>' . PHP_EOL
-            . '<button id="tetris-stop" disabled="disabled">' . $ptx['label_stop']
-            . '</button>' . PHP_EOL
-            . '</div>' . PHP_EOL;
-        return $o;
-    }
-
-    /**
-     * @return string
-     */
-    private static function rules()
-    {
-        global $plugin_tx;
-
-        $ptx = $plugin_tx['tetris'];
-        $o = <<<EOT
-<div id="tetris-rules">
-    <div>$ptx[message_howto_play]</div>
-    <table>
-        <tr><td>$ptx[label_left]</td><td class="key">J / &larr;</td></tr>
-        <tr><td>$ptx[label_right]</td><td class="key">L / &rarr;</td></tr>
-        <tr><td>$ptx[label_rotate]</td><td class="key">I / &uarr;</td></tr>
-        <tr><td>$ptx[label_down]</td><td class="key">K / &darr;</td></tr>
-    </table>
-</div>
-
-EOT;
-        return $o;
-    }
- 
     /**
      * @return bool
      */

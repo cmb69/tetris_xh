@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Christoph M. Becker
+ * Copyright 2017 Christoph M. Becker
  *
  * This file is part of Tetris_XH.
  *
@@ -19,14 +19,28 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @return string
- */
-function tetris()
-{
-    ob_start();
-    Tetris\Plugin::main();
-    return ob_get_clean();
-}
+namespace Tetris;
 
-Tetris\Plugin::run();
+class HtmlString
+{
+    /**
+     * @var string
+     */
+    private $value;
+
+    /**
+     * @param string $string
+     */
+    public function __construct($string)
+    {
+        $this->value = (string) $string;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->value;
+    }
+}
