@@ -217,8 +217,8 @@ EOT;
 EOT;
         foreach ($_Tetris_highscores as $highscore) {
             list($name, $score) = $highscore;
-            $name = htmlspecialchars($name, ENT_COMPAT, 'UTF-8');
-            $score = htmlspecialchars($score, ENT_COMPAT, 'UTF-8');
+            $name = XH_hsc($name);
+            $score = XH_hsc($score);
             $o .= <<<EOT
         <tr><td class="name">$name</td><td class="score">$score</td></tr>
 
