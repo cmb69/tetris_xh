@@ -30,10 +30,10 @@ class Plugin
      */
     public static function run()
     {
-        global $o, $tetris, $action, $admin, $plugin;
+        global $o, $action, $admin, $plugin;
 
         if (XH_ADM) {
-            if (isset($tetris) && $tetris == 'true') {
+            if (XH_wantsPluginAdministration('tetris')) {
                 $o .= print_plugin_admin('off');
                 switch ($admin) {
                     case '':
