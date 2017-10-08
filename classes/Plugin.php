@@ -33,6 +33,7 @@ class Plugin
         global $o, $action, $admin, $plugin;
 
         if (XH_ADM) {
+            XH_registerStandardPluginMenuItems(false);
             if (XH_wantsPluginAdministration('tetris')) {
                 $o .= print_plugin_admin('off');
                 switch ($admin) {
