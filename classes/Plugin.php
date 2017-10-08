@@ -98,7 +98,7 @@ HTM;
     {
         global $pth, $tx, $plugin_tx;
 
-        $phpVersion = '4.3.10';
+        $phpVersion = '5.3.0';
         $ptx = $plugin_tx['tetris'];
         $imgdir = $pth['folder']['plugins'] . 'tetris/images/';
         $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
@@ -108,7 +108,7 @@ HTM;
             . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
             . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
             . tag('br') . tag('br') . PHP_EOL;
-        foreach (array('pcre', 'session') as $ext) {
+        foreach (array('json') as $ext) {
             $o .= (extension_loaded($ext) ? $ok : $fail)
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
                 . tag('br') . PHP_EOL;
