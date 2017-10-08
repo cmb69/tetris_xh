@@ -162,7 +162,6 @@ HTM;
         $stats = self::stats();
         $cmd = self::cmd();
         $rules = self::rules();
-        $about = self::about();
         $o = <<<EOT
 <div id="tetris-no-js" class="cmsimplecore_warning">$ptx[error_no_js]</div>
 <div id="tetris-tabs">
@@ -170,7 +169,6 @@ HTM;
         <li><a href="#tetris">$ptx[label_play]</a></li>
         <li><a href="$url">$ptx[label_highscores]</a></li>
         <li><a href="#tetris-rules">$ptx[label_rules]</a></li>
-        <li><a href="#tetris-about">$ptx[label_about]</a></li>
     </ul>
     <div id="tetris">
         $grid
@@ -182,7 +180,6 @@ HTM;
         $cmd
     </div>
     $rules
-    $about
 </div>
     
 EOT;
@@ -400,25 +397,6 @@ EOT;
         return $o;
     }
  
-    /**
-     * @return string
-     */
-    private static function about()
-    {
-        global $plugin_tx;
-        
-        $ptx = $plugin_tx['tetris'];
-        $o = <<<EOT
-<div id="tetris-about">
-    <h4>Tetris_XH</h4>
-    $ptx[message_about]
-    <p>&copy; 2011-2017 by <a href="http://3-magi.net/">cmb</a></p>
-</div>
-
-EOT;
-        return $o;
-    }
-
     /**
      * @return bool
      */
