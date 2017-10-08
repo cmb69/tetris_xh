@@ -28,7 +28,7 @@ class Plugin
     /**
      * @return void
      */
-    public static function run()
+    public function run()
     {
         global $o, $action, $admin, $plugin;
 
@@ -38,7 +38,7 @@ class Plugin
                 $o .= print_plugin_admin('off');
                 switch ($admin) {
                     case '':
-                        $o .= self::version();
+                        $o .= $this->version();
                         break;
                     default:
                         $o .= plugin_admin_common($action, $admin, $plugin);
@@ -50,7 +50,7 @@ class Plugin
     /**
      * @return string
      */
-    private static function version()
+    private function version()
     {
         global $pth;
 

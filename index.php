@@ -29,4 +29,4 @@ function tetris()
     return ob_get_clean();
 }
 
-Tetris\Plugin::run();
+(new Tetris\Plugin)->run();
