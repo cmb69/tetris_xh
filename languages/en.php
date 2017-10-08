@@ -4,7 +4,6 @@ $plugin_tx['tetris']['syscheck_title']="System check";
 $plugin_tx['tetris']['syscheck_phpversion']="PHP version &ge; %s";
 $plugin_tx['tetris']['syscheck_extension']="Extension '%s' loaded";
 $plugin_tx['tetris']['syscheck_encoding']="Encoding 'UTF-8' configured";
-$plugin_tx['tetris']['syscheck_magic_quotes']="magic_quotes_runtime off";
 $plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple plugin</a> installed";
 $plugin_tx['tetris']['syscheck_writable']="'%s' writable";
 

@@ -113,8 +113,6 @@ HTM;
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
                 . tag('br') . PHP_EOL;
         }
-        $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . PHP_EOL;
         $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
             . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br') . PHP_EOL;
         $state = file_exists($pth['folder']['plugins'].'jquery/jquery.inc.php')
@@ -237,8 +235,8 @@ EOT;
       */
     private static function newHighscore()
     {
-        $name = stsl($_POST['name']);
-        $score = stsl($_POST['score']);
+        $name = $_POST['name'];
+        $score = $_POST['score'];
         if (strlen($name) <= 20 // FIXME: use utf8_strlen()
             && preg_match('/[0-9]{1,6}/', $score)
         ) {

@@ -4,7 +4,6 @@
 	$plugin_tx['tetris']['syscheck_phpversion']="PHP verze ≥ %s";
 	$plugin_tx['tetris']['syscheck_extension']="Rozšíření '%s' nahráno";
 	$plugin_tx['tetris']['syscheck_encoding']="Kódování 'UTF-8' nastaveno";
-	$plugin_tx['tetris']['syscheck_magic_quotes']="magic_quotes_runtime off";
 	$plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple plugin</a> instalován";
 	$plugin_tx['tetris']['syscheck_writable']="'%s' zapisovatelné";
 	$plugin_tx['tetris']['label_ok']="Ok";
