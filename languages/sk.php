@@ -3,7 +3,6 @@
 $plugin_tx['tetris']['syscheck_title']="Kontrola systému";
 $plugin_tx['tetris']['syscheck_phpversion']="PHP verzia &ge; %s";
 $plugin_tx['tetris']['syscheck_extension']="Rozšírenie '%s' načítané";
-$plugin_tx['tetris']['syscheck_encoding']="Kódovanie 'UTF-8' nastavené";
 $plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple plugin</a> nainštalovaný";
 $plugin_tx['tetris']['syscheck_writable']="'%s' writable";
 $plugin_tx['tetris']['label_ok']="Ok";

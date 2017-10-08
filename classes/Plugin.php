@@ -113,8 +113,6 @@ HTM;
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
                 . tag('br') . PHP_EOL;
         }
-        $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br') . PHP_EOL;
         $state = file_exists($pth['folder']['plugins'].'jquery/jquery.inc.php')
             ? $ok
             : $fail;

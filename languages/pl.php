@@ -10,7 +10,6 @@
 $plugin_tx['tetris']['syscheck_title']="Test systemu";
 $plugin_tx['tetris']['syscheck_phpversion']="Wersja PHP ≥ %s";
 $plugin_tx['tetris']['syscheck_extension']="Wtyczka '%s' wczytana poprawnie";
-$plugin_tx['tetris']['syscheck_encoding']="Kodowanie znaków 'UTF-8' poprawne";
 $plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple plugin</a> zainstalowano poprawnie";
 $plugin_tx['tetris']['syscheck_writable']="'%s'  ma prawa zapisu";
 $plugin_tx['tetris']['label_ok']="Ok";

@@ -3,7 +3,6 @@
 $plugin_tx['tetris']['syscheck_title']="System-Prüfung";
 $plugin_tx['tetris']['syscheck_phpversion']="PHP-Version ≥ %s";
 $plugin_tx['tetris']['syscheck_extension']="Erweiterung '%s' geladen";
-$plugin_tx['tetris']['syscheck_encoding']="UTF-8-Kodierung eingestellt";
 $plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple Plugin</a> installiert";
 $plugin_tx['tetris']['syscheck_writable']="Ordner '%s' beschreibbar";
 $plugin_tx['tetris']['label_ok']="OK";
