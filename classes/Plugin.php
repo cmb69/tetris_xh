@@ -47,11 +47,7 @@ class Plugin
     }
 
     /**
-     * Returns the plugin version information view.
-     *
-     * @return string (X)HTML
-     *
-     * @global array The paths of system files and folders.
+     * @return string
      */
     private static function version()
     {
@@ -96,13 +92,7 @@ HTM;
     }
 
     /**
-     * Returns system check view.
-     *
-     * @return string (X)HTML
-     *
-     * @global array The paths of system files and folders.
-     * @global array The localization of the core.
-     * @global array The localization of the plugins.
+     * @return string
      */
     private static function systemCheck()
     {
@@ -144,15 +134,8 @@ HTM;
         return $o;
     }
 
-      /**
-     * Returns the view of the Tetris plugin.
-     *
+    /**
      * @return string
-     *
-     * @global array  The paths of system files and folders.
-     * @global array  The localization of the plugins.
-     * @global string The script name.
-     * @global string The current page URL.
      */
     public static function main()
     {
@@ -210,30 +193,22 @@ EOT;
     }
 
     /**
-     * Returns the minimum required score to get a highscore.
-     *
      * @return string
-     * 
-     * @global array The highscores
      */
     private static function requiredHighscore()
     {
         global $_Tetris_highscores;
-   
+
         return isset($_Tetris_highscores[9][1]) ? $_Tetris_highscores[9][1] : 0;
     }
 
      /**
-     * Return the view of the highscore list.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The highscores.
-     */
+      * @return string
+      */
     private static function highscoreList()
     {
         global $_Tetris_highscores;
-   
+
         $o = <<<EOT
 <!-- Tetris_XH: highscores -->
 <div id="tetris-highscores">
@@ -258,10 +233,8 @@ EOT;
     }
 
      /**
-     * Enters a new highscore to the list.
-     *
-     * @return void
-     */
+      * @return void
+      */
     private static function newHighscore()
     {
         $name = stsl($_POST['name']);
@@ -275,16 +248,9 @@ EOT;
     }
 
     /**
-     * Enters a new highscore.
-     * 
-     * Strips the highscores to at most 10 entries.
-     *
-     * @param string $name  A player name.
-     * @param string $score A score.
-     *
+     * @param string $name
+     * @param string $score
      * @return void
-     * 
-     * @global array The highscores
      */
     private static function enterHighscore($name, $score)
     {
@@ -295,18 +261,8 @@ EOT;
         array_splice($_Tetris_highscores, 10);
     }
 
-      /**
-     * Includes the necessary scripts and stylesheets.
-     *
+    /**
      * @return void
-     *
-     * @global array  The paths of system files and folders.
-     * @global string The (X)HTML fragment to insert into the head element.
-     * @global array  The configuration of the plugins.
-     * @global array  The localization of the plugins.
-     * @global string The current language.
-     * @global string The script name.
-     * @global string The current page URL.
      */
     private static function headers()
     {
@@ -334,13 +290,7 @@ EOT;
     }
 
     /**
-     * Returns the localization needed for the JavaScript.
-     *
-     * @return string array.
-     *
-     * @global array  The paths of system files and folders.
-     * @global string The current language.
-     * @global array  The localization of the plugins.
+     * @return array.
      */
     private static function langJS()
     {
@@ -358,9 +308,7 @@ EOT;
     }
 
     /**
-     * Returns the the Tetris matrix view.
-     *
-     * @return string (X)HTML.
+     * @return string
      */
     private static function grid()
     {
@@ -377,9 +325,7 @@ EOT;
     }
 
     /**
-     * Returns the view of the next tetromino.
-     *
-     * @return string (X)HTML.
+     * @return string
      */
     private static function next()
     {
@@ -396,11 +342,7 @@ EOT;
     }
 
     /**
-     * Returns the of the tetris stats view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the plugins.
+     * @return string
      */
     private static function stats()
     {
@@ -422,11 +364,7 @@ EOT;
     }
 
     /**
-     * Returns the view of the tetris command buttons.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the plugins.
+     * @return string
      */
     private static function cmd()
     {
@@ -443,11 +381,7 @@ EOT;
     }
 
     /**
-     * Returns the view of the content of the rule tab.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the plugins.
+     * @return string
      */
     private static function rules()
     {
@@ -470,11 +404,7 @@ EOT;
     }
  
     /**
-     * Returns the about view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the plugins.
+     * @return string
      */
     private static function about()
     {
@@ -493,11 +423,7 @@ EOT;
     }
 
     /**
-     * Reads the highscores.
-     *
      * @return bool
-     * 
-     * @global array The highscores.
      */
     private static function readHighscores()
     {
@@ -512,11 +438,7 @@ EOT;
     }
 
     /**
-     * Writes back the highscores.
-     *
      * @return void
-     * 
-     * @global array The highscores.
      */
     private static function writeHighscores()
     {
@@ -532,12 +454,7 @@ EOT;
     }
 
     /**
-     * Returns the path of the data folder.
-     *
      * @return string
-     *
-     * @global array The paths of system files and folders.
-     * @global array The configuration of the plugins. * 
      */
     private static function dataFolder()
     {
