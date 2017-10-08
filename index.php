@@ -25,7 +25,7 @@
 function tetris()
 {
     ob_start();
-    Tetris\Plugin::main();
+    (new Tetris\MainController)->defaultAction();
     return ob_get_clean();
 }
 
