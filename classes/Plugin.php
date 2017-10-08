@@ -98,7 +98,7 @@ HTM;
     {
         global $pth, $tx, $plugin_tx;
 
-        $phpVersion = '5.3.0';
+        $phpVersion = '5.5.0';
         $ptx = $plugin_tx['tetris'];
         $imgdir = $pth['folder']['plugins'] . 'tetris/images/';
         $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
