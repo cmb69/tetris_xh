@@ -23,7 +23,7 @@ namespace Tetris;
 
 class Plugin
 {
-    const VERSION = '@TETRIS_VERSION@';
+    const VERSION = '1';
 
     /**
      * @return void

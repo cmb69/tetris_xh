@@ -41,17 +41,6 @@
         <delete file="export.tar"/>
         <move todir="dist">
             <fileset dir="export">
-                <include name="classes/Plugin.php"/>
-                <include name="version.nfo"/>
-            </fileset>
-            <filterchain>
-                <replacetokens>
-                    <token key="TETRIS_VERSION" value="${version}"/>
-                </replacetokens>
-            </filterchain>
-        </move>
-        <move todir="dist">
-            <fileset dir="export">
                 <exclude name="tetris.komodoproject"/>
                 <exclude name="build.xml"/>
                 <exclude name="composer.*"/>
