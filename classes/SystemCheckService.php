@@ -47,7 +47,7 @@ class SystemCheckService
         return array(
             $this->checkPhpVersion("7.1.0"),
             $this->checkExtension('json'),
-            $this->checkXhVersion('1.6.3'),
+            $this->checkXhVersion("1.7.0"),
             $this->checkPlugin('jquery'),
             $this->checkWritability("$this->pluginFolder/css/"),
             $this->checkWritability("$this->pluginFolder/config/"),
