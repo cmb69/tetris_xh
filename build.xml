@@ -2,56 +2,47 @@
 
 <project name="Tetris" default="help">
 
-    <fileset id="php-sources" dir=".">
-        <include name="index.php"/>
-        <include name="classes/*.php"/>
-    </fileset>
+  <target name="help" description="lists available targets">
+    <exec executable="phing" outputProperty="help">
+      <arg line="-l"/>
+    </exec>
+    <echo>${help}</echo>
+  </target>
 
-    <target name="help" description="lists available targets">
-        <exec command="phing -l" outputProperty="help"/>
-        <echo>${help}</echo>
-    </target>
+  <target name="sniff" description="checks adherence to PSR-2">
+  <exec executable="phpcs" passthru="true" checkreturn="true">
+    <arg line="--standard=PSR2 --runtime-set ignore_warnings_on_exit true index.php classes"/>
+  </exec>
+  </target>
 
-    <target name="sniff" description="checks adherence to the coding standard">
-        <phpcodesniffer standard="PSR2" haltonerror="true">
-            <fileset refid="php-sources"/>
-        </phpcodesniffer>
-    </target>
+  <target name="stan" description="run static analysis">
+    <exec executable="phpstan" passthru="true" checkreturn="true">
+      <arg line="--ansi analyze"/>
+    </exec>
+  </target>
 
-    <target name="mess" description="detects code flaws">
-        <phpmd rulesets="codesize,unusedcode">
-            <fileset refid="php-sources"/>
-         </phpmd>
-    </target>
+  <target name="check" description="runs all checks" depends="sniff,stan"/>
 
-    <target name="compat" description="checks PHP requirements">
-        <exec command="phpcompatinfo analyser:run --alias current" logoutput="true"/>
-    </target>
-
-    <target name="uml" description="generates UML diagram">
-        <fail unless="plantuml" message="plantuml is not defined!"/>
-        <exec command="umlwriter diagram:render --reflector=reflect --processor=plantuml classes | java -jar ${plantuml} -p -tsvg > classes.svg"
-              logoutput="true"/>
-    </target>
-
-    <target name="build" description="builds distributable ZIP archive">
-        <fail unless="version" message="version is not defined!"/>
-        <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
-        <untar file="export.tar" todir="export"/>
-        <delete file="export.tar"/>
-        <move todir="dist">
-            <fileset dir="export">
-                <exclude name="tetris.komodoproject"/>
-                <exclude name="build.xml"/>
-                <exclude name="composer.*"/>
-                <exclude name="phpcompatinfo.json"/>
-            </fileset>
-        </move>
-        <delete dir="export"/>
-        <copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/>
-        <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
-        <zip destfile="Tetris_XH-${version}.zip" basedir="dist" prefix="tetris/"/>
-        <delete dir="dist"/>
-    </target>
+  <target name="build" description="builds distributable ZIP archive">
+    <exec executable="git" passthru="true" checkreturn="true">
+      <arg line="archive -o export.zip HEAD"/>
+    </exec>
+    <unzip file="export.zip" todir="export"/>
+    <delete file="export.zip"/>
+    <move todir="dist">
+      <fileset dir="export">
+        <exclude name=".phive/**"/>
+        <exclude name="build.xml"/>
+        <exclude name="composer.json"/>
+        <exclude name="phpstan.*"/>
+        <exclude name="teplad.xml"/>
+      </fileset>
+    </move>
+    <delete dir="export"/>
+    <copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/>
+    <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
+    <zip destfile="Tetris_XH-2.0-dev.zip" basedir="dist" prefix="tetris/"/>
+    <delete dir="dist"/>
+  </target>
 
 </project>

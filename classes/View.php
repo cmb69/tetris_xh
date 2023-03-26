@@ -118,9 +118,6 @@ class View
         return $this->escape(vsprintf($plugin_tx['tetris'][$key], $args));
     }
 
-    /**
-     * @return string
-     */
     public function render()
     {
         global $pth;

@@ -23,7 +23,7 @@ namespace Tetris;
 
 class Plugin
 {
-    const VERSION = '1';
+    const VERSION = "2.0-dev";
 
     /**
      * @return void
@@ -32,7 +32,7 @@ class Plugin
     {
         global $o, $action, $admin, $plugin;
 
-        if (XH_ADM) {
+        if (defined("XH_ADM") && XH_ADM) {
             XH_registerStandardPluginMenuItems(false);
             if (XH_wantsPluginAdministration('tetris')) {
                 $o .= print_plugin_admin('off');
@@ -43,7 +43,7 @@ class Plugin
                         $o .= ob_get_clean();
                         break;
                     default:
-                        $o .= plugin_admin_common($action, $admin, $plugin);
+                        $o .= plugin_admin_common();
                 }
             }
         }
