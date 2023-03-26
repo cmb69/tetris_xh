@@ -28,16 +28,17 @@ class MainController extends Controller
      */
     public function defaultAction()
     {
-        global $sn, $su;
+        global $pth, $plugin_tx, $sn, $su;
 
         $this->headers();
-        $view = new View('main');
-        $view->url = $sn . '?' . $su . '&tetris_action=show_highscores';
-        $view->gridRows = range('d', 'u');
-        $view->gridCols = range(1, 10);
-        $view->nextRows = range(0, 3);
-        $view->nextCols = range(0, 3);
-        $view->render();
+        $view = new View($pth["folder"]["plugins"] . "tetris/views/", $plugin_tx["tetris"]);
+        echo $view->render("main", [
+            "url" => $sn . '?' . $su . '&tetris_action=show_highscores',
+            "gridRows" => range('d', 'u'),
+            "gridCols" => range(1, 10),
+            "nextRows" => range(0, 3),
+            "nextCols" => range(0, 3),
+        ]);
     }
 
     /**
@@ -65,9 +66,7 @@ class MainController extends Controller
 EOT;
     }
 
-    /**
-     * @return array.
-     */
+    /** @return array<string,string> */
     private function langJS()
     {
         $texts = array();
@@ -93,14 +92,16 @@ EOT;
      */
     public function showHighscoresAction()
     {
+        global $pth, $plugin_tx;
         $highscores = HighscoreService::readHighscores();
         foreach ($highscores as &$highscore) {
             list($player, $score) = $highscore;
             $highscore = (object) compact('player', 'score');
         }
-        $view = new View('highscores');
-        $view->highscores = $highscores;
-        $view->render();
+        $view = new View($pth["folder"]["plugins"] . "tetris/views/", $plugin_tx["tetris"]);
+        echo $view->render("highscores", [
+            "highscores" => $highscores,
+        ]);
         exit;
     }
 

@@ -35,7 +35,7 @@ function tetris()
     }
     ob_start();
     $controller->$action();
-    return ob_get_clean();
+    return (string) ob_get_clean();
 }
 
 (new Tetris\Plugin)->run();

@@ -28,12 +28,13 @@ class InfoController extends Controller
      */
     public function defaultAction()
     {
-        global $pth;
+        global $pth, $plugin_tx;
 
-        $view = new View('info');
-        $view->logo = "{$pth['folder']['plugins']}tetris/tetris.png";
-        $view->version = Plugin::VERSION;
-        $view->checks = (new SystemCheckService)->getChecks();
-        $view->render();
+        $view = new View($pth["folder"]["plugins"] . "tetris/views/", $plugin_tx["tetris"]);
+        echo $view->render("info", [
+            "logo" => "{$pth['folder']['plugins']}tetris/tetris.png",
+            "version" => Plugin::VERSION,
+            "checks" => (new SystemCheckService)->getChecks(),
+        ]);
     }
 }

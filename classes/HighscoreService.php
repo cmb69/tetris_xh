@@ -24,7 +24,7 @@ namespace Tetris;
 class HighscoreService
 {
     /**
-     * @return array
+     * @return list<array{string,int}>
      */
     public static function readHighscores()
     {
@@ -63,8 +63,9 @@ class HighscoreService
     }
 
     /**
-      * @return void
-      */
+     * @param list<array{string,int}> $highscores
+     * @return void
+     */
     private static function writeHighscores(array $highscores)
     {
         $fn = self::dataFolder() . 'tetris.dat';
