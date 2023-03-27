@@ -15,7 +15,7 @@ use Tetris\Infra\View;
 ?>
 <!-- tetris -->
 <div id="tetris-no-js" class="cmsimplecore_warning"><?=$this->text('error_no_js')?></div>
-<script src="<?=$this->escape($script)?>"></script>
+<script src="<?=$script?>"></script>
 <div id="tetris-tabs" data-config='<?=$this->json($config)?>'>
   <ul>
     <li><a href="#tetris"><?=$this->text('label_play')?></a></li>
@@ -28,7 +28,7 @@ use Tetris\Infra\View;
 <?foreach ($gridRows as $row):?>
         <tr>
 <?  foreach ($gridCols as $col):?>
-          <td id="tetris-<?=$this->escape($row)?><?=$this->escape($col)?>"></td>
+          <td id="tetris-<?=$row?><?=$col?>"></td>
 <?  endforeach?>
         </tr>
 <?endforeach?>
@@ -40,7 +40,7 @@ use Tetris\Infra\View;
 <?foreach ($nextRows as $row):?>
           <tr>
 <?  foreach ($nextCols as $col):?>
-            <td id="tetris-x<?=$this->escape($col)?><?=$this->escape($row)?>"></td>
+            <td id="tetris-x<?=$col?><?=$row?>"></td>
 <?  endforeach?>
           </tr>
 <?endforeach?>

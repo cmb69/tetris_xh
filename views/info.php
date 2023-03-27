@@ -9,10 +9,10 @@ use Tetris\Infra\View;
  */
 ?>
 <!-- tetris plugin info -->
-<h1>Tetris <?=$this->escape($version)?></h1>
+<h1>Tetris <?=$version?></h1>
 <div class="tetris_syscheck">
   <h2><?=$this->text('syscheck_title')?></h2>
 <?foreach ($checks as $check):?>
-  <p class="<?=$this->escape($check['class'])?>"><?=$this->text($check['key'], $check['arg'])?><?=$this->text($check['statekey'])?></p>
+  <p class="<?=$check['class']?>"><?=$this->text($check['key'], $check['arg'])?><?=$this->text($check['statekey'])?></p>
 <?endforeach?>
 </div>

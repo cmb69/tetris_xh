@@ -39,7 +39,7 @@ class View
     /** @param scalar $args */
     public function text(string $key, ...$args): string
     {
-        return $this->escape(sprintf($this->text[$key], ...$args));
+        return sprintf($this->escape($this->text[$key]), ...$args);
     }
 
     public function plain(string $key): string
@@ -56,18 +56,20 @@ class View
     /** @param array<string,mixed> $_data */
     public function render(string $_template, array $_data): string
     {
+        array_walk_recursive($_data, function (&$value) {
+            assert(is_null($value) || is_scalar($value));
+            if (is_string($value)) {
+                $value = $this->escape($value);
+            }
+        });
         extract($_data);
         ob_start();
         include $this->templateFolder . $_template . ".php";
         return (string) ob_get_clean();
     }
 
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function escape($value)
+    public function escape(string $string): string
     {
-        return XH_hsc($value);
+        return XH_hsc($string);
     }
 }

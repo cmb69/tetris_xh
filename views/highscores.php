@@ -12,8 +12,8 @@ use Tetris\Infra\View;
   <table>
 <?foreach ($highscores as $highscore):?>
     <tr>
-      <td class="name"><?=$this->escape($highscore['player'])?></td>
-      <td class="score"><?=$this->escape($highscore['score'])?></td>
+      <td class="name"><?=$highscore['player']?></td>
+      <td class="score"><?=$highscore['score']?></td>
     </tr>
 <?endforeach?>
   </table>
