@@ -25,7 +25,6 @@ use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Tetris\Infra\FakeHighscoreService;
 use Tetris\Infra\FakeRequest;
-use Tetris\Infra\Jquery;
 use Tetris\Infra\Newsbox;
 use Tetris\Infra\View;
 
@@ -39,11 +38,10 @@ class MainControllerTest extends TestCase
         $conf = XH_includeVar("./config/config.php", "plugin_cf")["tetris"];
         $text = XH_includeVar("./languages/en.php", "plugin_tx")["tetris"];
         $this->highscoreService = new FakeHighscoreService;
-        $jquery = $this->createStub(Jquery::class);
         $newsbox = $this->createStub(Newsbox::class);
         $newsbox->method("contents")->willReturn("See <a href=\"https://en.wikipedia.org/wiki/Tetris#Gameplay\">Wikipedia</a>.");
         $view = new View("./views/", $text);
-        $this->sut = new MainController("./plugins/tetris/", $conf, $this->highscoreService, $jquery, $newsbox, $view);
+        $this->sut = new MainController("./plugins/tetris/", $conf, $this->highscoreService, $newsbox, $view);
     }
 
     public function testRendersGame(): void

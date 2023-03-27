@@ -3,7 +3,6 @@
 $plugin_tx['tetris']['syscheck_extension']="PHP-Erweiterung '%s' ist geladen: ";
 $plugin_tx['tetris']['syscheck_fail']="Fehler";
 $plugin_tx['tetris']['syscheck_phpversion']="PHP-Version ≥ %s: ";
-$plugin_tx['tetris']['syscheck_plugin']="CMSIMPLE_XH Plugin '%s' ist installiert: ";
 $plugin_tx['tetris']['syscheck_success']="OK";
 $plugin_tx['tetris']['syscheck_title']="System-Prüfung";
 $plugin_tx['tetris']['syscheck_warning']="Warnung";

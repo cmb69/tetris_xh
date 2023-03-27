@@ -22,7 +22,6 @@
 namespace Tetris;
 
 use Tetris\Infra\HighscoreService;
-use Tetris\Infra\Jquery;
 use Tetris\Infra\Newsbox;
 use Tetris\Infra\SystemChecker;
 use Tetris\Infra\View;
@@ -36,7 +35,6 @@ class Dic
             $pth["folder"]["plugins"] . "tetris/",
             $plugin_cf["tetris"],
             self::makeHighscoreService(),
-            new Jquery,
             new Newsbox,
             self::makeView()
         );

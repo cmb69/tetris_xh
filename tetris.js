@@ -10,7 +10,21 @@
  */
 
 
-(function($) {
+(function() {
+    function one(selector) {
+        return document.querySelector(selector);
+    }
+
+    function all(selector) {
+        return document.querySelectorAll(selector);
+    }
+
+    function each(items, fun) {
+        for (i = 0; i < items.length; i++) {
+            fun(items[i]);
+        }
+    }
+
     var tetris = {
 
         // Shape colors
@@ -62,7 +76,7 @@
                 tetris.cells[i] = [];
                 for (j = 1; j < 11; ++j) {
                     k = String.fromCharCode(i + 100);
-                    tetris.cells[i][j] = $(['#tetris-', k, j].join(''));
+                    tetris.cells[i][j] = one(["#tetris-", k, j].join(""));
                 }
             }
             tetris.bound = document;
@@ -86,10 +100,14 @@
                 [1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],
                 [1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],
                 [1,1,1,1,1,1,1,1,1,1,1,1]];
-            $('#tetris-grid td').css('background-color', tetris.colors[0]);
-            $('#tetris-start').unbind('click', tetris.start).html(tetris.config.labelPause).click(tetris.pause);
-            document.getElementById("tetris-stop").disabled = null;
-            $(tetris.bound).keypress(tetris.key);
+            each(all("#tetris-grid td"), function (element) {
+                element.style.backgroundColor = tetris.colors[0];
+            });
+            let button = one("#tetris-start");
+            button.textContent = tetris.config.labelPause;
+            button.onclick = tetris.pause;
+            one("#tetris-stop").disabled = null;
+            document.addEventListener("keydown", tetris.key);
             tetris.next = tetris.newShape();
             tetris.shift();
             tetris.duration = tetris.config.initialSpeed;
@@ -123,7 +141,7 @@
             for (i = 0; i < 4; ++i) {
                 for (j = 0; j < 4; ++j) {
                     d = s[i][j] ? c : n;
-                    $(['#tetris-x', j, i].join('')).css('background-color', d);
+                    one(["#tetris-x", j, i].join("")).style.backgroundColor = d;
                 }
             }
         },
@@ -145,17 +163,21 @@
 
         // Pause the game
         pause: function() {
-            $(tetris.bound).unbind('keypress', tetris.key);
+            document.removeEventListener("keydown", tetris.key);
             window.clearInterval(tetris.timer);
             tetris.timer = null;
-            $('#tetris-start').unbind('click', tetris.pause).html(tetris.config.labelResume).click(tetris.resume);
+            let button = one("#tetris-start");
+            button.textContent = tetris.config.labelResume;
+            button.onclick = tetris.resume;
         },
 
         // Resume the game
         resume: function() {
-            $(tetris.bound).keypress(tetris.key);
+            document.addEventListener("keydown", tetris.key);
             tetris.timer = window.setInterval(tetris.moveDown, tetris.duration);
-            $('#tetris-start').unbind('click', tetris.resume).html(tetris.config.labelPause).click(tetris.pause);
+            let button = one("#tetris-start");
+            button.textContent = tetris.config.labelPause;
+            button.onclick = tetris.pause;
         },
 
         // Stop the game
@@ -163,19 +185,23 @@
             var i, j;
             // Manage buttons
             if (tetris.timer) {
-                $(tetris.bound).unbind('keypress', tetris.key);
+                document.removeEventListener("keydown", tetris.key);
                 window.clearInterval(tetris.timer);
                 tetris.timer = null;
-                $('#tetris-start').unbind('click', tetris.pause).html(tetris.config.labelStart).click(tetris.start);
+                let button = one("#tetris-start");
+                button.textContent = tetris.config.labelStart;
+                button.onclick = tetris.start;
             } else {
-                $('#tetris-start').unbind('click', tetris.resume).html(tetris.config.labelStart).click(tetris.start);
+                let button = one("#tetris-start");
+                button.textContent = tetris.config.labelStart;
+                button.onclick = tetris.start;
             }
             document.getElementById("tetris-stop").disabled = "disabled";
             // Draw everything in grey
             for (i = 0; i < 18; ++i) {
                 for (j = 1; j < 11; ++j) {
                     if (tetris.grid[i][j]) {
-                        tetris.cells[i][j].css('background-color', '#cccccc');
+                        tetris.cells[i][j].style.backgroundColor = "#cccccc";
                     }
                 }
             }
@@ -184,19 +210,20 @@
             // clear the next shape
             for (i = 0; i < 4; ++i) {
                 for (j = 0; j < 4; ++j) {
-                    $(['#tetris-x', j, i].join('')).css('background-color', tetris.colors[0]);
+                    one(["#tetris-x", j, i].join("")).style.backgroundColor = tetris.colors[0];
                 }
             }
 
-            $.ajax({
-                url: tetris.config.getHighscoreUrl,
-                async: false,
-                success: function(data) {
-                    if (tetris.score > data) {
+            let request = new XMLHttpRequest();
+            request.open("GET", tetris.config.getHighscoreUrl);
+            request.onreadystatechange = function () {
+                if (request.readyState === 4 && request.status === 200) {
+                    if (+tetris.score > +request.responseText) {
                         tetris.newHighscore();
                     }
                 }
-            });
+            };
+            request.send();
         },
 
         // Check overlays
@@ -276,7 +303,7 @@
                 if (tetris.grid[i].join('').indexOf('0') == -1) {
                     // Complete lines become white
                     for (j = 1; j < 11; ++j) {
-                        tetris.cells[k][j].css('background-color', '#cccccc');
+                        tetris.cells[k][j].style.backgroundColor = "#cccccc";
                     }
                     ++f;
                     for (j = i; j > 0; --j) {
@@ -313,8 +340,8 @@
             // redraw the grid
             for (i = 0; i < 18; ++i) {
                 for (j = 1; j < 11; ++j) {
-                    tetris.cells[i][j].css('background-color',
-                        tetris.colors[tetris.grid[i][j]]);
+                    tetris.cells[i][j].style.backgroundColor =
+                        tetris.colors[tetris.grid[i][j]];
                 }
             }
             tetris.refresh();
@@ -326,7 +353,10 @@
             for (i = 0; i < 4; ++i) {
                 for (j = 0; j < 4; ++j) {
                     if (tetris.curShape[r][j][i]) {
-                        tetris.cells[y + j][x + i].css('background-color', c);
+                        let cell = tetris.cells[y + j][x + i];
+                        if (cell) {
+                            cell.style.backgroundColor = c;
+                        }
                     }
                 }
             }
@@ -339,9 +369,9 @@
             // draw to the next one
             tetris.draw(tetris.r, tetris.x, tetris.y, tetris.colors[tetris.cur]);
             // change stats
-            $('#tetris-level').html(tetris.format(tetris.level + 1));
-            $('#tetris-lines').html(tetris.format(tetris.lines));
-            $('#tetris-score').html(tetris.format(tetris.score));
+            one("#tetris-level").textContent = tetris.format(tetris.level + 1);
+            one("#tetris-lines").textContent = tetris.format(tetris.lines);
+            one("#tetris-score").textContent = tetris.format(tetris.score);
             // reset coordinates
             tetris.x0 = tetris.x;
             tetris.y0 = tetris.y;
@@ -352,14 +382,10 @@
         newHighscore: function () {        
             var name = prompt("Your name");
             if (name) {
-                jQuery.ajax({
-                    url: tetris.config.newHighscoreUrl,
-                    type: 'POST',
-                    data: {
-                        name: name,
-                        score: tetris.score
-                    }
-                });
+                let request = new XMLHttpRequest();
+                request.open("POST", tetris.config.newHighscoreUrl);
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.send("name=" + encodeURIComponent(name) + "&score=" + encodeURIComponent(tetris.score));
             }
         },
 
@@ -371,37 +397,39 @@
     };
 
     // Initialization
-    $(function() {
+    addEventListener("DOMContentLoaded", function() {
         tetris.config = JSON.parse(document.getElementById("tetris-tabs").dataset.config);
         tetris.init();
-        document.getElementById("tetris-no-js").style = "display: none !important";
-        document.getElementById("tetris_button_play").onclick = function (event) {
-            document.getElementById("tetris_button_play").disabled = true;
-            document.getElementById("tetris_button_highscores").disabled = false;
-            document.getElementById("tetris_button_rules").disabled = false;
-            document.getElementById("tetris").style = "display: block";
-            document.getElementById("tetris-highscores").style = "display: none";
-            document.getElementById("tetris-rules").style = "display: none";
+        one("#tetris-no-js").style = "display: none !important";
+        one("#tetris_button_play").onclick = function () {
+            one("#tetris_button_play").disabled = true;
+            one("#tetris_button_highscores").disabled = false;
+            one("#tetris_button_rules").disabled = false;
+            one("#tetris").style = "display: block";
+            one("#tetris-highscores").style = "display: none";
+            one("#tetris-rules").style = "display: none";
         };
-        document.getElementById("tetris_button_highscores").onclick = function (event) {
-            document.getElementById("tetris_button_play").disabled = false;
-            document.getElementById("tetris_button_highscores").disabled = true;
-            document.getElementById("tetris_button_rules").disabled = false;
-            document.getElementById("tetris").style = "display: none";
-            document.getElementById("tetris-highscores").style = "display: block";
-            document.getElementById("tetris-rules").style = "display: none";
+        one("#tetris_button_highscores").onclick = function () {
+            one("#tetris_button_play").disabled = false;
+            one("#tetris_button_highscores").disabled = true;
+            one("#tetris_button_rules").disabled = false;
+            one("#tetris").style = "display: none";
+            one("#tetris-highscores").style = "display: block";
+            one("#tetris-rules").style = "display: none";
         };
-        document.getElementById("tetris_button_rules").onclick = function (event) {
-            document.getElementById("tetris_button_play").disabled = false;
-            document.getElementById("tetris_button_highscores").disabled = false;
-            document.getElementById("tetris_button_rules").disabled = true;
-            document.getElementById("tetris").style = "display: none";
-            document.getElementById("tetris-highscores").style = "display: none";
-            document.getElementById("tetris-rules").style = "display: block";
+        one("#tetris_button_rules").onclick = function () {
+            one("#tetris_button_play").disabled = false;
+            one("#tetris_button_highscores").disabled = false;
+            one("#tetris_button_rules").disabled = true;
+            one("#tetris").style = "display: none";
+            one("#tetris-highscores").style = "display: none";
+            one("#tetris-rules").style = "display: block";
         };
 
-        $('#tetris-grid table, #tetris-next table').css('background-color', tetris.colors[0]);
-        $('#tetris-start').click(tetris.start);
-        $('#tetris-stop').click(tetris.gameOver);
+        each(all('#tetris-grid table, #tetris-next table'), function (element) {
+            element.style.backgroundColor = tetris.colors[0];
+        });
+        one("#tetris-start").onclick = tetris.start;
+        one("#tetris-stop").onclick = tetris.gameOver;
    });
-})(jQuery);
+})();

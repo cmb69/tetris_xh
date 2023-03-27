@@ -41,9 +41,6 @@ class MainController
     /** @var HighscoreService */
     private $highscoreService;
 
-    /** @var Jquery */
-    private $jquery;
-
     /** @var Newsbox */
     private $newsbox;
 
@@ -55,14 +52,12 @@ class MainController
         string $pluginFolder,
         array $conf,
         HighscoreService $highscoreService,
-        Jquery $jquery,
         Newsbox $newsbox,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->conf = $conf;
         $this->highscoreService = $highscoreService;
-        $this->jquery = $jquery;
         $this->newsbox = $newsbox;
         $this->view = $view;
     }
@@ -83,7 +78,6 @@ class MainController
 
     private function defaultAction(Request $request): Response
     {
-        $this->jquery->include();
         $highscores = $this->highscoreService->readHighscores();
         $highscores = array_map(function (array $highscore) {
             [$player, $score] = $highscore;
