@@ -37,7 +37,7 @@ class HighscoreService
     public function readHighscores()
     {
         $fn = $this->dataFolder() . 'tetris.dat';
-        if (($cnt = file_get_contents($fn)) === false
+        if (($cnt = @file_get_contents($fn)) === false
             || ($highscores = unserialize($cnt)) === false
         ) {
             $highscores = [];

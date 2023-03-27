@@ -3,11 +3,11 @@
 <script src="./plugins/tetris/tetris.js"></script>
 <div id="tetris-tabs" data-config='{"getHighscoreUrl":"/?Tetris&amp;tetris_action=get_highscore","newHighscoreUrl":"/?Tetris&amp;tetris_action=new_highscore","falldown":true,"initialSpeed":600,"acceleration":50,"labelStart":"Start","labelPause":"Pause","labelResume":"Resume"}'>
   <ul>
-    <li><a href="#tetris">Play</a></li>
-    <li><a href="/?Tetris&amp;tetris_action=show_highscores">Highscores</a></li>
-    <li><a href="#tetris-rules">Rules</a></li>
+    <li><button id="tetris_button_play" type="button">Play</button></li>
+    <li><button id="tetris_button_highscores" type="button" disabled>Highscores</button></li>
+    <li><button id="tetris_button_rules" type="button">Rules</button></li>
   </ul>
-  <div id="tetris">
+  <div id="tetris" style="display:none">
     <div id="tetris-grid">
       <table>
         <tr>
@@ -272,13 +272,18 @@
       <button id="tetris-stop" disabled="disabled">Stop</button>
     </div>
   </div>
-  <div id="tetris-rules">
-    <div>&lt;p&gt;How to play Tetris is explained at &lt;a href=&quot;http://en.wikipedia.org/wiki/Tetris#Gameplay&quot; target=&quot;_blank&quot;&gt;Wikipedia&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Use the following keys (the arrow keys don't work in all browsers):&lt;/p&gt;</div>
+  <div id="tetris-highscores">
     <table>
-      <tr><td>Left</td><td class="key">J / &larr;</td></tr>
-      <tr><td>Right</td><td class="key">L / &rarr;</td></tr>
-      <tr><td>Rotate</td><td class="key">I / &uarr;</td></tr>
-      <tr><td>Down</td><td class="key">K / &darr;</td></tr>
+    </table>
+  </div>
+  <div id="tetris-rules" style="display:none">
+    <div>See <a href="https://en.wikipedia.org/wiki/Tetris#Gameplay">Wikipedia</a>.</div>
+    <p>Use the following keys (the arrow keys do not work in all browsers):</p>
+    <table>
+      <tr><td>Left</td><td class="key">J / ←</td></tr>
+      <tr><td>Right</td><td class="key">L / →</td></tr>
+      <tr><td>Rotate</td><td class="key">I / ↑</td></tr>
+      <tr><td>Down</td><td class="key">K / ↓</td></tr>
     </table>
   </div>
 </div>

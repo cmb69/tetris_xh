@@ -11,6 +11,8 @@ use Tetris\Infra\View;
  * @var list<int> $gridCols
  * @var list<int> $nextRows
  * @var list<int> $nextCols
+ * @var list<array{player:string,score:int}> $highscores
+ * @var string $rules
  */
 ?>
 <!-- tetris -->
@@ -18,11 +20,11 @@ use Tetris\Infra\View;
 <script src="<?=$script?>"></script>
 <div id="tetris-tabs" data-config='<?=$this->json($config)?>'>
   <ul>
-    <li><a href="#tetris"><?=$this->text('label_play')?></a></li>
-    <li><a href="<?=$url?>"><?=$this->text('label_highscores')?></a></li>
-    <li><a href="#tetris-rules"><?=$this->text('label_rules')?></a></li>
+    <li><button id="tetris_button_play" type="button"><?=$this->text('label_play')?></button></li>
+    <li><button id="tetris_button_highscores" type="button" disabled><?=$this->text('label_highscores')?></button></li>
+    <li><button id="tetris_button_rules" type="button"><?=$this->text('label_rules')?></button></li>
   </ul>
-  <div id="tetris">
+  <div id="tetris" style="display:none">
     <div id="tetris-grid">
       <table>
 <?foreach ($gridRows as $row):?>
@@ -61,13 +63,24 @@ use Tetris\Infra\View;
       <button id="tetris-stop" disabled="disabled"><?=$this->text('label_stop')?></button>
     </div>
   </div>
-  <div id="tetris-rules">
-    <div><?=$this->text('message_howto_play')?></div>
+  <div id="tetris-highscores">
     <table>
-      <tr><td><?=$this->text('label_left')?></td><td class="key">J / &larr;</td></tr>
-      <tr><td><?=$this->text('label_right')?></td><td class="key">L / &rarr;</td></tr>
-      <tr><td><?=$this->text('label_rotate')?></td><td class="key">I / &uarr;</td></tr>
-      <tr><td><?=$this->text('label_down')?></td><td class="key">K / &darr;</td></tr>
+<?foreach ($highscores as $highscore):?>
+      <tr>
+        <td class="name"><?=$highscore['player']?></td>
+        <td class="score"><?=$highscore['score']?></td>
+      </tr>
+<?endforeach?>
+    </table>
+  </div>
+  <div id="tetris-rules" style="display:none">
+    <div><?=$rules?></div>
+    <p><?=$this->text('message_howto_play')?></p>
+    <table>
+      <tr><td><?=$this->text('label_left')?></td><td class="key">J / ←</td></tr>
+      <tr><td><?=$this->text('label_right')?></td><td class="key">L / →</td></tr>
+      <tr><td><?=$this->text('label_rotate')?></td><td class="key">I / ↑</td></tr>
+      <tr><td><?=$this->text('label_down')?></td><td class="key">K / ↓</td></tr>
     </table>
   </div>
 </div>

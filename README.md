@@ -60,6 +60,11 @@ To display the tetris game on a page, insert:
 
     {{{tetris()}}}
 
+If you want to show your visitors the rules of Tetris, you can create a hidding
+page with the name `Tetris_Rules` whose contents will be shown in the `Rules`
+tab of the Tetris widget. Consider to just place a link to
+<https://en.wikipedia.org/wiki/Tetris#Gameplay> or a similar site there.
+
 ## Limitations
 
 To play tetris, JavaScript has to be enabled in the browser of the visitor.

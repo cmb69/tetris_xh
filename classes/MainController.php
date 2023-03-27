@@ -23,8 +23,10 @@ namespace Tetris;
 
 use Tetris\Infra\HighscoreService;
 use Tetris\Infra\Jquery;
+use Tetris\Infra\Newsbox;
 use Tetris\Infra\Request;
 use Tetris\Infra\View;
+use Tetris\Value\Html;
 use Tetris\Value\Response;
 use Tetris\Value\Url;
 
@@ -42,6 +44,9 @@ class MainController
     /** @var Jquery */
     private $jquery;
 
+    /** @var Newsbox */
+    private $newsbox;
+
     /** @var View */
     private $view;
 
@@ -51,12 +56,14 @@ class MainController
         array $conf,
         HighscoreService $highscoreService,
         Jquery $jquery,
+        Newsbox $newsbox,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->conf = $conf;
         $this->highscoreService = $highscoreService;
         $this->jquery = $jquery;
+        $this->newsbox = $newsbox;
         $this->view = $view;
     }
 
@@ -77,6 +84,11 @@ class MainController
     private function defaultAction(Request $request): Response
     {
         $this->jquery->include();
+        $highscores = $this->highscoreService->readHighscores();
+        $highscores = array_map(function (array $highscore) {
+            [$player, $score] = $highscore;
+            return ["player" => $player, "score" => $score];
+        }, $highscores);
         $output = $this->view->render("main", [
             "config" => $this->jsConfig($request->url()),
             "script" => $this->pluginFolder . "tetris.js",
@@ -85,6 +97,8 @@ class MainController
             "gridCols" => range(1, 10),
             "nextRows" => range(0, 3),
             "nextCols" => range(0, 3),
+            "highscores" => $highscores,
+            "rules" => Html::of($this->newsbox->contents("Tetris_Rules")),
         ]);
         return Response::create($output);
     }

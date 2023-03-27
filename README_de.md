@@ -60,6 +60,12 @@ Um das Tetris-Spiel auf einer Seite anzuzeigen, fügen Sie dort ein:
 
     {{{tetris()}}}
 
+Wollen Sie Ihren Besuchern die Tetrisregeln anzeigen, können Sie eine versteckte
+Seite namens `Tetris_Rules` anlegen, deren Inhalt im `Regeln`-Tab des Tetris-Widgets
+angezeigt wird. Erwägen Sie, dort einfach nur einen Link zu
+<https://de.wikipedia.org/wiki/Tetris#Spielprinzip> oder einer ähnlichen Site
+zu platzieren.
+
 ## Einschränkungen
 
 Um Tetris zu spielen, muss JavaScript im Browser des Besuchers aktiviert
