@@ -17,7 +17,7 @@ use Tetris\Infra\View;
 ?>
 <!-- tetris -->
 <div id="tetris-no-js" class="cmsimplecore_warning"><?=$this->text('error_no_js')?></div>
-<script src="<?=$script?>"></script>
+<script type="module" src="<?=$script?>"></script>
 <div id="tetris-tabs" data-config='<?=$this->json($config)?>'>
   <ul>
     <li><button id="tetris_button_play" type="button"><?=$this->text('label_play')?></button></li>
