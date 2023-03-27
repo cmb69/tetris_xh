@@ -1,136 +1,90 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="de">
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs">
 <head>
-<meta http-equiv="content-type" content="text/html;charset=utf-8">
-<title>Tetris_XH - Handbuch</title>
-<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Tetris_XH – Benutzerhandbuch</title>
+  <style type="text/css">
+    body {
+        font-family: Georgia, serif;
+        line-height: 1.5;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        background: #ffffe1;
+        max-width: 32em;
+    }
+    p {
+        text-align: justify;
+    }
+    pre {
+        color: black;
+        background: #ffe;
+        overflow: auto;
+        padding: 0.2em 0.5em;
+        border: 1px solid silver;
+    }
+  </style>
 </head>
-
 <body>
-
-<h1>Tetris_XH - ein CMSimple_XH-Plugin</h1>
-<div style="float:left; margin-right: 1em"><img src="../tetris.png" alt="Plugin
-Icon"></div>
-<p>Tetris_XH ist eine Implementierung des bekannten Tetris-Spiels zum Einbinden
-in eine CMSimple_XH Website.</p>
-
-<ul id="nav">
-<!--<li><a href="#notice">Wichtiger Hinweis</a></li>-->
-<li><a href="#requirements">Voraussetzungen</a></li>
+<h1 id="tetris_xh">Tetris_XH</h1>
+<p>Tetris_XH ist eine Implementierung des bekannten Tetris-Spiels zum Einbinden in eine CMSimple_XH Website.</p>
+<ul>
+<li><a href="#voraussetzungen">Voraussetzungen</a></li>
+<li><a href="#download">Download</a></li>
 <li><a href="#installation">Installation</a></li>
-<li><a href="#settings">Einstellungen</a></li>
-<li><a href="#usage">Verwendung</a></li>
-<li><a href="#limitations">Einschränkungen</a></li>
-<li><a href="#license">Lizenz</a></li>
-<li><a href="#credits">Danksagung</a></li>
+<li><a href="#einstellungen">Einstellungen</a></li>
+<li><a href="#verwendung">Verwendung</a></li>
+<li><a href="#einschränkungen">Einschränkungen</a>
+<ul>
+<li><a href="#vulnerabilität-der-highscores">Vulnerabilität der Highscores</a></li>
+</ul></li>
+<li><a href="#problembehebung">Problembehebung</a></li>
+<li><a href="#lizenz">Lizenz</a></li>
+<li><a href="#danksagung">Danksagung</a></li>
 </ul>
-
-<div id="body">
-
-<p><strong>Bitte lesen Sie diese Dokumentation <em>bevor</em> Sie auf Probleme
-stoßen!</strong></p>
-
-<!--<h2><a name="notice">Wichtiger Hinweis</a></h2>-->
-<!--<p><strong>Die aktuelle Version von Tetris_XH ist ein so genannter Release-->
-<!--Candidate. Vorsicht bei der Anwendung!</strong></p>-->
-<!--<div class="toplink"><a href="#">zum Seitenanfang</a></div>-->
-
-<h2><a name="requirements">Voraussetzungen</a></h2>
-<p>Tetris_XH benötigt CMSimple_XH ≥ 1.7.0 und PHP ≥ 7.1.0 mit der JSON Extension.</p>
-<div class="toplink"><a href="#">zum Seitenanfang</a></div>
-
-<h2><a name="installation">Installation</a></h2>
-<p>Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch. Im
-<a href="http://www.cmsimple-xh.org/wiki/doku.php/de:installation"> CMSimple_XH
-Wiki</a> finden sie ausführliche Hinweise.</p>
-<ol>
+<h2 id="voraussetzungen">Voraussetzungen</h2>
+<p>Tetris_XH ist ein Plugin für <a href="https://www.cmsimple-xh.org/de/">CMSimple_XH</a>. Es benötigt CMSimple_XH ≥ 1.7.0 und PHP ≥ 7.1.0 mit der JSON Extension.</p>
+<h2 id="download">Download</h2>
+<p>Das <a href="https://github.com/cmb69/tetris_xh/releases/latest">aktuelle Release</a> kann von Github herunter geladen werden.</p>
+<h2 id="installation">Installation</h2>
+<p>The Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch. Im <a href="https://wiki.cmsimple-xh.org/de/?fuer-anwender/arbeiten-mit-dem-cms/plugins">CMSimple_XH-Wiki</a> finden Sie weitere Informationen.</p>
+<ol type="1">
 <li><strong>Sichern Sie die Daten auf Ihrem Server.</strong></li>
 <li>Entpacken Sie die ZIP-Datei auf Ihrem Computer.</li>
-<li>Laden Sie das gesamte Verzeichnis tetris/ auf Ihren Server in das
-CMSimple_XH Pluginverzeichnis hoch.</li>
-<li>Vergeben Sie Schreibrechte für die Unterverzeichnisse config/,
-css/ und languages/.</li>
-<li><strong>Gehen Sie zu "Tetris" im Administrationsbereich, und prüfen Sie, ob
-alle Vorraussetzungen erfüllt sind.</strong></li>
+<li>Laden Sie den gesamten Ordner <code>tetris/</code> auf Ihren Server in den <code>plugins/</code> Ordner von CMSimple_XH hoch.</li>
+<li>Vergeben Sie Schreibrechte für die Unterordner <code>config/</code>, <code>css/</code> und <code>languages/</code>.</li>
+<li>Navigieren Sie zu <code>Tetris</code> im Administrationsbereich, und prüfen Sie, ob alle Vorraussetzungen erfüllt sind.</li>
 </ol>
-<div class="toplink"><a href="#">zum Seitenanfang</a></div>
-
-<h2><a name="settings">Einstellungen</a></h2>
-<p>Die Konfiguration des Plugins erfolgt wie bei vielen anderen CMSimple_XH
-Plugins auch im Administrationsbereich der Website. Wählen Sie unter "Plugins"
-"Tetris" aus.</p>
-<p>Sie können die Vorinstellungen von Tetris_XH unter "Konfiguration" ändern.
-Beim Überfahren der Hilfe-Icons mit der Maus werden Hinweise zu den
-Einstellungen angezeigt.</p>
-<p>Die Lokalisierung wird unter "Sprache" vorgenommen. Sie können die Texte in
-Ihre eigene Sprache übersetzen, oder sie entsprechend Ihren Anforderungen
-anpassen.</p>
-<p>Das Aussehen von Tetris_XH kann unter "Stylesheet" angepasst werden.</p>
-<div class="toplink"><a href="#">zum Seitenanfang</a></div>
-
-<h2><a name="usage">Verwendung</a></h2>
+<h2 id="einstellungen">Einstellungen</h2>
+<p>Die Konfiguration des Plugins erfolgt wie bei vielen anderen CMSimple_XH Plugins auch im Administrationsbereich der Website. Wählen Sie <code>Plugins</code> → <code>Tetris</code>.</p>
+<p>Sie können die Vorinstellungen von Tetris_XH unter <code>Konfiguration</code> ändern. Beim Überfahren der Hilfe-Icons mit der Maus werden Hinweise zu den Einstellungen angezeigt.</p>
+<p>Die Lokalisierung wird unter <code>Sprache</code> vorgenommen. Sie können die Zeichenketten in Ihre eigene Sprache übersetzen (falls keine entsprechende Sprachdatei zur Verfügung steht), oder sie entsprechend Ihren Anforderungen anpassen.</p>
+<p>Das Aussehen von Tetris_XH kann unter <code>Stylesheet</code> angepasst werden.</p>
+<h2 id="verwendung">Verwendung</h2>
 <p>Um das Tetris-Spiel auf einer Seite anzuzeigen, fügen Sie dort ein:</p>
-<pre>{{{PLUGIN:tetris();}}}</pre>
-<div class="toplink"><a href="#">zum Seitenanfang</a></div>
-
-<h2><a name="limitations">Beschränkungen</a></h2>
-<p>Um Tetris zu spielen, muss JavaScript im Browser des Besuchers aktiviert
-sein.</p>
-
-<h3>jQuery</h3>
-<p>Tetris_XH <em>könnte</em> in Installationen mit jQuery abhängigen Plugins,
-Addons oder Templates, die nicht jQuery4CMSimple verwenden, sondern ihre eigene
-jQuery Bibliothek importieren, nicht funktionieren. Dieses Problem wird nicht
-behoben werden (es ist ohnehin nicht möglich, es für alle Fälle zu beheben),
-weil allen Entwicklern geraten wird, ausschließlich jQuery4CMSimple in
-Verbindung mit ihrem jQuery basierten Code für CMSimple_XH zu verwenden. Daher
-sollten diejenigen Erweiterungen aktualisiert werden, die sich nicht daran
-halten!</p>
-
-<h3>Vulnerabilität der Highscores</h3>
-<p>Es ist nicht besonders schwer für Hacker die Highscores zu manipulieren ohne
-diese tatsächlich erspielt zu haben. Aber dies stellt keine wirkliche
-Sicherheitslücke dar, da die Größe der Highscore-Datenbank eingeschränkt
-ist.</p>
-
-<div class="toplink"><a href="#">zum Seitenanfang</a></div>
-
-<h2><a name="license">Lizenz</a></h2>
-<p>Tetris_XH kann unter Einhaltung der <a
-href="http://www.gnu.org/licenses/gpl.html">GPLv3</a> verwendet werden.</p>
-<p>&copy; 2011-2017 Christoph M. Becker</p>
-<p>Polnische Übersetzung &copy; 2012 Kamil Kresz<br>
-Tschechische Übersetzung &copy; 2012 Josef Němec<br>
-Slovakische Übersetzung &copy; 2012 Dr. Martin Sereday</p>
-<div class="toplink"><a href="#">zum Seitenanfang</a></div>
-
-<h2><a name="credits">Danksagung</a></h2>
-<p>Tetris_XH basiert auf <a
-href="http://fmarcia.info/jquery/tetris/tetris.html"> Tetris with jQuery</a> von
-Franck Marcia. Vielen Dank dafür, dass er diese nette und einfache
-Implementierung von Tetris entwickelt und den Code unter einer
-Open-Source-Lizenz veröffentlicht hat.</p>
-<p>Das Plugin-Icon wurde von <a href="http://atux.deviantart.com/">AtuX</a>
-entworfen. Vielen Dank für die Veröffentlichung unter einer freien Lizenz.</p>
-<p>Vielen Dank an die Community im <a
-href="http://www.cmsimpleforum.com">CMSimple-Forum</a> für Tipps, Anregungen und
-das Testen. Besonders möchte ich Gert und oldnema für ihre
-Verbesserungsvorschläge danken. Und ich muss mich bei bca entschuldigen, der die
-Online-Demo als erster getestet hat, aber aufgrund eines Fehlers im Plugin
-seinen Highscore nicht eintragen konnte.</p>
-<p>Vielen Dank an Luda Wieland, die mich darauf hinwies, dass die Highscores in
-Installationen in einem UserDir nicht gespeichert werden konnten, und die mir
-beim Debuggen des Problems half.</p>
-<p>Und zu guter Letzt vielen Dank an <a href="http://www.harteg.dk/">Peter
-Harteg</a>, den "Vater" von CMSimple, und alle Entwickler von <a
-href="http://www.cmsimple-xh.org/"> CMSimple_XH</a>, ohne die dieses
-phantastische CMS nicht existieren würde.</p>
-<div class="toplink"><a href="#">zum Seitenanfang</a></div>
-
-</div>
-
+<pre><code>{{{tetris()}}}</code></pre>
+<h2 id="einschränkungen">Einschränkungen</h2>
+<p>Um Tetris zu spielen, muss JavaScript im Browser des Besuchers aktiviert sein.</p>
+<h3 id="vulnerabilität-der-highscores">Vulnerabilität der Highscores</h3>
+<p>Es ist nicht trivial für Hacker die Highscores zu manipulieren ohne diese tatsächlich erspielt zu haben. Aber dies stellt keine wirkliche Sicherheitslücke dar, da die Größe der Highscore-Datenbank eingeschränkt ist.</p>
+<h2 id="problembehebung">Problembehebung</h2>
+<p>Melden Sie Programmfehler und stellen Sie Supportanfragen entweder auf <a href="https://github.com/cmb69/tetris_xh/issues">Github</a> oder im <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>
+<h2 id="lizenz">Lizenz</h2>
+<p>Tetris_XH ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</p>
+<p>Die Veröffentlichung von Tetris_XH erfolgt in der Hoffnung, dass es Ihnen von Nutzen sein wird, aber <em>ohne irgendeine Garantie</em>, sogar ohne die implizite Garantie der <em>Marktreife</em> oder der <em>Verwendbarkeit für einen bestimmten Zweck</em>. Details finden Sie in der GNU General Public License.</p>
+<p>Sie sollten ein Exemplar der GNU General Public License zusammen mit Tetris_XH erhalten haben. Falls nicht, siehe <a href="https://www.gnu.org/licenses/" class="uri">https://www.gnu.org/licenses/</a>.</p>
+<p>Copyright © 2011-2023 Christoph M. Becker</p>
+<p>Polnische Übersetzung © 2012 Kamil Kresz<br />
+Tschechische Übersetzung © 2012 Josef Němec<br />
+Slovakische Übersetzung © 2012 Dr. Martin Sereday</p>
+<h2 id="danksagung">Danksagung</h2>
+<p>Tetris_XH basiert auf Tetris with jQuery von Franck Marcia. Vielen Dank dafür, dass er diese nette und einfache Implementierung von Tetris entwickelt und den Code unter einer Open-Source-Lizenz veröffentlicht hat.</p>
+<p>Das Plugin-Icon wurde von <a href="https://www.deviantart.com/atux">AtuX</a> entworfen. Vielen Dank für die Veröffentlichung unter einer freien Lizenz.</p>
+<p>Vielen Dank an die Community im <a href="https://www.cmsimpleforum.com">CMSimple_XH Forum</a> für Tipps, Anregungen und das Testen. Besonders möchte ich <em>Gert</em> und <em>oldnema</em> für ihre Verbesserungsvorschläge danken. Und ich muss mich bei <em>bca</em> entschuldigen, der die Online-Demo als erster getestet hat, aber aufgrund eines Fehlers im Plugin seinen Highscore nicht eintragen konnte.</p>
+<p>Vielen Dank an Luda Wieland, die mich darauf hinwies, dass die Highscores in Installationen in einem <code>UserDir</code> nicht gespeichert werden konnten, und die mir beim Debuggen des Problems half.</p>
+<p>Und zu guter letzt vielen Dank an <a href="http://www.harteg.dk/">Peter Harteg</a>, den „Vater“ von CMSimple, und allen Entwicklern von <a href="https://www.cmsimple-xh.org/de/">CMSimple_XH</a> ohne die es dieses phantastische CMS nicht gäbe.</p>
 </body>
-
 </html>
