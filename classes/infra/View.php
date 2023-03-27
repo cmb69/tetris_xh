@@ -19,7 +19,7 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Tetris;
+namespace Tetris\Infra;
 
 class View
 {

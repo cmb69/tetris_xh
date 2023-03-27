@@ -21,24 +21,59 @@
 
 namespace Tetris;
 
-class MainController extends Controller
+use Tetris\Infra\HighscoreService;
+use Tetris\Infra\Jquery;
+use Tetris\Infra\View;
+use Tetris\Value\Response;
+
+class MainController
 {
+    /** @var array<string,string> */
+    private $conf;
+     
+    /** @var array<string,string> */
+    private $lang;
+
+    /** @var HighscoreService */
+    private $highscoreService;
+
+    /** @var Jquery */
+    private $jquery;
+
+    /** @var View */
+    private $view;
+
     /**
-     * @return void
+     * @param array<string,string> $conf
+     * @param array<string,string> $lang
      */
-    public function defaultAction()
+    public function __construct(
+        array $conf,
+        array $lang,
+        HighscoreService $highscoreService,
+        Jquery $jquery,
+        View $view
+    ) {
+        $this->conf = $conf;
+        $this->lang = $lang;
+        $this->highscoreService = $highscoreService;
+        $this->jquery = $jquery;
+        $this->view = $view;
+    }
+
+    public function defaultAction(): Response
     {
-        global $pth, $plugin_tx, $sn, $su;
+        global $sn, $su;
 
         $this->headers();
-        $view = new View($pth["folder"]["plugins"] . "tetris/views/", $plugin_tx["tetris"]);
-        echo $view->render("main", [
+        $output = $this->view->render("main", [
             "url" => $sn . '?' . $su . '&tetris_action=show_highscores',
             "gridRows" => range('d', 'u'),
             "gridCols" => range(1, 10),
             "nextRows" => range(0, 3),
             "nextCols" => range(0, 3),
         ]);
+        return Response::create($output);
     }
 
     /**
@@ -48,8 +83,7 @@ class MainController extends Controller
     {
         global $pth, $hjs, $sn, $su;
 
-        include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
-        include_jQuery();
+        $this->jquery->include();
         $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
             . 'tetris/tetris.js"></script>' . PHP_EOL;
         $falldown = $this->conf['falldown_immediately'] ? 'true' : 'false';
@@ -78,45 +112,33 @@ EOT;
         return $texts;
     }
 
-    /**
-     * @return void
-     */
-    public function getHighscoreAction()
+    public function getHighscoreAction(): Response
     {
-        echo HighscoreService::requiredHighscore();
-        exit;
+        return Response::terminate()->withOutput((string) $this->highscoreService->requiredHighscore());
     }
 
-    /**
-     * @return void
-     */
-    public function showHighscoresAction()
+    public function showHighscoresAction(): Response
     {
-        global $pth, $plugin_tx;
-        $highscores = HighscoreService::readHighscores();
+        $highscores = $this->highscoreService->readHighscores();
         foreach ($highscores as &$highscore) {
             list($player, $score) = $highscore;
             $highscore = (object) compact('player', 'score');
         }
-        $view = new View($pth["folder"]["plugins"] . "tetris/views/", $plugin_tx["tetris"]);
-        echo $view->render("highscores", [
+        $output = $this->view->render("highscores", [
             "highscores" => $highscores,
         ]);
-        exit;
+        return Response::terminate()->withOutput($output);
     }
 
-    /**
-     * @return void
-     */
-    public function newHighscoreAction()
+    public function newHighscoreAction(): Response
     {
         $name = $_POST['name'];
         $score = $_POST['score'];
         if (strlen($name) <= 20 // FIXME: use utf8_strlen()
             && preg_match('/[0-9]{1,6}/', $score)
         ) {
-            HighscoreService::enterHighscore($name, (int) $score);
+            $this->highscoreService->enterHighscore($name, (int) $score);
         }
-        exit;
+        return Response::terminate();
     }
 }

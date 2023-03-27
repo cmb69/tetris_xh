@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Tetris_XH.
  *
@@ -19,11 +19,22 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-spl_autoload_register(
-    function ($class) {
-        $parts = explode('\\', $class, 2);
-        if ($parts[0] == 'Tetris') {
-            include_once dirname(__FILE__) . '/' . $parts[1] . '.php';
+namespace Tetris\Infra;
+
+use Tetris\Value\Response;
+
+class Responder
+{
+    /** @return string|never */
+    public static function respond(Response $response)
+    {
+        if ($response->terminated()) {
+            while (ob_get_level()) {
+                ob_end_clean();
+            }
+            echo $response->output();
+            exit;
         }
+        return $response->output();
     }
-);
+}

@@ -21,6 +21,11 @@
 
 namespace Tetris;
 
+use Tetris\Infra\HighscoreService;
+use Tetris\Infra\Responder;
+use Tetris\Infra\SystemChecker;
+use Tetris\Infra\View;
+
 class Plugin
 {
     const VERSION = "2.0-dev";
@@ -30,7 +35,7 @@ class Plugin
      */
     public function run()
     {
-        global $o, $action, $admin, $plugin;
+        global $o, $admin, $pth, $plugin_tx;
 
         if (defined("XH_ADM") && XH_ADM) {
             XH_registerStandardPluginMenuItems(false);
@@ -38,9 +43,7 @@ class Plugin
                 $o .= print_plugin_admin('off');
                 switch ($admin) {
                     case '':
-                        ob_start();
-                        (new InfoController)->defaultAction();
-                        $o .= ob_get_clean();
+                        $o .= Responder::respond(Dic::makeInfoController()->defaultAction());
                         break;
                     default:
                         $o .= plugin_admin_common();

@@ -19,16 +19,24 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Tetris;
+namespace Tetris\Infra;
 
 class HighscoreService
 {
+    /** @var string */
+    private $dataFolder;
+
+    public function __construct(string $dataFolder)
+    {
+        $this->dataFolder = $dataFolder;
+    }
+
     /**
      * @return list<array{string,int}>
      */
-    public static function readHighscores()
+    public function readHighscores()
     {
-        $fn = self::dataFolder() . 'tetris.dat';
+        $fn = $this->dataFolder() . 'tetris.dat';
         if (($cnt = file_get_contents($fn)) === false
             || ($highscores = unserialize($cnt)) === false
         ) {
@@ -40,9 +48,9 @@ class HighscoreService
     /**
      * @return int
      */
-    public static function requiredHighscore()
+    public function requiredHighscore()
     {
-        $highscores = self::readHighscores();
+        $highscores = $this->readHighscores();
         return isset($highscores[9][1]) ? (int) $highscores[9][1] : 0;
     }
 
@@ -51,34 +59,32 @@ class HighscoreService
      * @param int $score
      * @return void
      */
-    public static function enterHighscore($name, $score)
+    public function enterHighscore($name, $score)
     {
-        $highscores = self::readHighscores();
+        $highscores = $this->readHighscores();
         $highscores[] = array($name, $score);
         usort($highscores, function ($a, $b) {
             return $b[1] - $a[1];
         });
         array_splice($highscores, 10);
-        self::writeHighscores($highscores);
+        $this->writeHighscores($highscores);
     }
 
     /**
      * @param list<array{string,int}> $highscores
      * @return void
      */
-    private static function writeHighscores(array $highscores)
+    private function writeHighscores(array $highscores)
     {
-        $fn = self::dataFolder() . 'tetris.dat';
+        $fn = $this->dataFolder() . 'tetris.dat';
         XH_writeFile($fn, serialize($highscores));
     }
 
     /**
      * @return string
      */
-    public static function dataFolder()
+    public function dataFolder()
     {
-        global $pth;
-
-        return "{$pth['folder']['base']}content/";
+        return $this->dataFolder;
     }
 }

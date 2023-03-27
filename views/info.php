@@ -1,6 +1,6 @@
 <?php
 
-use Tetris\View;
+use Tetris\Infra\View;
 
 /**
  * @var View $this

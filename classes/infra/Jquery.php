@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Tetris_XH.
  *
@@ -19,24 +19,15 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Tetris\Dic;
-use Tetris\Infra\Responder;
+namespace Tetris\Infra;
 
-/**
- * @return string
- */
-function tetris()
+class Jquery
 {
-    $controller = Dic::makeMainController();
-    if (isset($_GET['tetris_action'])) {
-        $action = str_replace('_', '', $_GET['tetris_action']) . 'Action';
-        if (!method_exists($controller, $action)) {
-            $action = 'defaultAction';
-        }
-    } else {
-        $action = 'defaultAction';
+    /** @return void */
+    public function include()
+    {
+        global $pth;
+        include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
+        include_jQuery();
     }
-    return Responder::respond($controller->$action());
 }
-
-(new Tetris\Plugin)->run();

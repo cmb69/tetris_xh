@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Tetris_XH.
  *
@@ -19,21 +19,28 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Tetris;
+namespace Tetris\Infra;
 
-abstract class Controller
+class SystemChecker
 {
-    /** @var array<string,string> */
-    protected $conf;
-     
-    /** @var array<string,string> */
-    protected $lang;
-
-    public function __construct()
+    public function checkVersion(string $actual, string $minimum): bool
     {
-        global $plugin_cf, $plugin_tx;
+        return version_compare($actual, $minimum) >= 0;
+    }
 
-        $this->conf = $plugin_cf['tetris'];
-        $this->lang = $plugin_tx['tetris'];
+    public function checkExtension(string $name): bool
+    {
+        return extension_loaded($name);
+    }
+
+    public function checkPlugin(string $name): bool
+    {
+        global $pth;
+        return is_dir($pth["folder"]["plugins"] . $name);
+    }
+
+    public function checkWritability(string $path): bool
+    {
+        return is_writable($path);
     }
 }
