@@ -27,7 +27,7 @@ $plugin_tx['tetris']['label_down']="Dół";
 $plugin_tx['tetris']['label_level']="Poziom";
 $plugin_tx['tetris']['label_rows']="Wiersze";
 $plugin_tx['tetris']['label_score']="Wynik";
-$plugin_tx['tetris']['message_howto_play']="<p>Zasady gry zostały wyjaśnione na <a href=\"http://pl.wikipedia.org/wiki/Tetris#Zasady_gry\" target=\"_blank\">Wikipedii</a>.</p><p>Użyj wymienionych klawiszy (strzałki nie działają ze wszystkimi przeglądarkami):</p>";
+$plugin_tx['tetris']['message_howto_play']="Użyj wymienionych klawiszy:";
 $plugin_tx['tetris']['error_no_js']="Javascript musi być aktywny aby zagrać!";
 $plugin_tx['tetris']['cf_falldown_immediately']="Określ zachowanie spadania: (1) - klocki spadają natychmiast lub (0) - klocki opadają co jedną linię.";
 $plugin_tx['tetris']['cf_speed_initial']="Prędkość początkowa gry. Im wyższa tym mniejsza prędkość.";

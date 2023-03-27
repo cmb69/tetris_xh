@@ -20,7 +20,7 @@ $plugin_tx['tetris']['label_down']="Dole";
 $plugin_tx['tetris']['label_level']="Level";
 $plugin_tx['tetris']['label_rows']="Riadky";
 $plugin_tx['tetris']['label_score']="Skóre";
-$plugin_tx['tetris']['message_howto_play']="<p>Ako hrať Tetris, je vysvetlené na <a href='http://en.wikipedia.org/wiki/Tetris#Gameplay' target='_blank'>Wikipedia</a>.</p><p>Použite tieto klávesy (šípky nefungujú vo všetkých prehliadačoch):</p>";
+$plugin_tx['tetris']['message_howto_play']="Použite tieto klávesy:";
 $plugin_tx['tetris']['message_about']="<p>Tetris pre CMSimple_XH.</p>";
 $plugin_tx['tetris']['error_no_js']="Javascript musí byť v prehliadači povlený!";
 $plugin_tx['tetris']['cf_folder_data']="Cesta k adresáru relatívna ku koreňovému adresáru  CMSimple, v ktorom sa majú uložiť dáta. Napr.: \"userfiles/tetris/\". Ak neuvediete nič, dáta sa uložia v adresári pluginu data/.";

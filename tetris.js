@@ -114,14 +114,15 @@ var tetris = {
     },
 
     // Define the action to be fired depending on key entry
-    key: function(e) {
-        switch(e.charCode || e.keyCode) {
+    key: function(event) {
+        switch(event.keyCode) {
             case 74: case 106: case 37: tetris.moveLeft(); break; // J or <-
             case 76: case 108: case 39: tetris.moveRight(); break; // L or ->
             case 75: case 107: case 40: if (tetris.config.falldown) {tetris.fallDown()} else {tetris.moveDown()}; break; // K or v
             case 73: case 105: case 38: tetris.rotate(); break; // I or ^
         }
-        return false;
+        event.preventDefault();
+        event.stopImmediatePropagation();
     },
 
     // Generate an random shape

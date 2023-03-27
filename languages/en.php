@@ -26,7 +26,7 @@ $plugin_tx['tetris']['label_level']="Level";
 $plugin_tx['tetris']['label_rows']="Rows";
 $plugin_tx['tetris']['label_score']="Score";
 
-$plugin_tx['tetris']['message_howto_play']="Use the following keys (the arrow keys do not work in all browsers):";
+$plugin_tx['tetris']['message_howto_play']="Use the following keys:";
 
 $plugin_tx['tetris']['error_no_js']="Javascript must be enabled in your browser to play!";
 
