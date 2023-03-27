@@ -40,7 +40,7 @@ class InfoControllerTest extends TestCase
         $highscoreService = $this->createStub(HighscoreService::class);
         $highscoreService->method("dataFolder")->willReturn("./content/");
         $view = new View("./views/", $text);
-        $sut = new InfoController("./plugins/", $text, $systemChecker, $highscoreService, $view);
+        $sut = new InfoController("./plugins/", $systemChecker, $highscoreService, $view);
         $response = $sut->defaultAction();
         Approvals::verifyHtml($response->output());
     }

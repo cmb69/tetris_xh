@@ -1,10 +1,9 @@
 <?php
 
 	$plugin_tx['tetris']['syscheck_title']="Kontrola systému";
-	$plugin_tx['tetris']['syscheck_phpversion']="PHP verze ≥ %s";
-	$plugin_tx['tetris']['syscheck_extension']="Rozšíření '%s' nahráno";
-	$plugin_tx['tetris']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple plugin</a> instalován";
-	$plugin_tx['tetris']['syscheck_writable']="'%s' zapisovatelné";
+	$plugin_tx['tetris']['syscheck_phpversion']="PHP verze ≥ %s: ";
+	$plugin_tx['tetris']['syscheck_extension']="Rozšíření '%s' nahráno: ";
+	$plugin_tx['tetris']['syscheck_writable']="'%s' zapisovatelné: ";
 	$plugin_tx['tetris']['label_ok']="Ok";
 	$plugin_tx['tetris']['label_cancel']="Zrušit";
 	$plugin_tx['tetris']['label_play']="Hraj";

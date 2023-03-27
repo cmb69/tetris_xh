@@ -43,10 +43,9 @@ class Dic
 
     public static function makeInfoController(): InfoController
     {
-        global $pth, $plugin_tx;
+        global $pth;
         return new InfoController(
             "{$pth['folder']['plugins']}tetris/",
-            $plugin_tx["tetris"],
             new SystemChecker,
             self::makeHighscoreService(),
             self::makeView()
