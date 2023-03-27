@@ -21,6 +21,7 @@
 
 namespace Tetris\Infra;
 
+/** @codeCoverageIgnore */
 class Jquery
 {
     /** @return void */

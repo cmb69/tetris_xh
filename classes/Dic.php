@@ -32,6 +32,7 @@ class Dic
     {
         global $pth, $plugin_cf, $plugin_tx;
         return new MainController(
+            $pth["folder"]["plugins"] . "tetris/",
             $plugin_cf["tetris"],
             $plugin_tx["tetris"],
             self::makeHighscoreService(),

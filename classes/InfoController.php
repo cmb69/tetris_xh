@@ -62,7 +62,7 @@ class InfoController
     {
         $output = $this->view->render("info", [
             "logo" => $this->pluginFolder . "tetris.png",
-            "version" => Plugin::VERSION,
+            "version" => TETRIS_VERSION,
             "checks" => $this->getChecks(),
         ]);
         return Response::create($output);
@@ -78,9 +78,9 @@ class InfoController
             $this->checkExtension('json'),
             $this->checkXhVersion("1.7.0"),
             $this->checkPlugin('jquery'),
-            $this->checkWritability("$this->pluginFolder/css/"),
-            $this->checkWritability("$this->pluginFolder/config/"),
-            $this->checkWritability("$this->pluginFolder/languages/"),
+            $this->checkWritability($this->pluginFolder . "css/"),
+            $this->checkWritability($this->pluginFolder . "config/"),
+            $this->checkWritability($this->pluginFolder . "languages/"),
             $this->checkWritability($this->highscoreService->dataFolder())
         );
     }

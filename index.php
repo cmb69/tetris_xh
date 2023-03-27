@@ -22,21 +22,12 @@
 use Tetris\Dic;
 use Tetris\Infra\Responder;
 
+const TETRIS_VERSION = "2.0-dev";
+
 /**
  * @return string
  */
 function tetris()
 {
-    $controller = Dic::makeMainController();
-    if (isset($_GET['tetris_action'])) {
-        $action = str_replace('_', '', $_GET['tetris_action']) . 'Action';
-        if (!method_exists($controller, $action)) {
-            $action = 'defaultAction';
-        }
-    } else {
-        $action = 'defaultAction';
-    }
-    return Responder::respond($controller->$action());
+    return Responder::respond(Dic::makeMainController()());
 }
-
-(new Tetris\Plugin)->run();

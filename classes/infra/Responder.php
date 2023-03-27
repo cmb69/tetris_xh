@@ -23,6 +23,7 @@ namespace Tetris\Infra;
 
 use Tetris\Value\Response;
 
+/** @codeCoverageIgnore */
 class Responder
 {
     /** @return string|never */

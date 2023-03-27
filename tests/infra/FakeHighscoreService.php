@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Tetris_XH.
  *
@@ -19,23 +19,30 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Tetris\Dic;
-use Tetris\Infra\Responder;
+namespace Tetris\Infra;
 
-/**
- * @var string $admin
- * @var string $o
- */
+class FakeHighscoreService extends HighscoreService
+{
+    private $data = [];
 
-XH_registerStandardPluginMenuItems(false);
+    public function __construct() {}
 
-if (XH_wantsPluginAdministration("tetris")) {
-    $o .= print_plugin_admin("off");
-    switch ($admin) {
-        case "":
-            $o .= Responder::respond(Dic::makeInfoController()->defaultAction());
-            break;
-        default:
-            $o .= plugin_admin_common();
+    public function readHighscores()
+    {
+        return $this->data;
+    }
+
+    public function enterHighscore($name, $score)
+    {
+        $this->data[] = [$name, $score];
+        usort($this->data, function ($a, $b) {
+            return $b[1] <=> $a[1];
+        });
+        $this->data = array_splice($this->data, 0, 10);
+    }
+
+    public function dataFolder()
+    {
+        return "./content/";
     }
 }

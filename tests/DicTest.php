@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Tetris_XH.
  *
@@ -19,23 +19,27 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Tetris\Dic;
-use Tetris\Infra\Responder;
+namespace Tetris;
 
-/**
- * @var string $admin
- * @var string $o
- */
+use PHPUnit\Framework\TestCase;
 
-XH_registerStandardPluginMenuItems(false);
+class DicTest extends TestCase
+{
+    public function setUp(): void
+    {
+        global $pth, $plugin_cf, $plugin_tx;
+        $pth = ["folder" => ["base" => "", "plugins" => ""]];
+        $plugin_cf = ["tetris" => []];
+        $plugin_tx = ["tetris" => []];
+    }
 
-if (XH_wantsPluginAdministration("tetris")) {
-    $o .= print_plugin_admin("off");
-    switch ($admin) {
-        case "":
-            $o .= Responder::respond(Dic::makeInfoController()->defaultAction());
-            break;
-        default:
-            $o .= plugin_admin_common();
+    public function testMakesMainController(): void
+    {
+        $this->assertInstanceOf(MainController::class, Dic::makeMainController());
+    }
+
+    public function testMakesInfoController(): void
+    {
+        $this->assertInstanceOf(InfoController::class, Dic::makeInfoController());
     }
 }

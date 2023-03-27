@@ -28,6 +28,9 @@ use Tetris\Value\Response;
 
 class MainController
 {
+    /** @var string */
+    private $pluginFolder;
+
     /** @var array<string,string> */
     private $conf;
      
@@ -48,12 +51,14 @@ class MainController
      * @param array<string,string> $lang
      */
     public function __construct(
+        string $pluginFolder,
         array $conf,
         array $lang,
         HighscoreService $highscoreService,
         Jquery $jquery,
         View $view
     ) {
+        $this->pluginFolder = $pluginFolder;
         $this->conf = $conf;
         $this->lang = $lang;
         $this->highscoreService = $highscoreService;
@@ -61,7 +66,21 @@ class MainController
         $this->view = $view;
     }
 
-    public function defaultAction(): Response
+    public function __invoke(): Response
+    {
+        switch ($_GET["tetris_action"] ?? "") {
+            default:
+                return $this->defaultAction();
+            case "get_highscore":
+                return $this->getHighscoreAction();
+            case "show_highscores":
+                return $this->showHighscoresAction();
+            case "new_highscore":
+                return $this->newHighscoreAction();
+        }
+    }
+
+    private function defaultAction(): Response
     {
         global $sn, $su;
 
@@ -81,11 +100,11 @@ class MainController
      */
     private function headers()
     {
-        global $pth, $hjs, $sn, $su;
+        global $hjs, $sn, $su;
 
         $this->jquery->include();
-        $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
-            . 'tetris/tetris.js"></script>' . PHP_EOL;
+        $hjs .= '<script type="text/javascript" src="' . $this->pluginFolder
+            . 'tetris.js"></script>' . PHP_EOL;
         $falldown = $this->conf['falldown_immediately'] ? 'true' : 'false';
         $texts = json_encode($this->langJS());
         $hjs .= <<<EOT
@@ -112,12 +131,12 @@ EOT;
         return $texts;
     }
 
-    public function getHighscoreAction(): Response
+    private function getHighscoreAction(): Response
     {
         return Response::terminate()->withOutput((string) $this->highscoreService->requiredHighscore());
     }
 
-    public function showHighscoresAction(): Response
+    private function showHighscoresAction(): Response
     {
         $highscores = $this->highscoreService->readHighscores();
         foreach ($highscores as &$highscore) {
@@ -130,7 +149,7 @@ EOT;
         return Response::terminate()->withOutput($output);
     }
 
-    public function newHighscoreAction(): Response
+    private function newHighscoreAction(): Response
     {
         $name = $_POST['name'];
         $score = $_POST['score'];
