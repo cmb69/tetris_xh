@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Tetris_XH.
  *
@@ -19,16 +19,24 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Tetris\Dic;
-use Tetris\Infra\Request;
-use Tetris\Infra\Responder;
+namespace Tetris\Infra;
 
-const TETRIS_VERSION = "2.0-dev";
-
-/**
- * @return string
- */
-function tetris()
+class FakeRequest extends Request
 {
-    return Responder::respond(Dic::makeMainController()(Request::current()));
+    private $options;
+
+    public function __construct(array $options = [])
+    {
+        $this->options = $options;
+    }
+
+    protected function query(): string
+    {
+        return $this->options["query"] ?? "";
+    }
+
+    protected function post(): array
+    {
+        return $this->options["post"] ?? [];
+    }
 }

@@ -23,8 +23,10 @@ namespace Tetris;
 
 use Tetris\Infra\HighscoreService;
 use Tetris\Infra\Jquery;
+use Tetris\Infra\Request;
 use Tetris\Infra\View;
 use Tetris\Value\Response;
+use Tetris\Value\Url;
 
 class MainController
 {
@@ -58,29 +60,27 @@ class MainController
         $this->view = $view;
     }
 
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
-        switch ($_GET["tetris_action"] ?? "") {
+        switch ($request->action()) {
             default:
-                return $this->defaultAction();
+                return $this->defaultAction($request);
             case "get_highscore":
                 return $this->getHighscoreAction();
             case "show_highscores":
                 return $this->showHighscoresAction();
             case "new_highscore":
-                return $this->newHighscoreAction();
+                return $this->newHighscoreAction($request);
         }
     }
 
-    private function defaultAction(): Response
+    private function defaultAction(Request $request): Response
     {
-        global $sn, $su;
-
         $this->jquery->include();
         $output = $this->view->render("main", [
-            "config" => $this->jsConfig(),
+            "config" => $this->jsConfig($request->url()),
             "script" => $this->pluginFolder . "tetris.js",
-            "url" => $sn . '?' . $su . '&tetris_action=show_highscores',
+            "url" => $request->url()->with("tetris_action", "show_highscores")->relative(),
             "gridRows" => range('d', 'u'),
             "gridCols" => range(1, 10),
             "nextRows" => range(0, 3),
@@ -90,12 +90,11 @@ class MainController
     }
 
     /** @return array<string,mixed> */
-    private function jsConfig(): array
+    private function jsConfig(Url $url): array
     {
-        global $sn, $su;
         return [
-            "getHighscoreUrl" => "$sn?$su&tetris_action=get_highscore",
-            "newHighscoreUrl" => "$sn?$su&tetris_action=new_highscore",
+            "getHighscoreUrl" => $url->with("tetris_action", "get_highscore")->relative(),
+            "newHighscoreUrl" => $url->with("tetris_action", "new_highscore")->relative(),
             "falldown" => (bool) $this->conf['falldown_immediately'],
             "initialSpeed" => (int) $this->conf['speed_initial'],
             "acceleration" => (int) $this->conf['speed_acceleration'],
@@ -123,10 +122,9 @@ class MainController
         return Response::terminate()->withOutput($output);
     }
 
-    private function newHighscoreAction(): Response
+    private function newHighscoreAction(Request $request): Response
     {
-        $name = $_POST['name'];
-        $score = $_POST['score'];
+        ["name" => $name, "score" => $score] = $request->highscorePost();
         if (strlen($name) <= 20 // FIXME: use utf8_strlen()
             && preg_match('/[0-9]{1,6}/', $score)
         ) {

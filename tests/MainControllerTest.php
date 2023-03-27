@@ -24,6 +24,7 @@ namespace Tetris;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Tetris\Infra\FakeHighscoreService;
+use Tetris\Infra\FakeRequest;
 use Tetris\Infra\Jquery;
 use Tetris\Infra\View;
 
@@ -44,7 +45,7 @@ class MainControllerTest extends TestCase
 
     public function testRendersGame(): void
     {
-        $response = ($this->sut)();
+        $response = ($this->sut)(new FakeRequest(["query" => "Tetris"]));
         Approvals::verifyHtml($response->output());
     }
 
@@ -53,8 +54,7 @@ class MainControllerTest extends TestCase
         for ($i = 0; $i <10; $i++) {
             $this->highscoreService->enterHighscore("cmb", 4711);
         }
-        $_GET = ["tetris_action" => "get_highscore"];
-        $response = ($this->sut)();
+        $response = ($this->sut)(new FakeRequest(["query" => "Tetris&tetris_action=get_highscore"]));
         $this->assertTrue($response->terminated());
         $this->assertEquals("4711", $response->output());
     }
@@ -62,17 +62,18 @@ class MainControllerTest extends TestCase
     public function testShowsHighscores(): void
     {
         $this->highscoreService->enterHighscore("cmb", 10000);
-        $_GET = ["tetris_action" => "show_highscores"];
-        $response = ($this->sut)();
+        $response = ($this->sut)(new FakeRequest(["query" => "Tetris&tetris_action=show_highscores"]));
         $this->assertTrue($response->terminated());
         Approvals::verifyHtml($response->output());
     }
 
     public function testNewHighscore(): void
     {
-        $_GET = ["tetris_action" => "new_highscore"];
-        $_POST = ["name" => "cmb", "score" => "10000"];
-        $response = ($this->sut)();
+        $request = new FakeRequest([
+            "query" => "Tetris&tetris_action=new_highscore",
+            "post" => ["name" => "cmb", "score" => "10000"],
+        ]);
+        $response = ($this->sut)($request);
         $this->assertTrue($response->terminated());
         $this->assertEquals([["cmb", 10000]], $this->highscoreService->readHighscores());
     }
