@@ -4,6 +4,8 @@ use Tetris\Infra\View;
 
 /**
  * @var View $this
+ * @var mixed $config
+ * @var string $script
  * @var string $url
  * @var list<string> $gridRows
  * @var list<int> $gridCols
@@ -13,7 +15,8 @@ use Tetris\Infra\View;
 ?>
 <!-- tetris -->
 <div id="tetris-no-js" class="cmsimplecore_warning"><?=$this->text('error_no_js')?></div>
-<div id="tetris-tabs">
+<script src="<?=$this->escape($script)?>"></script>
+<div id="tetris-tabs" data-config='<?=$this->json($config)?>'>
   <ul>
     <li><a href="#tetris"><?=$this->text('label_play')?></a></li>
     <li><a href="<?=$url?>"><?=$this->text('label_highscores')?></a></li>

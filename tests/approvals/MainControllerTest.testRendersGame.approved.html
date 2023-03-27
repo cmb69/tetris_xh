@@ -1,6 +1,7 @@
 <!-- tetris -->
 <div id="tetris-no-js" class="cmsimplecore_warning">Javascript must be enabled in your browser to play!</div>
-<div id="tetris-tabs">
+<script src="./plugins/tetris/tetris.js"></script>
+<div id="tetris-tabs" data-config='{"getHighscoreUrl":"?&tetris_action=get_highscore","newHighscoreUrl":"?&tetris_action=new_highscore","falldown":true,"initialSpeed":600,"acceleration":50,"labelStart":"Start","labelPause":"Pause","labelResume":"Resume"}'>
   <ul>
     <li><a href="#tetris">Play</a></li>
     <li><a href="?&tetris_action=show_highscores">Highscores</a></li>

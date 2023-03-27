@@ -39,22 +39,13 @@ class MainControllerTest extends TestCase
         $this->highscoreService = new FakeHighscoreService;
         $jquery = $this->createStub(Jquery::class);
         $view = new View("./views/", $text);
-        $this->sut = new MainController("./plugins/tetris/", $conf, $text, $this->highscoreService, $jquery, $view);
+        $this->sut = new MainController("./plugins/tetris/", $conf, $this->highscoreService, $jquery, $view);
     }
 
     public function testRendersGame(): void
     {
         $response = ($this->sut)();
         Approvals::verifyHtml($response->output());
-    }
-
-    public function testOutputsHjs(): void
-    {
-        global $sn, $su, $hjs;
-        $sn = "/";
-        $su = "Tetris";
-        ($this->sut)();
-        Approvals::verifyHtml($hjs);
     }
 
     public function testReportsRequiredHighscore(): void

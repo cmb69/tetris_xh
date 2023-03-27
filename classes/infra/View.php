@@ -42,6 +42,17 @@ class View
         return $this->escape(sprintf($this->text[$key], ...$args));
     }
 
+    public function plain(string $key): string
+    {
+        return $this->text[$key];
+    }
+
+    /** @param mixed $value */
+    public function json($value): string
+    {
+        return (string) json_encode($value, JSON_HEX_APOS | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
     /** @param array<string,mixed> $_data */
     public function render(string $_template, array $_data): string
     {

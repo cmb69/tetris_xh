@@ -87,12 +87,12 @@
 		[1,0,0,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,0,0,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1]];
 	    $('#tetris-grid td').css('background-color', tetris.colors[0]);
-	    $('#tetris-start').unbind('click', tetris.start).html(TETRIS_TX['label_pause']).click(tetris.pause);
+	    $('#tetris-start').unbind('click', tetris.start).html(tetris.config.labelPause).click(tetris.pause);
 	    document.getElementById("tetris-stop").disabled = null;
 	    $(tetris.bound).keypress(tetris.key);
 	    tetris.next = tetris.newShape();
 	    tetris.shift();
-	    tetris.duration = TETRIS_SPEED_INITIAL;
+	    tetris.duration = tetris.config.initialSpeed;
 	    tetris.refresh();
 	    tetris.timer = window.setInterval(tetris.moveDown, tetris.duration);
 	},
@@ -102,7 +102,7 @@
 	    switch(e.charCode || e.keyCode) {
 		case 74: case 106: case 37: tetris.moveLeft(); break; // J or <-
 		case 76: case 108: case 39: tetris.moveRight(); break; // L or ->
-		case 75: case 107: case 40: if (TETRIS_FALLDOWN) {tetris.fallDown()} else {tetris.moveDown()}; break; // K or v
+		case 75: case 107: case 40: if (tetris.config.falldown) {tetris.fallDown()} else {tetris.moveDown()}; break; // K or v
 		case 73: case 105: case 38: tetris.rotate(); break; // I or ^
 	    }
 	    return false;
@@ -148,14 +148,14 @@
 	    $(tetris.bound).unbind('keypress', tetris.key);
 	    window.clearInterval(tetris.timer);
 	    tetris.timer = null;
-	    $('#tetris-start').unbind('click', tetris.pause).html(TETRIS_TX['label_resume']).click(tetris.resume);
+	    $('#tetris-start').unbind('click', tetris.pause).html(tetris.config.labelResume).click(tetris.resume);
 	},
 
 	// Resume the game
 	resume: function() {
 	    $(tetris.bound).keypress(tetris.key);
 	    tetris.timer = window.setInterval(tetris.moveDown, tetris.duration);
-	    $('#tetris-start').unbind('click', tetris.resume).html(TETRIS_TX['label_pause']).click(tetris.pause);
+	    $('#tetris-start').unbind('click', tetris.resume).html(tetris.config.labelPause).click(tetris.pause);
 	},
 
 	// Stop the game
@@ -166,9 +166,9 @@
 		$(tetris.bound).unbind('keypress', tetris.key);
 		window.clearInterval(tetris.timer);
 		tetris.timer = null;
-		$('#tetris-start').unbind('click', tetris.pause).html(TETRIS_TX['label_start']).click(tetris.start);
+		$('#tetris-start').unbind('click', tetris.pause).html(tetris.config.labelStart).click(tetris.start);
 	    } else {
-		$('#tetris-start').unbind('click', tetris.resume).html(TETRIS_TX['label_start']).click(tetris.start);
+		$('#tetris-start').unbind('click', tetris.resume).html(tetris.config.labelStart).click(tetris.start);
 	    }
 	    document.getElementById("tetris-stop").disabled = "disabled";
 	    // Draw everything in grey
@@ -189,7 +189,7 @@
 	    }
 
 	    $.ajax({
-		url: TETRIS_HIGHSCORES + "get_highscore",
+		url: tetris.config.getHighscoreUrl,
 		async: false,
 		success: function(data) {
 		    if (tetris.score > data) {
@@ -305,7 +305,7 @@
 	    tetris.lines += f;
 	    if (tetris.lines % 10 === 0) {
 		tetris.level = tetris.lines / 10;
-		tetris.duration = TETRIS_SPEED_INITIAL - TETRIS_SPEED_ACCELERATION * tetris.level;
+		tetris.duration = tetris.config.initialSpeed - tetris.config.acceleration * tetris.level;
 	    }
 	    window.clearTimeout(tetris.timer);
 	    tetris.timer = window.setInterval(tetris.moveDown, tetris.duration);
@@ -353,7 +353,7 @@
             var name = prompt("Your name");
             if (name) {
                 jQuery.ajax({
-                    url: TETRIS_HIGHSCORES + "new_highscore",
+                    url: tetris.config.newHighscoreUrl,
                     type: 'POST',
                     data: {
                         name: name,
@@ -370,13 +370,13 @@
 	}
     };
 
-
     // Initialization
     $(function() {
-	tetris.init();
-	$('#tetris-no-js').hide();
-	$('#tetris-grid table, #tetris-next table').css('background-color', tetris.colors[0]);
-	$('#tetris-start').click(tetris.start);
-	$('#tetris-stop').click(tetris.gameOver);
+        tetris.config = JSON.parse(document.getElementById("tetris-tabs").dataset.config);
+        tetris.init();
+        $('#tetris-no-js').hide();
+        $('#tetris-grid table, #tetris-next table').css('background-color', tetris.colors[0]);
+        $('#tetris-start').click(tetris.start);
+        $('#tetris-stop').click(tetris.gameOver);
    });
 })(jQuery);

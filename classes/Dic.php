@@ -30,11 +30,10 @@ class Dic
 {
     public static function makeMainController(): MainController
     {
-        global $pth, $plugin_cf, $plugin_tx;
+        global $pth, $plugin_cf;
         return new MainController(
             $pth["folder"]["plugins"] . "tetris/",
             $plugin_cf["tetris"],
-            $plugin_tx["tetris"],
             self::makeHighscoreService(),
             new Jquery,
             self::makeView()

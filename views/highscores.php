@@ -4,7 +4,7 @@ use Tetris\Infra\View;
 
 /**
  * @var View $this
- * @var list<stdClass> $highscores
+ * @var list<array{player:string,score:int}> $highscores
  */
 ?>
 <!-- tetris highscores -->
@@ -12,8 +12,8 @@ use Tetris\Infra\View;
   <table>
 <?foreach ($highscores as $highscore):?>
     <tr>
-      <td class="name"><?=$this->escape($highscore->player)?></td>
-      <td class="score"><?=$this->escape($highscore->score)?></td>
+      <td class="name"><?=$this->escape($highscore['player'])?></td>
+      <td class="score"><?=$this->escape($highscore['score'])?></td>
     </tr>
 <?endforeach?>
   </table>
