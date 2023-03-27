@@ -28,7 +28,6 @@ class Url
         $that = new self;
         $parts = parse_url($url);
         assert(isset($parts["scheme"], $parts["host"], $parts["path"]));
-        $that->base = $parts["scheme"] . "://" . $parts["host"];
         $that->path = $parts["path"];
         $match = preg_match('/^([^=&]*)(?:&|$)(.*)/', $parts["query"] ?? "", $matches);
         assert($match !== false);
@@ -36,9 +35,6 @@ class Url
         parse_str($matches[2], $that->params);
         return $that;
     }
-
-    /** @var string */
-    private $base;
 
     /** @var string */
     private $path;
