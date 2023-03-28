@@ -34,13 +34,14 @@ class FakeRepository extends Repository
         return $this->data;
     }
 
-    public function addHighscore(Highscore $highscore)
+    public function addHighscore(Highscore $highscore): bool
     {
         $this->data[] = $highscore;
         usort($this->data, function ($a, $b) {
             return $b->score() <=> $a->score();
         });
         $this->data = array_splice($this->data, 0, 10);
+        return true;
     }
 
     public function dataFolder(): string
