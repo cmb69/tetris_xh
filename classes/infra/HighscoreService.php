@@ -34,10 +34,29 @@ class HighscoreService
     /** @return list<array{string,int}> */
     public function readHighscores()
     {
-        if (($cnt = @file_get_contents($this->filename())) === false
-            || ($highscores = unserialize($cnt)) === false
-        ) {
-            $highscores = [];
+        if (($stream = @fopen($this->filename(), "r")) === false) {
+            return [];
+        }
+        flock($stream, LOCK_SH);
+        $highscores = $this->read($stream);
+        flock($stream, LOCK_UN);
+        fclose($stream);
+        return $highscores;
+    }
+
+    /**
+     * @param resource $stream
+     * @return list<array{string,int}>
+     */
+    private function read($stream): array
+    {
+        $highscores = [];
+        while (($line = fgets($stream)) !== false) {
+            $fields = explode(":", $line, 2);
+            if (count($fields) < 2) {
+                continue;
+            }
+            $highscores[] = [$fields[0], (int) $fields[1]];
         }
         return $highscores;
     }
@@ -51,22 +70,43 @@ class HighscoreService
     /** @return void */
     public function enterHighscore(string $name, int $score)
     {
-        $highscores = $this->readHighscores();
-        $highscores[] = array($name, $score);
-        usort($highscores, function ($a, $b) {
-            return $b[1] - $a[1];
-        });
-        array_splice($highscores, 10);
-        $this->writeHighscores($highscores);
+        if (($stream = @fopen($this->filename(), "c+")) === false) {
+            return;
+        }
+        flock($stream, LOCK_EX);
+        $highscores = $this->read($stream);
+        $highscores = $this->add($highscores, [$name, $score]);
+        rewind($stream);
+        $this->write($stream, $highscores);
+        flock($stream, LOCK_UN);
+        fclose($stream);
     }
 
     /**
      * @param list<array{string,int}> $highscores
+     * @param array{string,int} $highscore
+     * @return list<array{string,int}>
+     */
+    private function add(array $highscores, array $highscore): array
+    {
+        $highscores[] = $highscore;
+        usort($highscores, function ($a, $b) {
+            return $b[1] <=> $a[1];
+        });
+        return array_slice($highscores, 0, 10);
+    }
+
+    /**
+     * @param resource $stream
+     * @param list<array{string,int}> $highscores
      * @return void
      */
-    private function writeHighscores(array $highscores)
+    private function write($stream, array $highscores)
     {
-        XH_writeFile($this->filename(), serialize($highscores));
+        foreach ($highscores as $highscore) {
+            fwrite($stream, implode(":", $highscore));
+            fwrite($stream, "\n");
+        }
     }
 
     public function dataFolder(): string
@@ -76,6 +116,6 @@ class HighscoreService
 
     private function filename(): string
     {
-        return $this->dataFolder . "tetris.dat";
+        return $this->dataFolder . "tetris.txt";
     }
 }

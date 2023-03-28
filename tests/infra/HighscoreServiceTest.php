@@ -26,25 +26,47 @@ use PHPUnit\Framework\TestCase;
 
 class HighscoreServiceTest extends TestCase
 {
+    public function testReadsExisitingHighscores(): void
+    {
+        vfsStream::setup("root");
+        file_put_contents("vfs://root/tetris.txt", "cmb:10000\nbroken\nother:3000\n");
+        $sut = new HighscoreService("vfs://root/");
+        $result = $sut->readHighscores();
+        $this->assertEquals([["cmb", 10000], ["other", 3000]], $result);
+    }
+
     public function testEntersHighscore(): void
     {
         vfsStream::setup("root");
-        touch("vfs://root/tetris.dat");
         $sut = new HighscoreService("vfs://root/");
         $sut->enterHighscore("cmb", 10000);
         $sut->enterHighscore("anon", 1000);
-        $this->assertStringEqualsFile(
-            "vfs://root/tetris.dat",
-            'a:2:{i:0;a:2:{i:0;s:3:"cmb";i:1;i:10000;}i:1;a:2:{i:0;s:4:"anon";i:1;i:1000;}}'
-        );
+        $this->assertStringEqualsFile("vfs://root/tetris.txt", "cmb:10000\nanon:1000\n");
+    }
+
+    public function testLimitsNumberOfHighscores(): void
+    {
+        vfsStream::setup("root");
+        file_put_contents("vfs://root/tetris.txt", "a:10\nb:9\nc:8\nd:7\ne:6\nf:5\ng:4\nh:3\ni:2\nj:1\n");
+        $sut = new HighscoreService("vfs://root/");
+        $sut->enterHighscore("cmb", 100);
+        $result = $sut->readHighscores();
+        $this->assertCount(10, $result);
     }
 
     public function testRequiredHighscore(): void
     {
         vfsStream::setup("root");
-        touch("vfs://root/tetris.dat");
         $sut = new HighscoreService("vfs://root/");
         $result = $sut->requiredHighscore();
         $this->assertEquals(0, $result);
+    }
+
+    public function testReportsDataFolder(): void
+    {
+        vfsStream::setup("root");
+        $sut = new HighscoreService("vfs://root/");
+        $result = $sut->dataFolder();
+        $this->assertEquals("vfs://root/", $result);
     }
 }
