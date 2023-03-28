@@ -21,8 +21,8 @@
 
 namespace Tetris;
 
-use Tetris\Infra\HighscoreService;
 use Tetris\Infra\Newsbox;
+use Tetris\Infra\Repository;
 use Tetris\Infra\SystemChecker;
 use Tetris\Infra\View;
 
@@ -34,7 +34,7 @@ class Dic
         return new MainController(
             $pth["folder"]["plugins"] . "tetris/",
             $plugin_cf["tetris"],
-            self::makeHighscoreService(),
+            self::makeRepository(),
             new Newsbox,
             self::makeView()
         );
@@ -46,19 +46,19 @@ class Dic
         return new InfoController(
             "{$pth['folder']['plugins']}tetris/",
             new SystemChecker,
-            self::makeHighscoreService(),
+            self::makeRepository(),
             self::makeView()
         );
     }
 
-    private static function makeHighscoreService(): HighscoreService
+    private static function makeRepository(): Repository
     {
         global $pth;
         $folder = $pth["folder"]["content"];
         if (!strncmp($folder, "../", strlen("../"))) {
             $folder = dirname($folder) . "/";
         }
-        return new HighscoreService($folder);
+        return new Repository($folder);
     }
 
     private static function makeView(): View

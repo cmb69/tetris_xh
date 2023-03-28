@@ -21,11 +21,12 @@
 
 namespace Tetris;
 
-use Tetris\Infra\HighscoreService;
-use Tetris\Infra\Jquery;
 use Tetris\Infra\Newsbox;
+use Tetris\Infra\Repository;
 use Tetris\Infra\Request;
 use Tetris\Infra\View;
+use Tetris\Logic\Util;
+use Tetris\Value\Highscore;
 use Tetris\Value\Html;
 use Tetris\Value\Response;
 use Tetris\Value\Url;
@@ -38,8 +39,8 @@ class MainController
     /** @var array<string,string> */
     private $conf;
      
-    /** @var HighscoreService */
-    private $highscoreService;
+    /** @var Repository */
+    private $repository;
 
     /** @var Newsbox */
     private $newsbox;
@@ -51,13 +52,13 @@ class MainController
     public function __construct(
         string $pluginFolder,
         array $conf,
-        HighscoreService $highscoreService,
+        Repository $repository,
         Newsbox $newsbox,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->conf = $conf;
-        $this->highscoreService = $highscoreService;
+        $this->repository = $repository;
         $this->newsbox = $newsbox;
         $this->view = $view;
     }
@@ -78,10 +79,9 @@ class MainController
 
     private function defaultAction(Request $request): Response
     {
-        $highscores = $this->highscoreService->readHighscores();
-        $highscores = array_map(function (array $highscore) {
-            [$player, $score] = $highscore;
-            return ["player" => $player, "score" => $score];
+        $highscores = $this->repository->highscores();
+        $highscores = array_map(function (Highscore $highscore) {
+            return ["player" => $highscore->player(), "score" => $highscore->score()];
         }, $highscores);
         $output = $this->view->render("main", [
             "config" => $this->jsConfig($request->url()),
@@ -114,15 +114,14 @@ class MainController
 
     private function getHighscoreAction(): Response
     {
-        return Response::terminate()->withOutput((string) $this->highscoreService->requiredHighscore());
+        return Response::terminate()->withOutput((string) $this->repository->requiredHighscore());
     }
 
     private function showHighscoresAction(): Response
     {
-        $highscores = $this->highscoreService->readHighscores();
-        $highscores = array_map(function (array $highscore) {
-            [$player, $score] = $highscore;
-            return ["player" => $player, "score" => $score];
+        $highscores = $this->repository->highscores();
+        $highscores = array_map(function (Highscore $highscore) {
+            return ["player" => $highscore->player(), "score" => $highscore->score()];
         }, $highscores);
         $output = $this->view->render("highscores", [
             "highscores" => $highscores,
@@ -132,11 +131,9 @@ class MainController
 
     private function newHighscoreAction(Request $request): Response
     {
-        ["name" => $name, "score" => $score] = $request->highscorePost();
-        if (strlen($name) <= 20 // FIXME: use utf8_strlen()
-            && preg_match('/[0-9]{1,6}/', $score)
-        ) {
-            $this->highscoreService->enterHighscore($name, (int) $score);
+        $highscore = $request->highscorePost();
+        if (Util::validateHighscore($highscore)) {
+            $this->repository->addHighscore($highscore);
         }
         return Response::terminate();
     }

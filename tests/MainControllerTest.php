@@ -23,25 +23,26 @@ namespace Tetris;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
-use Tetris\Infra\FakeHighscoreService;
+use Tetris\Infra\FakeRepository;
 use Tetris\Infra\FakeRequest;
 use Tetris\Infra\Newsbox;
 use Tetris\Infra\View;
+use Tetris\Value\Highscore;
 
 class MainControllerTest extends TestCase
 {
     private $sut;
-    private $highscoreService;
+    private $repository;
 
     public function setUp(): void
     {
         $conf = XH_includeVar("./config/config.php", "plugin_cf")["tetris"];
         $text = XH_includeVar("./languages/en.php", "plugin_tx")["tetris"];
-        $this->highscoreService = new FakeHighscoreService;
+        $this->repository = new FakeRepository;
         $newsbox = $this->createStub(Newsbox::class);
         $newsbox->method("contents")->willReturn("See <a href=\"https://en.wikipedia.org/wiki/Tetris#Gameplay\">Wikipedia</a>.");
         $view = new View("./views/", $text);
-        $this->sut = new MainController("./plugins/tetris/", $conf, $this->highscoreService, $newsbox, $view);
+        $this->sut = new MainController("./plugins/tetris/", $conf, $this->repository, $newsbox, $view);
     }
 
     public function testRendersGame(): void
@@ -53,7 +54,7 @@ class MainControllerTest extends TestCase
     public function testReportsRequiredHighscore(): void
     {
         for ($i = 0; $i <10; $i++) {
-            $this->highscoreService->enterHighscore("cmb", 4711);
+            $this->repository->addHighscore(new Highscore("cmb", 4711));
         }
         $response = ($this->sut)(new FakeRequest(["query" => "Tetris&tetris_action=get_highscore"]));
         $this->assertTrue($response->terminated());
@@ -62,7 +63,7 @@ class MainControllerTest extends TestCase
 
     public function testShowsHighscores(): void
     {
-        $this->highscoreService->enterHighscore("cmb", 10000);
+        $this->repository->addHighscore(new Highscore("cmb", 10000));
         $response = ($this->sut)(new FakeRequest(["query" => "Tetris&tetris_action=show_highscores"]));
         $this->assertTrue($response->terminated());
         Approvals::verifyHtml($response->output());
@@ -76,6 +77,6 @@ class MainControllerTest extends TestCase
         ]);
         $response = ($this->sut)($request);
         $this->assertTrue($response->terminated());
-        $this->assertEquals([["cmb", 10000]], $this->highscoreService->readHighscores());
+        $this->assertEquals([new Highscore("cmb", 10000)], $this->repository->highscores());
     }
 }

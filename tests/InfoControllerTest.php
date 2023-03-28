@@ -23,7 +23,7 @@ namespace Tetris;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
-use Tetris\Infra\HighscoreService;
+use Tetris\Infra\Repository;
 use Tetris\Infra\SystemChecker;
 use Tetris\Infra\View;
 
@@ -37,10 +37,10 @@ class InfoControllerTest extends TestCase
         $systemChecker->method("checkExtension")->willReturn(false);
         $systemChecker->method("checkPlugin")->willReturn(false);
         $systemChecker->method("checkWritability")->willReturn(false);
-        $highscoreService = $this->createStub(HighscoreService::class);
-        $highscoreService->method("dataFolder")->willReturn("./content/");
+        $repository = $this->createStub(Repository::class);
+        $repository->method("dataFolder")->willReturn("./content/");
         $view = new View("./views/", $text);
-        $sut = new InfoController("./plugins/", $systemChecker, $highscoreService, $view);
+        $sut = new InfoController("./plugins/", $systemChecker, $repository, $view);
         $response = $sut->defaultAction();
         Approvals::verifyHtml($response->output());
     }

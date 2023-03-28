@@ -23,24 +23,25 @@ namespace Tetris\Infra;
 
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use Tetris\Value\Highscore;
 
-class HighscoreServiceTest extends TestCase
+class RepositoryTest extends TestCase
 {
     public function testReadsExisitingHighscores(): void
     {
         vfsStream::setup("root");
         file_put_contents("vfs://root/tetris.txt", "cmb:10000\nbroken\nother:3000\n");
-        $sut = new HighscoreService("vfs://root/");
-        $result = $sut->readHighscores();
-        $this->assertEquals([["cmb", 10000], ["other", 3000]], $result);
+        $sut = new Repository("vfs://root/");
+        $result = $sut->highscores();
+        $this->assertEquals([new Highscore("cmb", 10000), new Highscore("other", 3000)], $result);
     }
 
     public function testEntersHighscore(): void
     {
         vfsStream::setup("root");
-        $sut = new HighscoreService("vfs://root/");
-        $sut->enterHighscore("cmb", 10000);
-        $sut->enterHighscore("anon", 1000);
+        $sut = new Repository("vfs://root/");
+        $sut->addHighscore(new Highscore("cmb", 10000));
+        $sut->addHighscore(new Highscore("anon", 1000));
         $this->assertStringEqualsFile("vfs://root/tetris.txt", "cmb:10000\nanon:1000\n");
     }
 
@@ -48,16 +49,16 @@ class HighscoreServiceTest extends TestCase
     {
         vfsStream::setup("root");
         file_put_contents("vfs://root/tetris.txt", "a:10\nb:9\nc:8\nd:7\ne:6\nf:5\ng:4\nh:3\ni:2\nj:1\n");
-        $sut = new HighscoreService("vfs://root/");
-        $sut->enterHighscore("cmb", 100);
-        $result = $sut->readHighscores();
+        $sut = new Repository("vfs://root/");
+        $sut->addHighscore(new Highscore("cmb", 100));
+        $result = $sut->highscores();
         $this->assertCount(10, $result);
     }
 
     public function testRequiredHighscore(): void
     {
         vfsStream::setup("root");
-        $sut = new HighscoreService("vfs://root/");
+        $sut = new Repository("vfs://root/");
         $result = $sut->requiredHighscore();
         $this->assertEquals(0, $result);
     }
@@ -65,7 +66,7 @@ class HighscoreServiceTest extends TestCase
     public function testReportsDataFolder(): void
     {
         vfsStream::setup("root");
-        $sut = new HighscoreService("vfs://root/");
+        $sut = new Repository("vfs://root/");
         $result = $sut->dataFolder();
         $this->assertEquals("vfs://root/", $result);
     }

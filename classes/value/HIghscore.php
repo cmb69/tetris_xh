@@ -19,30 +19,29 @@
  * along with Tetris_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Tetris\Infra;
+namespace Tetris\Value;
 
-class FakeHighscoreService extends HighscoreService
+class Highscore
 {
-    private $data = [];
+    /** @var string */
+    private $player;
 
-    public function __construct() {}
+    /** @var int */
+    private $score;
 
-    public function readHighscores()
+    public function __construct(string $player, int $score)
     {
-        return $this->data;
+        $this->player = $player;
+        $this->score = $score;
     }
 
-    public function enterHighscore(string $name, int $score)
+    public function player(): string
     {
-        $this->data[] = [$name, $score];
-        usort($this->data, function ($a, $b) {
-            return $b[1] <=> $a[1];
-        });
-        $this->data = array_splice($this->data, 0, 10);
+        return $this->player;
     }
 
-    public function dataFolder(): string
+    public function score(): int
     {
-        return "./content/";
+        return $this->score;
     }
 }

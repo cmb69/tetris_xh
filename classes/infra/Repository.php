@@ -21,8 +21,12 @@
 
 namespace Tetris\Infra;
 
-class HighscoreService
+use Tetris\Value\Highscore;
+
+class Repository
 {
+    private const MAX_HIGHSCORES = 10;
+
     /** @var string */
     private $dataFolder;
 
@@ -31,8 +35,8 @@ class HighscoreService
         $this->dataFolder = $dataFolder;
     }
 
-    /** @return list<array{string,int}> */
-    public function readHighscores()
+    /** @return list<Highscore> */
+    public function highscores()
     {
         if (($stream = @fopen($this->filename(), "r")) === false) {
             return [];
@@ -46,7 +50,7 @@ class HighscoreService
 
     /**
      * @param resource $stream
-     * @return list<array{string,int}>
+     * @return list<Highscore>
      */
     private function read($stream): array
     {
@@ -56,57 +60,62 @@ class HighscoreService
             if (count($fields) < 2) {
                 continue;
             }
-            $highscores[] = [$fields[0], (int) $fields[1]];
+            $highscores[] = new Highscore($fields[0], (int) $fields[1]);
         }
         return $highscores;
     }
 
     public function requiredHighscore(): int
     {
-        $highscores = $this->readHighscores();
-        return isset($highscores[9][1]) ? (int) $highscores[9][1] : 0;
+        $highscores = $this->highscores();
+        return isset($highscores[self::MAX_HIGHSCORES - 1])
+            ? $highscores[self::MAX_HIGHSCORES - 1]->score()
+            : 0;
     }
 
-    /** @return void */
-    public function enterHighscore(string $name, int $score)
+    public function addHighscore(Highscore $highscore): bool
     {
         if (($stream = @fopen($this->filename(), "c+")) === false) {
-            return;
+            return false;
         }
         flock($stream, LOCK_EX);
         $highscores = $this->read($stream);
-        $highscores = $this->add($highscores, [$name, $score]);
+        $highscores = $this->add($highscores, $highscore);
         rewind($stream);
-        $this->write($stream, $highscores);
+        if (!$this->write($stream, $highscores)) {
+            return false;
+        }
         flock($stream, LOCK_UN);
         fclose($stream);
+        return true;
     }
 
     /**
-     * @param list<array{string,int}> $highscores
-     * @param array{string,int} $highscore
-     * @return list<array{string,int}>
+     * @param list<Highscore> $highscores
+     * @return list<Highscore>
      */
-    private function add(array $highscores, array $highscore): array
+    private function add(array $highscores, Highscore $highscore): array
     {
         $highscores[] = $highscore;
         usort($highscores, function ($a, $b) {
-            return $b[1] <=> $a[1];
+            return $b->score() <=> $a->score();
         });
-        return array_slice($highscores, 0, 10);
+        return array_slice($highscores, 0, self::MAX_HIGHSCORES);
     }
 
     /**
      * @param resource $stream
-     * @param list<array{string,int}> $highscores
-     * @return void
+     * @param list<Highscore> $highscores
      */
-    private function write($stream, array $highscores)
+    private function write($stream, array $highscores): bool
     {
         foreach ($highscores as $highscore) {
-            fwrite($stream, implode(":", $highscore));
-            fwrite($stream, "\n");
+            $line = $highscore->player() . ":" . (string) $highscore->score();
+            if (fwrite($stream, $line . "\n") === false) {
+                return false;
+            }
         }
+        return true;
     }
 
     public function dataFolder(): string

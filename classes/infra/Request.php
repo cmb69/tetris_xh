@@ -21,6 +21,7 @@
 
 namespace Tetris\Infra;
 
+use Tetris\Value\Highscore;
 use Tetris\Value\Url;
 
 class Request
@@ -49,13 +50,12 @@ class Request
         return $action;
     }
 
-    /** @return array{name:string,score:string} */
-    public function highscorePost(): array
+    public function highscorePost(): Highscore
     {
-        return [
-            "name" => $this->trimmedPostString("name"),
-            "score" => $this->trimmedPostString("score"),
-        ];
+        return new Highscore(
+            $this->trimmedPostString("name"),
+            (int) $this->trimmedPostString("score")
+        );
     }
 
     private function trimmedPostString(string $key): string

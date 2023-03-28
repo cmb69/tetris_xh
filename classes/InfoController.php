@@ -21,7 +21,7 @@
 
 namespace Tetris;
 
-use Tetris\Infra\HighscoreService;
+use Tetris\Infra\Repository;
 use Tetris\Infra\SystemChecker;
 use Tetris\Infra\View;
 use Tetris\Value\Response;
@@ -34,8 +34,8 @@ class InfoController
     /** @var SystemChecker */
     private $systemChecker;
 
-    /** @var HighscoreService */
-    private $highscoreService;
+    /** @var Repository */
+    private $repository;
 
     /** @var View */
     private $view;
@@ -43,12 +43,12 @@ class InfoController
     public function __construct(
         string $pluginFolder,
         SystemChecker $systemChecker,
-        HighscoreService $highscoreService,
+        Repository $repository,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->systemChecker = $systemChecker;
-        $this->highscoreService = $highscoreService;
+        $this->repository = $repository;
         $this->view = $view;
     }
 
@@ -71,7 +71,7 @@ class InfoController
             $this->checkWritability($this->pluginFolder . "css/"),
             $this->checkWritability($this->pluginFolder . "config/"),
             $this->checkWritability($this->pluginFolder . "languages/"),
-            $this->checkWritability($this->highscoreService->dataFolder())
+            $this->checkWritability($this->repository->dataFolder())
         );
     }
 
