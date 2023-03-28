@@ -32,7 +32,7 @@ class FakeHighscoreService extends HighscoreService
         return $this->data;
     }
 
-    public function enterHighscore($name, $score)
+    public function enterHighscore(string $name, int $score)
     {
         $this->data[] = [$name, $score];
         usort($this->data, function ($a, $b) {
@@ -41,7 +41,7 @@ class FakeHighscoreService extends HighscoreService
         $this->data = array_splice($this->data, 0, 10);
     }
 
-    public function dataFolder()
+    public function dataFolder(): string
     {
         return "./content/";
     }

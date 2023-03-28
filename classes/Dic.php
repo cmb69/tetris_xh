@@ -54,7 +54,11 @@ class Dic
     private static function makeHighscoreService(): HighscoreService
     {
         global $pth;
-        return new HighscoreService("{$pth['folder']['base']}content/");
+        $folder = $pth["folder"]["content"];
+        if (!strncmp($folder, "../", strlen("../"))) {
+            $folder = dirname($folder) . "/";
+        }
+        return new HighscoreService($folder);
     }
 
     private static function makeView(): View

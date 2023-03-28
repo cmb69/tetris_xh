@@ -31,13 +31,10 @@ class HighscoreService
         $this->dataFolder = $dataFolder;
     }
 
-    /**
-     * @return list<array{string,int}>
-     */
+    /** @return list<array{string,int}> */
     public function readHighscores()
     {
-        $fn = $this->dataFolder() . 'tetris.dat';
-        if (($cnt = @file_get_contents($fn)) === false
+        if (($cnt = @file_get_contents($this->filename())) === false
             || ($highscores = unserialize($cnt)) === false
         ) {
             $highscores = [];
@@ -45,21 +42,14 @@ class HighscoreService
         return $highscores;
     }
 
-    /**
-     * @return int
-     */
-    public function requiredHighscore()
+    public function requiredHighscore(): int
     {
         $highscores = $this->readHighscores();
         return isset($highscores[9][1]) ? (int) $highscores[9][1] : 0;
     }
 
-    /**
-     * @param string $name
-     * @param int $score
-     * @return void
-     */
-    public function enterHighscore($name, $score)
+    /** @return void */
+    public function enterHighscore(string $name, int $score)
     {
         $highscores = $this->readHighscores();
         $highscores[] = array($name, $score);
@@ -76,15 +66,16 @@ class HighscoreService
      */
     private function writeHighscores(array $highscores)
     {
-        $fn = $this->dataFolder() . 'tetris.dat';
-        XH_writeFile($fn, serialize($highscores));
+        XH_writeFile($this->filename(), serialize($highscores));
     }
 
-    /**
-     * @return string
-     */
-    public function dataFolder()
+    public function dataFolder(): string
     {
         return $this->dataFolder;
+    }
+
+    private function filename(): string
+    {
+        return $this->dataFolder . "tetris.dat";
     }
 }
